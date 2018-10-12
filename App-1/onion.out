@@ -1,0 +1,77 @@
+onion
+
+d=3 nsim=1000000 seed=1234 eta=1.000000
+r[1,2]: sample mean 0.000890, sample var 0.250761, theor. var 0.250000
+r[2,3]: sample mean 0.000359, sample var 0.249938, theor. var 0.250000
+
+d=4 nsim=1000000 seed=1234 eta=1.000000
+r[1,2]: sample mean 0.000417, sample var 0.199861, theor. var 0.200000
+r[2,3]: sample mean -0.000736, sample var 0.199944, theor. var 0.200000
+r[3,4]: sample mean 0.000314, sample var 0.199696, theor. var 0.200000
+
+d=5 nsim=1000000 seed=1234 eta=1.000000
+r[1,2]: sample mean -0.000613, sample var 0.166255, theor. var 0.166667
+r[2,3]: sample mean 0.000448, sample var 0.166759, theor. var 0.166667
+r[3,4]: sample mean -0.000001, sample var 0.166693, theor. var 0.166667
+r[4,5]: sample mean 0.000405, sample var 0.166478, theor. var 0.166667
+
+d=6 nsim=1000000 seed=1234 eta=1.000000
+r[1,2]: sample mean 0.000069, sample var 0.142844, theor. var 0.142857
+r[2,3]: sample mean 0.000337, sample var 0.142849, theor. var 0.142857
+r[3,4]: sample mean 0.000666, sample var 0.142638, theor. var 0.142857
+r[4,5]: sample mean -0.000595, sample var 0.142667, theor. var 0.142857
+r[5,6]: sample mean -0.000289, sample var 0.142910, theor. var 0.142857
+
+d=3 nsim=1000000 seed=1234 eta=3.000000
+r[1,2]: sample mean -0.000941, sample var 0.124662, theor. var 0.125000
+r[2,3]: sample mean 0.000159, sample var 0.124910, theor. var 0.125000
+
+d=4 nsim=1000000 seed=1234 eta=3.000000
+r[1,2]: sample mean -0.000261, sample var 0.110592, theor. var 0.111111
+r[2,3]: sample mean 0.000021, sample var 0.111005, theor. var 0.111111
+r[3,4]: sample mean 0.000037, sample var 0.110994, theor. var 0.111111
+
+d=5 nsim=1000000 seed=1234 eta=3.000000
+r[1,2]: sample mean -0.000368, sample var 0.100135, theor. var 0.100000
+r[2,3]: sample mean 0.000213, sample var 0.100206, theor. var 0.100000
+r[3,4]: sample mean 0.000191, sample var 0.100093, theor. var 0.100000
+r[4,5]: sample mean 0.000579, sample var 0.099810, theor. var 0.100000
+
+d=6 nsim=1000000 seed=1234 eta=3.000000
+r[1,2]: sample mean 0.000038, sample var 0.090877, theor. var 0.090909
+r[2,3]: sample mean -0.000323, sample var 0.090859, theor. var 0.090909
+r[3,4]: sample mean 0.000502, sample var 0.090699, theor. var 0.090909
+r[4,5]: sample mean -0.000329, sample var 0.091015, theor. var 0.090909
+r[5,6]: sample mean 0.000192, sample var 0.090592, theor. var 0.090909
+
+d=10 nsim=100000 seed=1234 eta=1.000000
+r[1,2]: sample mean -0.002116, sample var 0.091363, theor. var 0.090909
+r[2,3]: sample mean -0.001216, sample var 0.090672, theor. var 0.090909
+r[3,4]: sample mean 0.000098, sample var 0.090887, theor. var 0.090909
+r[4,5]: sample mean 0.000047, sample var 0.091086, theor. var 0.090909
+r[5,6]: sample mean -0.002214, sample var 0.090854, theor. var 0.090909
+r[6,7]: sample mean -0.001022, sample var 0.091460, theor. var 0.090909
+r[7,8]: sample mean -0.000167, sample var 0.091308, theor. var 0.090909
+r[8,9]: sample mean 0.000681, sample var 0.090409, theor. var 0.090909
+r[9,10]: sample mean 0.000491, sample var 0.090989, theor. var 0.090909
+
+d=20 nsim=100000 seed=1234 eta=1.000000
+r[1,2]: sample mean 0.001455, sample var 0.047815, theor. var 0.047619
+r[2,3]: sample mean -0.000373, sample var 0.047904, theor. var 0.047619
+r[3,4]: sample mean -0.000287, sample var 0.047561, theor. var 0.047619
+r[4,5]: sample mean 0.000139, sample var 0.047414, theor. var 0.047619
+r[5,6]: sample mean -0.000609, sample var 0.047790, theor. var 0.047619
+r[6,7]: sample mean -0.000355, sample var 0.047571, theor. var 0.047619
+r[7,8]: sample mean 0.000721, sample var 0.047853, theor. var 0.047619
+r[8,9]: sample mean -0.000782, sample var 0.047710, theor. var 0.047619
+r[9,10]: sample mean 0.000214, sample var 0.047730, theor. var 0.047619
+r[10,11]: sample mean 0.000414, sample var 0.047544, theor. var 0.047619
+r[11,12]: sample mean -0.000388, sample var 0.047415, theor. var 0.047619
+r[12,13]: sample mean 0.000852, sample var 0.047614, theor. var 0.047619
+r[13,14]: sample mean 0.000849, sample var 0.047595, theor. var 0.047619
+r[14,15]: sample mean -0.000744, sample var 0.047465, theor. var 0.047619
+r[15,16]: sample mean -0.000559, sample var 0.047667, theor. var 0.047619
+r[16,17]: sample mean 0.000019, sample var 0.047475, theor. var 0.047619
+r[17,18]: sample mean 0.000482, sample var 0.047617, theor. var 0.047619
+r[18,19]: sample mean -0.000701, sample var 0.047439, theor. var 0.047619
+r[19,20]: sample mean -0.001027, sample var 0.047787, theor. var 0.047619
