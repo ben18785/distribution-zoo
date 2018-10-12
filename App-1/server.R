@@ -473,6 +473,16 @@ shinyServer(function(input, output) {
                     helpText(a("More information about the normal distribution.",
                                target="_blank",
                                href="https://en.wikipedia.org/wiki/Normal_distribution")))
+      }else if(input$dist=='Uniform'){
+        withMathJax(h2("Moments"),h2("$$\\mathrm{E}(\\theta) = \\frac{1}{2}(a + b)$$"),
+                    h2("$$var(\\theta) = \\frac{1}{12}(b - a)$$"),
+                    h2("PDF"),
+                    h2("$$f(\\theta|a,b) = \\frac{1}{b - a} \\text{, where } a < b$$"),
+                    h2("CDF"),
+                    h2("$$F(\\theta|a,b) = $$"),
+                    helpText(a("More information about the normal distribution.",
+                               target="_blank",
+                               href="https://en.wikipedia.org/wiki/Normal_distribution")))
       }
     }
   })
