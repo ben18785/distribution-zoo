@@ -477,9 +477,15 @@ shinyServer(function(input, output) {
         withMathJax(h2("Moments"),h2("$$\\mathrm{E}(\\theta) = \\frac{1}{2}(a + b)$$"),
                     h2("$$var(\\theta) = \\frac{1}{12}(b - a)$$"),
                     h2("PDF"),
-                    h2("$$f(\\theta|a,b) = \\frac{1}{b - a} \\text{, where } a < b$$"),
+                    h2("$$f(\\theta|a,b) = \\frac{1}{b - a} \\text{, if } \\theta\\in[0,1]$$"),
                     h2("CDF"),
-                    h2("$$F(\\theta|a,b) = $$"),
+                    h2(withMathJax(
+                      helpText(HTML('$$\\color{black}{F(\\theta)=\\begin{cases}
+                               0,  & \\text{if }\\theta < a \\\\
+                               \\frac{x-a}{b-a}, & \\text{if } \\theta\\in [a,b]\\\\
+                               1, \\text{if } \\theta > b
+                               \\end{cases}\\!}$$')))
+      ),
                     helpText(a("More information about the normal distribution.",
                                target="_blank",
                                href="https://en.wikipedia.org/wiki/Normal_distribution")))
