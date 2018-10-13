@@ -1,7 +1,6 @@
 rm(list=ls())
 library(shiny)
 setwd("C:/Users/bclamber/Desktop/distribution-viewer")
-runExample("01_hello")
 runApp("App-1",display.mode = "showcase")
 runExample("02_text") # tables and data frames
 runExample("03_reactivity") # a reactive expression

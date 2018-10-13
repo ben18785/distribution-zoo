@@ -500,8 +500,7 @@ shinyServer(function(input, output) {
     aMean <- fCalculateMean()
     aVar <- fCalculateVariance()
     if (input$distType=='Continuous'){
-      withMathJax(h2(paste("median = ",aMean),align="center"),
-                  h2(paste("25% = ",aVar),align="center") )
+      withMathJax(h2(paste("median = ",aMean),align="center"))
     }
   })
 
