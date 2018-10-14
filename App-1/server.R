@@ -577,6 +577,25 @@ shinyServer(function(input, output) {
       }
     }
   })
+  output$mytabs = renderUI({
+    if(input$distType!='Multivariate'){
+      myTabs = tabsetPanel(type = "tabs", 
+                           tabPanel("Plot of PDF", plotOutput("plot"),
+                                    uiOutput("runningQuantities")), 
+                           tabPanel("Plot of CDF", plotOutput("plotCDF"),
+                                    uiOutput("runningQuantities1")),
+                           tabPanel("Formulae", 
+                                    uiOutput("formulae"))
+      )
+    }else{
+      myTabs = tabsetPanel(type = "tabs", 
+                           tabPanel("Plot of PDF", plotOutput("plot"),
+                                    uiOutput("runningQuantities")),
+                           tabPanel("Formulae", 
+                                    uiOutput("formulae"))
+      )
+    }
+  })
   
 
   })

@@ -148,14 +148,7 @@ shinyUI(fluidPage(
     # Show a tabset that includes a plot, summary, and table view
     # of the generated distribution
     mainPanel(
-      tabsetPanel(type = "tabs", 
-                  tabPanel("Plot of PDF", plotOutput("plot"),
-                           uiOutput("runningQuantities")), 
-                  tabPanel("Plot of CDF", plotOutput("plotCDF"),
-                           uiOutput("runningQuantities1")),
-                  tabPanel("Formulae", 
-                           uiOutput("formulae"))
-      )
+      uiOutput('mytabs')
     )
   )
 )
