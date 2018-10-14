@@ -334,9 +334,18 @@ shinyServer(function(input, output) {
       dataF$X1<-rep(x.points,aLen)
       dataF$X2 <- unlist(lapply(x.points,function(x) rep(x,aLen)))
       names(dataF) <- c("x", "y", "pdf")
-      ggplot(dataF, aes(x, y, z = pdf))+ geom_raster(aes(fill=pdf),interpolate = TRUE)+
-        geom_contour(colour = "white")+
-        xlim(c(-input$rangeN,input$rangeN)) + ylim(c(-input$rangeN,input$rangeN)) 
+      ggplot(dataF, aes(x, y, z = pdf)) +
+        geom_raster(aes(fill=pdf),interpolate = TRUE) +
+        scale_fill_distiller("density", palette = "Spectral") +
+        geom_contour(colour = "white") +
+        xlim(c(-input$rangeN,input$rangeN)) +
+        ylim(c(-input$rangeN,input$rangeN)) +
+        theme_classic() +
+        theme(plot.title = element_text(hjust = 0.5, size = 18),
+              axis.text = element_text(size=14),
+              axis.title = element_text(size=16),
+              legend.title = element_text(size=16),
+              legend.text = element_text(size=14))
     }else if (input$dist2=='MultivariateT'){
       lMean <- c(input$meanXT,input$meanYT)
       lSigma <- matrix(c(input$sigmaXT^2,input$sigmaXT * input$sigmaYT * input$rhoxyT,
@@ -357,9 +366,17 @@ shinyServer(function(input, output) {
       dataF$X1<-rep(x.points,aLen)
       dataF$X2 <- unlist(lapply(x.points,function(x) rep(x,aLen)))
       names(dataF) <- c("x", "y", "pdf")
-      ggplot(dataF, aes(x, y, z = pdf))+ geom_raster(aes(fill=pdf),interpolate = TRUE)+
-        geom_contour(colour = "white")+
-        xlim(c(-input$rangeN,input$rangeN)) + ylim(c(-input$rangeN,input$rangeN)) 
+      ggplot(dataF, aes(x, y, z = pdf)) +
+        geom_raster(aes(fill=pdf),interpolate = TRUE) +
+        scale_fill_distiller("density", palette = "Spectral") +
+        geom_contour(colour = "white") +
+        xlim(c(-input$rangeN,input$rangeN)) + ylim(c(-input$rangeN,input$rangeN)) +
+        theme_classic() +
+        theme(plot.title = element_text(hjust = 0.5, size = 18),
+              axis.text = element_text(size=14),
+              axis.title = element_text(size=16),
+              legend.title = element_text(size=16),
+              legend.text = element_text(size=14))
     } else if (input$dist2=='Wishart'){
       lList<-rWishart(input$sampleSizeWish,input$dfWish,diag(input$dimensionWish))
       lOffD <- vector(length=input$sampleSizeWish)
