@@ -214,11 +214,11 @@ shinyServer(function(input, output) {
            1)
     } else if (input$distType=='Discrete'){
       switch(input$dist1,
-             Bernoulli=1+input$probBer,
-             Binomial=1 + input$sizeBin * input$probBin,
-             Poisson=1 + input$lambdaPois,
-             NegativeBinomial=1 + input$meanNB,
-             BetaBinomial=1 + input$sizeBetaBin * input$shapeBetaBin1 / (input$shapeBetaBin1 + input$shapeBetaBin2),
+             Bernoulli=input$probBer,
+             Binomial=input$sizeBin * input$probBin,
+             Poisson=input$lambdaPois,
+             NegativeBinomial=input$meanNB,
+             BetaBinomial=input$sizeBetaBin * input$shapeBetaBin1 / (input$shapeBetaBin1 + input$shapeBetaBin2),
              paste("mean=1,sd=1")
              )
     }
@@ -247,11 +247,12 @@ shinyServer(function(input, output) {
               1)
     }else if (input$distType=='Discrete'){
     aVar <- switch(input$dist1,
-                   Bernoulli=1+input$probBer,
-                   Binomial=1 + input$sizeBin * input$probBin,
-                   Poisson=1 + input$lambdaPois,
-                   NegativeBinomial=1 + input$meanNB,
-                   BetaBinomial=1 + input$sizeBetaBin * input$shapeBetaBin1 / (input$shapeBetaBin1 + input$shapeBetaBin2))
+                   Bernoulli=input$probBer * (1 - input$probBer),
+                   Binomial=input$sizeBin * input$probBin * (1 - input$probBer),
+                   Poisson=input$lambdaPois,
+                   NegativeBinomial=input$meanNB + (input$meanNB^2 / input$dispersionNB),
+                   BetaBinomial=input$sizeBetaBin * input$shapeBetaBin1 * input$shapeBetaBin2 *(input$shapeBetaBin1 + input$shapeBetaBin2 + input$sizeBetaBin) / ((input$shapeBetaBin1 + input$shapeBetaBin2)^2 * (input$shapeBetaBin1 + input$shapeBetaBin2 + 1))
+                   )
     }
     
     return(aVar)
@@ -294,7 +295,7 @@ shinyServer(function(input, output) {
       dataF <- data.frame(a=lScale,pmf=lPMF)
       ggplot(data=dataF, aes(x=factor(a), y=pmf)) +
         geom_bar(stat="identity", position=position_dodge(),fill="darkblue", colour="black") + xlab('X') +
-        geom_vline(xintercept=aMean,
+        geom_vline(xintercept=(aMean + 1),
                      colour="orange",
                      linetype = "longdash",
                      size=1) +
