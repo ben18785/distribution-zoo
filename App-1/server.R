@@ -30,6 +30,14 @@ pCustomHalfCauchy <- function(x,location,scale){
   return((1/aInt)*pcauchy(x,location,scale))
 }
 
+dCustomBetaBinomial <- function(x, n, alpha, beta){
+  return(choose(n, x) * beta(x + alpha, n - x + beta) / beta(alpha, beta))
+}
+
+pCustomBetaBinomial <- function(x, n, alpha, beta){
+  return(sum(sapply(0:x, function(i) dCustomBetaBinomial(i, n, alpha, beta))))
+}
+
 rcoronion<-function(d,eta=1){ 
   d<-as.integer(d)
   if(d<=0 || !is.integer(d))
@@ -98,7 +106,7 @@ shinyServer(function(input, output) {
            Binomial=dbinom,
            Poisson=dpois,
            NegativeBinomial=dnbinom,
-           BetaBinomial=dbetabinom.ab,
+           BetaBinomial=dCustomBetaBinomial,
            dbern)
     } else if (input$distType=='Multivariate'){
       switch(input$dist2,
@@ -130,7 +138,7 @@ shinyServer(function(input, output) {
              Binomial=pbinom,
              Poisson=ppois,
              NegativeBinomial=pnbinom,
-             BetaBinomial=pbetabinom.ab,
+             BetaBinomial=pCustomBetaBinomial,
              dbern)
     } 
   })
@@ -185,7 +193,7 @@ shinyServer(function(input, output) {
                      Binomial=paste("size=",input$sizeBin,",prob=",input$probBin),
                      Poisson=paste("lambda=",input$lambdaPois),
                      NegativeBinomial=paste("mu=",input$meanNB,",size=",input$dispersionNB),
-                     BetaBinomial=paste("size=",input$sizeBetaBin,",shape1=",input$shapeBetaBin1,",shape2=",input$shapeBetaBin2),
+                     BetaBinomial=paste("n=",input$sizeBetaBin,",alpha=",input$shapeBetaBin1,",beta=",input$shapeBetaBin2),
                      paste("mean=1,sd=1"))
     return(lExtra)
   })
@@ -266,8 +274,8 @@ shinyServer(function(input, output) {
     aDist <- data()
 
     aMean <- fCalculateMean()
-    aVar <- fCalculateVariance()
     if (input$distType == 'Continuous'){
+      aVar <- fCalculateVariance()
       lExtra <- fExtraFunctionInputs()
       lScale <- fScale()
       aLen <- length(lScale)
@@ -288,6 +296,7 @@ shinyServer(function(input, output) {
               axis.title = element_text(size=16)) +
         ylim(0, NA)
     } else if (input$distType=='Discrete') {
+      aVar <- fCalculateVariance()
       lExtra <- fExtra1FunctionInputs()
       lScale <- fScale1()
       aLen <- length(lScale)
@@ -424,12 +433,12 @@ shinyServer(function(input, output) {
   output$plotCDF <- renderPlot({
     
     aDist <- dataCDF()
-    
+    aMean <- fCalculateMean()
     if (input$distType=='Continuous'){
+      aVar <- fCalculateVariance()
     lScale <- fScale()
     aLen <- length(lScale)
     lExtra <- fExtraFunctionInputs()
-    aMean <- fCalculateMean()
     
     lPDF <- unlist(lapply(lScale, function(x) eval(parse(text=paste("aDist(x,",lExtra,")")))))
     qplot(lScale,lPDF,geom="path",
@@ -444,21 +453,29 @@ shinyServer(function(input, output) {
       theme(plot.title = element_text(hjust = 0.5, size = 18),
             axis.text = element_text(size=14),
             axis.title = element_text(size=16)) +
-      ylim(0, NA)
+      ylim(0, NA) +
+      ggtitle(paste0("mean = ", round(aMean, 2), ", var = ", round(aVar, 2)))
 
     } else if (input$distType=='Discrete'){
+      aVar <- fCalculateVariance()
       lExtra <- fExtra1FunctionInputs()
-      aMean <- fCalculateMean()
       lScale <- fScale1()
       aLen <- length(lScale)
       lPMF <- unlist(lapply(lScale, function(x) eval(parse(text=paste("aDist(x,",lExtra,")")))))
       dataF <- data.frame(a=lScale,pmf=lPMF)
       ggplot(data=dataF, aes(x=factor(a), y=pmf)) +
         geom_bar(stat="identity", position=position_dodge(),fill="darkblue", colour="black") + xlab('X')+ 
-        geom_vline(xintercept=aMean,
+        geom_vline(xintercept=(1+aMean),
                    colour="orange",
                    linetype = "longdash",
-                   size=1)
+                   size=1) +
+        theme_classic() +
+        theme(plot.title = element_text(hjust = 0.5, size = 18),
+              axis.text = element_text(size=14),
+              axis.title = element_text(size=16)) +
+        ylim(0, NA) +
+        ylab('cumulate probability') +
+        ggtitle(paste0("mean = ", round(aMean, 2), ", var = ", round(aVar, 2)))
     }else if (input$dist2=='MultivariateNormal'){
       lMean <- c(input$meanXN,input$meanYN)
       lSigma <- matrix(c(input$sigmaXN^2,input$sigmaXN * input$sigmaYN * input$rhoxyN,
