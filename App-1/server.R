@@ -226,7 +226,8 @@ shinyServer(function(input, output) {
   
   fCalculateVariance <- reactive({
     aVar <- switch(input$dist,
-             Normal=input$sigma,
+             Normal=input$sigma^2,
+             Uniform = (1/12) * (input$b - input$a)^2, 
               1)
     return(aVar)
   })
@@ -239,6 +240,7 @@ shinyServer(function(input, output) {
     aDist <- data()
 
     aMean <- fCalculateMean()
+    aVar <- fCalculateVariance()
     if (input$distType == 'Continuous'){
       lExtra <- fExtraFunctionInputs()
       lScale <- fScale()
@@ -248,10 +250,16 @@ shinyServer(function(input, output) {
       qplot(lScale,lPDF,geom="path",
           xlab="X",ylab="probability density",
           xlim=c(lScale[1],lScale[aLen]))+
-      geom_line(color='darkblue',size=2) + geom_vline(xintercept=ifelse(is.na(aMean),-10000,aMean),
-                                                      colour="orange",
-                                                      linetype = "longdash",
-                                                      size=1)
+      geom_line(color='darkblue',size=1) +
+        geom_vline(xintercept=ifelse(is.na(aMean),-10000,aMean),
+                                    colour="orange",
+                                    linetype = "longdash",
+                                    size=1) +
+        theme_classic() +
+        ggtitle(paste0("mean = ", round(aMean, 2), ", var = ", round(aVar, 2))) +
+        theme(plot.title = element_text(hjust = 0.5, size = 18),
+              axis.text = element_text(size=14),
+              axis.title = element_text(size=16))
     } else if (input$distType=='Discrete') {
       lExtra <- fExtra1FunctionInputs()
       lScale <- fScale1()
@@ -393,12 +401,15 @@ shinyServer(function(input, output) {
     
     lPDF <- unlist(lapply(lScale, function(x) eval(parse(text=paste("aDist(x,",lExtra,")")))))
     qplot(lScale,lPDF,geom="path",
-          xlab="X",ylab="pdf",
+          xlab="X",ylab="cumulative probability",
           xlim=c(lScale[1],lScale[aLen]))+
-      geom_line(color='darkblue',size=2) + geom_vline(xintercept=aMean,
-                                                      colour="orange",
-                                                      linetype = "longdash",
-                                                      size=1)
+      geom_line(color='darkblue',size=1) +
+      geom_vline(xintercept=aMean,
+                            colour="orange",
+                            linetype = "longdash",
+                            size=1) +
+      theme_classic()
+
     } else if (input$distType=='Discrete'){
       lExtra <- fExtra1FunctionInputs()
       aMean <- fCalculateMean()
@@ -497,21 +508,5 @@ shinyServer(function(input, output) {
     }
   })
   
-  output$runningQuantities <- renderUI({
-    aMean <- fCalculateMean()
-    aVar <- fCalculateVariance()
-    if (input$distType=='Continuous'){
-      withMathJax(h2(paste("mean = ",aMean),align="center"),
-      h2(paste("variance = ",aVar),align="center") )
-    }
-  })
-  
-  output$runningQuantities1 <- renderUI({
-    aMean <- fCalculateMean()
-    aVar <- fCalculateVariance()
-    if (input$distType=='Continuous'){
-      withMathJax(h2(paste("median = ",aMean),align="center"))
-    }
-  })
 
   })
