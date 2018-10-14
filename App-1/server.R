@@ -642,8 +642,10 @@ shinyServer(function(input, output) {
   })
   
   output$juliacode <- renderUI({
+    
     if(input$dist=="Normal"){
-      tagList(h2("PDF"),
+      tagList(sliderInput("n", "N", 1, 1000, 500),
+              h2("PDF"),
               h3("import scipy.stats"),
               h3(paste0("scipy.stats.norm.pdf(x, ",input$mu,", ",input$sigma,")")),
               h2("Log PDF"),
@@ -653,8 +655,18 @@ shinyServer(function(input, output) {
     }
   })
   
+  output$code <- renderUI({
+     selectInput("language", "Language",
+                 c("R"="R",
+                   "Python"="Python",
+                   "Matlab"="Matlab",
+                   "Mathematica"="Mathematica",
+                   "Julia"="Julia",
+                   "C++"="C++"),
+                 selected="R")
+  })
+  
   output$mytabs = renderUI({
-    if(input$show_code==FALSE){
       if(input$distType!='Multivariate'){
         myTabs = tabsetPanel(type = "tabs", 
                              tabPanel("Plot of PDF", plotOutput("plot"),
@@ -664,7 +676,9 @@ shinyServer(function(input, output) {
                              tabPanel("Formulae", 
                                       uiOutput("formulae")),
                              tabPanel("LaTex", 
-                                      uiOutput("latex"))
+                                      uiOutput("latex")),
+                             tabPanel("code", 
+                                      uiOutput("code"))
         )
       }else{
         myTabs = tabsetPanel(type = "tabs", 
@@ -674,9 +688,6 @@ shinyServer(function(input, output) {
                                       uiOutput("formulae"))
         )
       }
-    }else{
-      
-    }
   })
   
 
