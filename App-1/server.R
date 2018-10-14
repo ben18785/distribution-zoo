@@ -297,7 +297,13 @@ shinyServer(function(input, output) {
         geom_vline(xintercept=aMean,
                      colour="orange",
                      linetype = "longdash",
-                     size=1)
+                     size=1) +
+        theme_classic() +
+        ggtitle(paste0("mean = ", round(aMean, 2), ", var = ", round(aVar, 2))) +
+        theme(plot.title = element_text(hjust = 0.5, size = 18),
+              axis.text = element_text(size=14),
+              axis.title = element_text(size=16)) +
+        ylim(0, NA)
     } else if (input$dist2=='MultivariateNormal'){
       lMean <- c(input$meanXN,input$meanYN)
       lSigma <- matrix(c(input$sigmaXN^2,input$sigmaXN * input$sigmaYN * input$rhoxyN,
