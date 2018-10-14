@@ -196,8 +196,7 @@ shinyServer(function(input, output) {
   })
   
   fCalculateMean <- reactive({
-    aMeanLogitNormal <- integrate(function(x) x * (1/(input$sigmaLogitN * sqrt(2 * pi))) * (1/(x * (1 - x))) * exp(- (log(x/(1-x)) - input$muLogitN)^2 / (2 * input$sigmaLogitN^2)),0,1)[[1]]
-    a2LogitNormal <- integrate(function(x) x^2 * (1/(input$sigmaLogitN * sqrt(2 * pi))) * (1/(x * (1 - x))) * exp(- (log(x/(1-x)) - input$muLogitN)^2 / (2 * input$sigmaLogitN^2)),0,1)[[1]]
+    
     lExtra <- if (input$distType=='Continuous'){
         switch(input$dist,
            Normal=input$mu,
@@ -211,7 +210,7 @@ shinyServer(function(input, output) {
            HalfCauchy=NA,
            InverseGamma=ifelse(input$shapeIG>1,input$scaleIG/(input$shapeIG-1),NA),
            InverseChiSquared=ifelse(input$dfIC>2,1/(input$dfIC-2),NA),
-           LogitNormal=a2LogitNormal-aMeanLogitNormal^2,
+           LogitNormal=integrate(function(x) x * (1/(input$sigmaLogitN * sqrt(2 * pi))) * (1/(x * (1 - x))) * exp(- (log(x/(1-x)) - input$muLogitN)^2 / (2 * input$sigmaLogitN^2)),0,1)[[1]],
            1)
     } else if (input$distType=='Discrete'){
       switch(input$dist1,
@@ -227,6 +226,8 @@ shinyServer(function(input, output) {
   
   fCalculateVariance <- reactive({
     if(input$distType=='Continuous'){
+      aMeanLogitNormal <- integrate(function(x) x * (1/(input$sigmaLogitN * sqrt(2 * pi))) * (1/(x * (1 - x))) * exp(- (log(x/(1-x)) - input$muLogitN)^2 / (2 * input$sigmaLogitN^2)),0,1)[[1]]
+      a2LogitNormal <- integrate(function(x) x^2 * (1/(input$sigmaLogitN * sqrt(2 * pi))) * (1/(x * (1 - x))) * exp(- (log(x/(1-x)) - input$muLogitN)^2 / (2 * input$sigmaLogitN^2)),0,1)[[1]]
     aVar <- switch(input$dist,
              Normal=input$sigma^2,
              Uniform = (1/12) * (input$b - input$a)^2,
@@ -242,11 +243,15 @@ shinyServer(function(input, output) {
                                  input$scaleIG/((input$shapeIG-1)^2 * (input$shapeIG-2)),NA),
              InverseChiSquared=ifelse(input$dfIC > 4,
                                       2 / ((input$dfIC-2)^2 * (input$dfIC-4)),NA),
-             LogitNormal=integrate(function(x) x * (1/(input$sigmaLogitN * sqrt(2 * pi))) * (1/(x * (1 - x))) * exp(- (log(x/(1-x)) - input$muLogitN)^2 / (2 * input$sigmaLogitN^2)),0,1)[[1]],
+             LogitNormal=a2LogitNormal-aMeanLogitNormal^2,
               1)
     }else if (input$distType=='Discrete'){
-    aVar <- switch(input$dist,
-      case = action)
+    aVar <- switch(input$dist1,
+                   Bernoulli=1+input$probBer,
+                   Binomial=1 + input$sizeBin * input$probBin,
+                   Poisson=1 + input$lambdaPois,
+                   NegativeBinomial=1 + input$meanNB,
+                   BetaBinomial=1 + input$sizeBetaBin * input$shapeBetaBin1 / (input$shapeBetaBin1 + input$shapeBetaBin2))
     }
     
     return(aVar)
@@ -417,7 +422,6 @@ shinyServer(function(input, output) {
     lScale <- fScale()
     aLen <- length(lScale)
     lExtra <- fExtraFunctionInputs()
-    # print(lExtra)
     aMean <- fCalculateMean()
     
     lPDF <- unlist(lapply(lScale, function(x) eval(parse(text=paste("aDist(x,",lExtra,")")))))
