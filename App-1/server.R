@@ -196,7 +196,8 @@ shinyServer(function(input, output) {
   })
   
   fCalculateMean <- reactive({
-    
+    aMeanLogitNormal <- integrate(function(x) x * (1/(input$sigmaLogitN * sqrt(2 * pi))) * (1/(x * (1 - x))) * exp(- (log(x/(1-x)) - input$muLogitN)^2 / (2 * input$sigmaLogitN^2)),0,1)[[1]]
+    a2LogitNormal <- integrate(function(x) x^2 * (1/(input$sigmaLogitN * sqrt(2 * pi))) * (1/(x * (1 - x))) * exp(- (log(x/(1-x)) - input$muLogitN)^2 / (2 * input$sigmaLogitN^2)),0,1)[[1]]
     lExtra <- if (input$distType=='Continuous'){
         switch(input$dist,
            Normal=input$mu,
@@ -210,7 +211,7 @@ shinyServer(function(input, output) {
            HalfCauchy=NA,
            InverseGamma=ifelse(input$shapeIG>1,input$scaleIG/(input$shapeIG-1),NA),
            InverseChiSquared=ifelse(input$dfIC>2,1/(input$dfIC-2),NA),
-           LogitNormal=integrate(function(x) x * (1/(input$sigmaLogitN * sqrt(2 * pi))) * (1/(x * (1 - x))) * exp(- (log(x/(1-x)) - input$muLogitN)^2 / (2 * input$sigmaLogitN^2)),0,1)[[1]],
+           LogitNormal=a2LogitNormal-aMeanLogitNormal^2,
            1)
     } else if (input$distType=='Discrete'){
       switch(input$dist1,
@@ -278,7 +279,8 @@ shinyServer(function(input, output) {
         ggtitle(paste0("mean = ", round(aMean, 2), ", var = ", round(aVar, 2))) +
         theme(plot.title = element_text(hjust = 0.5, size = 18),
               axis.text = element_text(size=14),
-              axis.title = element_text(size=16))
+              axis.title = element_text(size=16)) +
+        ylim(0, NA)
     } else if (input$distType=='Discrete') {
       lExtra <- fExtra1FunctionInputs()
       lScale <- fScale1()
@@ -427,7 +429,11 @@ shinyServer(function(input, output) {
                             colour="orange",
                             linetype = "longdash",
                             size=1) +
-      theme_classic()
+      theme_classic() +
+      theme(plot.title = element_text(hjust = 0.5, size = 18),
+            axis.text = element_text(size=14),
+            axis.title = element_text(size=16)) +
+      ylim(0, NA)
 
     } else if (input$distType=='Discrete'){
       lExtra <- fExtra1FunctionInputs()
