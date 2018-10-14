@@ -644,7 +644,20 @@ shinyServer(function(input, output) {
   output$juliacode <- renderUI({
     
     if(input$dist=="Normal"){
-              taglist(h2("PDF"),
+              tagList(h2("PDF"),
+              h3("import scipy.stats"),
+              h3(paste0("scipy.stats.norm.pdf(x, ",input$mu,", ",input$sigma,")")),
+              h2("Log PDF"),
+              h3("dnorm(x, mu, sigma, log=TRUE)"),
+              h2("Random sample of size n"),
+              h3("rnorm(n, mu, sigma)"))
+    }
+  })
+  
+  output$cpluspluscode <- renderUI({
+    
+    if(input$dist=="Normal"){
+      tagList(h2("PDF"),
               h3("import scipy.stats"),
               h3(paste0("scipy.stats.norm.pdf(x, ",input$mu,", ",input$sigma,")")),
               h2("Log PDF"),
@@ -654,6 +667,7 @@ shinyServer(function(input, output) {
     }
   })
 
+  
   output$language <- renderUI({
      tagList(selectInput("language", "Language",
                  c("R"="R",
@@ -661,12 +675,22 @@ shinyServer(function(input, output) {
                    "Matlab"="Matlab",
                    "Mathematica"="Mathematica",
                    "Julia"="Julia",
-                   "C++"="C++"),
+                   "C++"="Cplusplus"),
                  selected="R")
                )
   })
   output$code <- renderUI({
-    h3(ifelse(input$language=="R",1,0))
+    if(is.null(input$language)){
+      uiOutput("rcode")
+    }else{
+      switch(input$language,
+             R=uiOutput("rcode"),
+             Python=uiOutput("pythoncode"),
+             Matlab=uiOutput("matlabcode"),
+             Mathematica=uiOutput("mathematicacode"),
+             Julia=uiOutput("juliacode"),
+             Cplusplus=uiOutput("cpluspluscode"))
+    }
   })
   
   output$mytabs = renderUI({
@@ -678,7 +702,7 @@ shinyServer(function(input, output) {
                                       uiOutput("runningQuantities1")),
                              tabPanel("Formulae", 
                                       uiOutput("formulae")),
-                             tabPanel("LaTex", 
+                             tabPanel("LaTeX", 
                                       uiOutput("latex")),
                              tabPanel("code", 
                                       uiOutput("language"),
