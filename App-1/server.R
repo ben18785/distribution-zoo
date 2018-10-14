@@ -550,33 +550,73 @@ shinyServer(function(input, output) {
                     h2("$$f(x|\\mu,\\sigma) = \\frac{1}{\\sqrt{2\\pi\\sigma^2}} 
                              \\text{exp}\\left(-\\frac{(x-\\mu)^2}{2\\sigma^2}\\right)$$"),
                     h2("CDF"),
-                    h2("$$F(x|\\mu,\\sigma) = \\frac{1}{2}\\left[1+\\text{erf}\\left(\\frac{x-\\mu}{\\sigma\\sqrt{2}}\\right)\\right]$$"),
-                    helpText(a("More information about the normal distribution.",
-                               target="_blank",
-                               href="https://en.wikipedia.org/wiki/Normal_distribution")))
+                    h2("$$F(x|\\mu,\\sigma) = \\frac{1}{2}\\left[1+\\text{erf}\\left(\\frac{x-\\mu}{\\sigma\\sqrt{2}}\\right)\\right]$$"))
       }else if(input$dist=='Uniform'){
-        withMathJax(h2("Moments"),h2("$$\\mathrm{E}(\\theta) = \\frac{1}{2}(a + b)$$"),
-                    h2("$$var(\\theta) = \\frac{1}{12}(b - a)$$"),
+        withMathJax(h2("Moments"),h2("$$\\mathrm{E}(X) = \\frac{1}{2}(a + b)$$"),
+                    h2("$$var(X) = \\frac{1}{12}(b - a)$$"),
                     h2("PDF"),
                     h2(withMathJax(
-                      helpText(HTML('$$\\color{black}{f(\\theta|a,b)=\\begin{cases}
-                                    0,  & \\text{if }\\theta \\not\\in [a,b] \\\\
-                                    \\frac{1}{b-a}, & \\text{if } \\theta \\in [a,b]
+                      helpText(HTML('$$\\color{black}{f(x|a,b)=\\begin{cases}
+                                    0,  & \\text{if }x \\not\\in [a,b] \\\\
+                                    \\frac{1}{b-a}, & \\text{if } x \\in [a,b]
                                     \\end{cases}\\!}$$')))),
                     h2("CDF"),
                     h2(withMathJax(
-                      helpText(HTML('$$\\color{black}{F(\\theta|a,b)=\\begin{cases}
-                               0,  & \\text{if }\\theta < a \\\\
-                               \\frac{x-a}{b-a}, & \\text{if } \\theta\\in [a,b]\\\\
-                               1, & \\text{if } \\theta > b
+                      helpText(HTML('$$\\color{black}{F(x|a,b)=\\begin{cases}
+                               0,  & \\text{if }x < a \\\\
+                               \\frac{x-a}{b-a}, & \\text{if } x\\in [a,b]\\\\
+                               1, & \\text{if } x > b
                                \\end{cases}\\!}$$')))
-      ),
-                    helpText(a("More information about the uniform distribution.",
+      ))
+      }else if(input$dist=='LogNormal'){
+        withMathJax(h2("Moments"),h2("$$\\mathrm{E}(X) = \\text{exp}(\\mu + \\frac{\\sigma^2}{2})$$"),
+                    h2("$$var(X) = \\left[\\text{exp}(\\sigma^2) - 1\\right] \\text{exp}(2\\mu + \\sigma^2)$$"),
+                    h2("PDF"),
+                    h2("$$ \\frac{1}{x \\sigma \\sqrt{2 \\pi}} \\text{exp}\\left(-\\frac{(\\text{log } x - \\mu)^2}{2\\sigma^2}\\right)$$"),
+                    h2("CDF"),
+                    h2("$$\\frac{1}{2} + \\frac{1}{2} \\text{erf}\\left(\\frac{\\text{log } x - \\mu}{\\sqrt{2} \\sigma}\\right)$$"),
+                    helpText(a("More information about the log-normal distribution.",
                                target="_blank",
-                               href="https://en.wikipedia.org/wiki/Uniform_distribution_(continuous)")))
+                               href="https://en.wikipedia.org/wiki/Log-normal_distribution")))
       }
     }
   })
+  
+  output$latex <- renderUI({
+    if (input$dist=='Normal'){
+      tagList(h2("Moments"),
+      h3("\\mathrm{E}(X) = \\mu"),
+      h3("var(X) = \\sigma^2"),
+      h2("PDF"),
+      h3("f(x|\\mu,\\sigma) = \\frac{1}{\\sqrt{2\\pi\\sigma^2}}\\text{exp}\\left(-\\frac{(x-\\mu)^2}{2\\sigma^2}\\right)"),
+      h2("CDF"),
+      h3("F(x|\\mu,\\sigma) = \\frac{1}{2}\\left[1+\\text{erf}\\left(\\frac{x-\\mu}{\\sigma\\sqrt{2}}\\right)\\right]"))
+    }
+    })
+  
+  output$rcode <- renderUI({
+    if(input$dist=="Normal"){
+      tagList(h2("PDF"),
+              h3(paste0("dnorm(x, ",input$mu,", ",input$sigma,")")),
+              h2("Log PDF"),
+              h3("dnorm(x, mu, sigma, log=TRUE)"),
+              h2("Random sample of size n"),
+              h3("rnorm(n, mu, sigma)"))
+    }
+  })
+  
+  output$pythoncode <- renderUI({
+    if(input$dist=="Normal"){
+      tagList(h2("PDF"),
+              h3("import scipy.stats"),
+              h3(paste0("scipy.stats.norm.pdf(x, ",input$mu,", ",input$sigma,")")),
+              h2("Log PDF"),
+              h3("dnorm(x, mu, sigma, log=TRUE)"),
+              h2("Random sample of size n"),
+              h3("rnorm(n, mu, sigma)"))
+    }
+  })
+  
   output$mytabs = renderUI({
     if(input$distType!='Multivariate'){
       myTabs = tabsetPanel(type = "tabs", 
@@ -585,7 +625,13 @@ shinyServer(function(input, output) {
                            tabPanel("Plot of CDF", plotOutput("plotCDF"),
                                     uiOutput("runningQuantities1")),
                            tabPanel("Formulae", 
-                                    uiOutput("formulae"))
+                                    uiOutput("formulae")),
+                           tabPanel("LaTex", 
+                                    uiOutput("latex")),
+                           tabPanel("R code",
+                                    uiOutput("rcode")),
+                           tabPanel("Python code",
+                                    uiOutput("pythoncode"))
       )
     }else{
       myTabs = tabsetPanel(type = "tabs", 
