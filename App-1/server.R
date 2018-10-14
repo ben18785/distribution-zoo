@@ -225,10 +225,29 @@ shinyServer(function(input, output) {
   })
   
   fCalculateVariance <- reactive({
+    if(input$distType=='Continuous'){
     aVar <- switch(input$dist,
              Normal=input$sigma^2,
-             Uniform = (1/12) * (input$b - input$a)^2, 
+             Uniform = (1/12) * (input$b - input$a)^2,
+             LogNormal = exp(input$sdlog^2 - 1) * exp(2 * input$meanlog + input$sdlog^2),
+             Exponential = 1/input$rate^2,
+             Gamma= input$shape / input$rateGam^2,
+             t = ifelse(input$nuT > 2,
+                        input$nuT / (input$nuT - 2), NA),
+             Beta=(input$alpha * input$beta) / ((input$alpha+input$beta)^2 * (input$alpha+input$beta + 1)),
+             Cauchy=NA,
+             HalfCauchy=NA,
+             InverseGamma=ifelse(input$shapeIG > 2,
+                                 input$scaleIG/((input$shapeIG-1)^2 * (input$shapeIG-2)),NA),
+             InverseChiSquared=ifelse(input$dfIC > 4,
+                                      2 / ((input$dfIC-2)^2 * (input$dfIC-4)),NA),
+             LogitNormal=integrate(function(x) x * (1/(input$sigmaLogitN * sqrt(2 * pi))) * (1/(x * (1 - x))) * exp(- (log(x/(1-x)) - input$muLogitN)^2 / (2 * input$sigmaLogitN^2)),0,1)[[1]],
               1)
+    }else if (input$distType=='Discrete'){
+    aVar <- switch(input$dist,
+      case = action)
+    }
+    
     return(aVar)
   })
   # Generate a plot of the data. Also uses the inputs to build
