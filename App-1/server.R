@@ -644,8 +644,7 @@ shinyServer(function(input, output) {
   output$juliacode <- renderUI({
     
     if(input$dist=="Normal"){
-      tagList(sliderInput("n", "N", 1, 1000, 500),
-              h2("PDF"),
+              taglist(h2("PDF"),
               h3("import scipy.stats"),
               h3(paste0("scipy.stats.norm.pdf(x, ",input$mu,", ",input$sigma,")")),
               h2("Log PDF"),
@@ -654,9 +653,9 @@ shinyServer(function(input, output) {
               h3("rnorm(n, mu, sigma)"))
     }
   })
-  
-  output$code <- renderUI({
-     selectInput("language", "Language",
+
+  output$language <- renderUI({
+     tagList(selectInput("language", "Language",
                  c("R"="R",
                    "Python"="Python",
                    "Matlab"="Matlab",
@@ -664,6 +663,10 @@ shinyServer(function(input, output) {
                    "Julia"="Julia",
                    "C++"="C++"),
                  selected="R")
+               )
+  })
+  output$code <- renderUI({
+    h3(ifelse(input$language=="R",1,0))
   })
   
   output$mytabs = renderUI({
@@ -678,6 +681,7 @@ shinyServer(function(input, output) {
                              tabPanel("LaTex", 
                                       uiOutput("latex")),
                              tabPanel("code", 
+                                      uiOutput("language"),
                                       uiOutput("code"))
         )
       }else{
