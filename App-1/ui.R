@@ -143,6 +143,17 @@ shinyUI(fluidPage(
                        sliderInput("dimensionLKJ", "Dimensions", min=4, max=20, value=4),
                        sliderInput("etaLKJ", "Degrees of freedom", min=0, max=40, value=1,step=0.25),
                        sliderInput("sampleSizeLKJ", "Sample size", min=1000, max=20000, value=2000)),
+    
+      checkboxInput("show_code", "Show code", FALSE),
+      conditionalPanel(condition="input.show_code==true",
+                       selectInput("language", "Language",
+                  c("R"="R",
+                    "Python"="Python",
+                    "Matlab"="Matlab",
+                    "Mathematica"="Mathematica",
+                    "Julia"="Julia",
+                    "C++"="C++"),
+                  selected="R")),
       br()
     ),
     # Show a tabset that includes a plot, summary, and table view

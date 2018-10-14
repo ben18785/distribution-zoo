@@ -617,29 +617,65 @@ shinyServer(function(input, output) {
     }
   })
   
+  output$matlabcode <- renderUI({
+    if(input$dist=="Normal"){
+      tagList(h2("PDF"),
+              h3("import scipy.stats"),
+              h3(paste0("scipy.stats.norm.pdf(x, ",input$mu,", ",input$sigma,")")),
+              h2("Log PDF"),
+              h3("dnorm(x, mu, sigma, log=TRUE)"),
+              h2("Random sample of size n"),
+              h3("rnorm(n, mu, sigma)"))
+    }
+  })
+  
+  output$mathematicacode <- renderUI({
+    if(input$dist=="Normal"){
+      tagList(h2("PDF"),
+              h3("import scipy.stats"),
+              h3(paste0("scipy.stats.norm.pdf(x, ",input$mu,", ",input$sigma,")")),
+              h2("Log PDF"),
+              h3("dnorm(x, mu, sigma, log=TRUE)"),
+              h2("Random sample of size n"),
+              h3("rnorm(n, mu, sigma)"))
+    }
+  })
+  
+  output$juliacode <- renderUI({
+    if(input$dist=="Normal"){
+      tagList(h2("PDF"),
+              h3("import scipy.stats"),
+              h3(paste0("scipy.stats.norm.pdf(x, ",input$mu,", ",input$sigma,")")),
+              h2("Log PDF"),
+              h3("dnorm(x, mu, sigma, log=TRUE)"),
+              h2("Random sample of size n"),
+              h3("rnorm(n, mu, sigma)"))
+    }
+  })
+  
   output$mytabs = renderUI({
-    if(input$distType!='Multivariate'){
-      myTabs = tabsetPanel(type = "tabs", 
-                           tabPanel("Plot of PDF", plotOutput("plot"),
-                                    uiOutput("runningQuantities")), 
-                           tabPanel("Plot of CDF", plotOutput("plotCDF"),
-                                    uiOutput("runningQuantities1")),
-                           tabPanel("Formulae", 
-                                    uiOutput("formulae")),
-                           tabPanel("LaTex", 
-                                    uiOutput("latex")),
-                           tabPanel("R code",
-                                    uiOutput("rcode")),
-                           tabPanel("Python code",
-                                    uiOutput("pythoncode"))
-      )
+    if(input$show_code==FALSE){
+      if(input$distType!='Multivariate'){
+        myTabs = tabsetPanel(type = "tabs", 
+                             tabPanel("Plot of PDF", plotOutput("plot"),
+                                      uiOutput("runningQuantities")), 
+                             tabPanel("Plot of CDF", plotOutput("plotCDF"),
+                                      uiOutput("runningQuantities1")),
+                             tabPanel("Formulae", 
+                                      uiOutput("formulae")),
+                             tabPanel("LaTex", 
+                                      uiOutput("latex"))
+        )
+      }else{
+        myTabs = tabsetPanel(type = "tabs", 
+                             tabPanel("Plot of PDF", plotOutput("plot"),
+                                      uiOutput("runningQuantities")),
+                             tabPanel("Formulae", 
+                                      uiOutput("formulae"))
+        )
+      }
     }else{
-      myTabs = tabsetPanel(type = "tabs", 
-                           tabPanel("Plot of PDF", plotOutput("plot"),
-                                    uiOutput("runningQuantities")),
-                           tabPanel("Formulae", 
-                                    uiOutput("formulae"))
-      )
+      
     }
   })
   
