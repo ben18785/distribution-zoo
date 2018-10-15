@@ -599,9 +599,9 @@ shinyServer(function(input, output) {
       tagList(h2("PDF"),
               h3(paste0("dnorm(x, ",input$mu,", ",input$sigma,")")),
               h2("Log PDF"),
-              h3("dnorm(x, mu, sigma, log=TRUE)"),
+              h3(paste0("dnorm(x, ",input$mu,", ",input$sigma," log=TRUE)")),
               h2("Random sample of size n"),
-              h3("rnorm(n, mu, sigma)"))
+              h3(paste0("rnorm(n,", input$mu, ", ", input$sigma,")")))
     }
   })
   
