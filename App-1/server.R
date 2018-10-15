@@ -76,12 +76,35 @@ rcoronion<-function(d,eta=1){
   rr
 }
 
-fMakeFunction <- function(mainName, params, prefixparams=NULL,postfixparams=NULL){
-  return(paste0(mainName, "(",
-                paste(prefixparams,  collapse = ", "), ", ",
-                paste(sapply(params, function(x) eval(parse(text=x))),collapse=", "), ", ",
-                paste(postfixparams,  collapse = ", "), ")"))
+fMakeFunction <- function(headingName, mainName, params, prefixparams=NULL,postfixparams=NULL){
+  common_prose <- paste(sapply(params, function(x) eval(parse(text=x))), collapse=", ")
+  prefix_prose <- paste(prefixparams,  collapse = ", ")
+  postfix_prose <- paste(postfixparams,  collapse = ", ")
+  if(!is.null(prefixparams))
+    if(!is.null(postfixparams))
+      words <- paste0(mainName, "(", prefix_prose, ", ", common_prose, ", ", postfix_prose, ")")
+    else
+      words <- paste0(mainName, "(", prefix_prose, ", ", common_prose, ")")
+  else
+    if(!is.null(postfixparams))
+      words <- paste0(mainName, "(", common_prose, ", ", postfix_prose, ")")
+    else
+      words <- paste0(mainName, "(", common_prose, ")")
+  return(list(h2(headingName), h3(words, style="color:#d95f02")))
 }
+
+fMakeDistribution <- function(headingNames, mainNames, lParams, lPrefixParams, lPostfixParams){
+  a_len <- length(mainNames)
+  lFunctions <- lapply(seq(1, a_len, 1),
+                       function(i) fMakeFunction(headingNames[[i]],
+                                                 mainNames[[i]],
+                                                 lParams[[i]],
+                                                 lPrefixParams[[i]],
+                                                 lPostfixParams[[i]]))
+  return(tagList(lFunctions))
+}
+
+lHeadings <- c("PDF", "Log PDF", "Random sample of size n")
 
 # Define server logic for random distribution application
 shinyServer(function(input, output) {
@@ -603,12 +626,10 @@ shinyServer(function(input, output) {
   
   output$rcode <- renderUI({
     if(input$dist=="Normal"){
-      tagList(h2("PDF"),
-              h3(paste0("dnorm(x, ",input$mu,", ",input$sigma,")")),
-              h2("Log PDF"),
-              h3(paste0("dnorm(x, ",input$mu,", ",input$sigma," log=TRUE)")),
-              h2("Random sample of size n"),
-              h3(paste0("rnorm(n,", input$mu, ", ", input$sigma,")")))
+      fMakeDistribution(lHeadings,
+                        c("dnorm", "dnorm", "rnorm"),
+                        list(c(input$mu,input$sigma),c(input$mu,input$sigma),c(input$mu,input$sigma)),
+                        list("x", "x", "n"), list(NULL, "log=TRUE", NULL))
     }
   })
   
@@ -622,7 +643,7 @@ shinyServer(function(input, output) {
               h2("Random sample of size n"),
               h3("Either:"),
               h3("import numpy as np"),
-              h3("np.random.normal(",input$mu,", ",input$sigma,)
+              h3("np.random.normal(",input$mu,", ",input$sigma))
     }
   })
   
