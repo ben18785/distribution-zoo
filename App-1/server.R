@@ -76,6 +76,13 @@ rcoronion<-function(d,eta=1){
   rr
 }
 
+fMakeFunction <- function(mainName, params, prefixparams=NULL,postfixparams=NULL){
+  return(paste0(mainName, "(",
+                paste(prefixparams,  collapse = ", "), ", ",
+                paste(sapply(params, function(x) eval(parse(text=x))),collapse=", "), ", ",
+                paste(postfixparams,  collapse = ", "), ")"))
+}
+
 # Define server logic for random distribution application
 shinyServer(function(input, output) {
   
@@ -611,9 +618,11 @@ shinyServer(function(input, output) {
               h3("import scipy.stats"),
               h3(paste0("scipy.stats.norm.pdf(x, ",input$mu,", ",input$sigma,")")),
               h2("Log PDF"),
-              h3("dnorm(x, mu, sigma, log=TRUE)"),
+              h3(paste0("scipy.stats.norm.logpdf(x, ",input$mu,", ",input$sigma,")")),
               h2("Random sample of size n"),
-              h3("rnorm(n, mu, sigma)"))
+              h3("Either:"),
+              h3("import numpy as np"),
+              h3("np.random.normal(",input$mu,", ",input$sigma,)
     }
   })
   
