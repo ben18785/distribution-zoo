@@ -76,7 +76,7 @@ rcoronion<-function(d,eta=1){
   rr
 }
 
-fMakeFunction <- function(headingName, mainName, params, prefixparams=NULL,postfixparams=NULL){
+fMakeFunction <- function(headingName, mainName, params, prefixparams=NULL,postfixparams=NULL, import=NULL){
   common_prose <- paste(sapply(params, function(x) eval(parse(text=x))), collapse=", ")
   prefix_prose <- paste(prefixparams,  collapse = ", ")
   postfix_prose <- paste(postfixparams,  collapse = ", ")
@@ -90,17 +90,22 @@ fMakeFunction <- function(headingName, mainName, params, prefixparams=NULL,postf
       words <- paste0(mainName, "(", common_prose, ", ", postfix_prose, ")")
     else
       words <- paste0(mainName, "(", common_prose, ")")
-  return(list(h2(headingName), h3(words, style="color:#d95f02")))
+  if(is.null(import))
+    lWords <- list(h2(headingName), h3(words, style="color:#d95f02"))
+  else
+    lWords <- list(h2(headingName), h3(import, style="color:#d95f02"), h3(words, style="color:#d95f02"))
+  return(lWords)
 }
 
-fMakeDistribution <- function(headingNames, mainNames, lParams, lPrefixParams, lPostfixParams){
+fMakeDistribution <- function(headingNames, mainNames, lParams, lPrefixParams, lPostfixParams, lImports){
   a_len <- length(mainNames)
   lFunctions <- lapply(seq(1, a_len, 1),
                        function(i) fMakeFunction(headingNames[[i]],
                                                  mainNames[[i]],
                                                  lParams[[i]],
                                                  lPrefixParams[[i]],
-                                                 lPostfixParams[[i]]))
+                                                 lPostfixParams[[i]],
+                                                 lImports[[i]]))
   return(tagList(lFunctions))
 }
 
@@ -628,22 +633,18 @@ shinyServer(function(input, output) {
     if(input$dist=="Normal"){
       fMakeDistribution(lHeadings,
                         c("dnorm", "dnorm", "rnorm"),
-                        list(c(input$mu,input$sigma),c(input$mu,input$sigma),c(input$mu,input$sigma)),
-                        list("x", "x", "n"), list(NULL, "log=TRUE", NULL))
+                        list(c(input$mu,input$sigma), c(input$mu,input$sigma), c(input$mu,input$sigma)),
+                        list("x", "x", "n"), list(NULL, "log=TRUE", NULL), list(NULL, NULL, NULL))
     }
   })
   
   output$pythoncode <- renderUI({
     if(input$dist=="Normal"){
-      tagList(h2("PDF"),
-              h3("import scipy.stats"),
-              h3(paste0("scipy.stats.norm.pdf(x, ",input$mu,", ",input$sigma,")")),
-              h2("Log PDF"),
-              h3(paste0("scipy.stats.norm.logpdf(x, ",input$mu,", ",input$sigma,")")),
-              h2("Random sample of size n"),
-              h3("Either:"),
-              h3("import numpy as np"),
-              h3("np.random.normal(",input$mu,", ",input$sigma))
+      fMakeDistribution(lHeadings,
+                        c("scipy.stats.norm.pdf", "scipy.stats.norm.logpdf", "numpy.random.normal"),
+                        list(c(input$mu,input$sigma), c(input$mu,input$sigma), c(input$mu,input$sigma)),
+                        list("x", "x", NULL), list(NULL, NULL, "n"),
+                        list("import scipy.stats", "import scipy.stats", "import numpy"))
     }
   })
   
