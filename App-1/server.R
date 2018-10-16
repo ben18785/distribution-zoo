@@ -76,21 +76,31 @@ rcoronion<-function(d,eta=1){
   rr
 }
 
-fMakeFunction <- function(headingName, mainName, params, prefixparams=NULL,postfixparams=NULL, import=NULL, freeform=NULL){
+fMakeFunction <- function(headingName, mainName, params, prefixparams=NULL,postfixparams=NULL, import=NULL, freeform=NULL, mathematica=FALSE){
+  if(mathematica){
+    a_forward_brace <- "["
+    a_backward_brace <- "]"
+  }else{
+    a_forward_brace <- "("
+    a_backward_brace <- ")"
+  }
   if(!is.null(freeform)){
     common_prose <- paste(sapply(params, function(x) eval(parse(text=x))), collapse=", ")
     prefix_prose <- paste(prefixparams,  collapse = ", ")
     postfix_prose <- paste(postfixparams,  collapse = ", ")
     if(!is.null(prefixparams))
       if(!is.null(postfixparams))
-        words <- paste0(mainName, "(", prefix_prose, ", ", common_prose, ", ", postfix_prose, ")")
+        words <- paste0(mainName, a_forward_brace, prefix_prose, ", ", common_prose, ", ", postfix_prose, a_backward_brace)
       else
-        words <- paste0(mainName, "(", prefix_prose, ", ", common_prose, ")")
+        words <- paste0(mainName, a_forward_brace, prefix_prose, ", ", common_prose, a_backward_brace)
     else
       if(!is.null(postfixparams))
-        words <- paste0(mainName, "(", common_prose, ", ", postfix_prose, ")")
+        if(!mathematica)
+          words <- paste0(mainName, a_forward_brace, common_prose, ", ", postfix_prose, a_backward_brace)
+        else
+          words <- paste0(mainName, a_forward_brace, common_prose, "], ", postfix_prose, a_backward_brace)
       else
-        words <- paste0(mainName, "(", common_prose, ")")
+        words <- paste0(mainName, a_forward_brace, common_prose, a_backward_brace)
     if(is.null(import))
       lWords <- list(h2(headingName), h3(words, style="color:#d95f02"))
     else
@@ -101,7 +111,7 @@ fMakeFunction <- function(headingName, mainName, params, prefixparams=NULL,postf
   return(lWords)
 }
 
-fMakeDistribution <- function(headingNames, mainNames, lParams, lPrefixParams, lPostfixParams, lImports, lFreeform){
+fMakeDistribution <- function(headingNames, mainNames, lParams, lPrefixParams, lPostfixParams, lImports, lFreeform, mathematica=FALSE){
   a_len <- length(mainNames)
   lFunctions <- lapply(seq(1, a_len, 1),
                        function(i) fMakeFunction(headingNames[[i]],
@@ -110,7 +120,8 @@ fMakeDistribution <- function(headingNames, mainNames, lParams, lPrefixParams, l
                                                  lPrefixParams[[i]],
                                                  lPostfixParams[[i]],
                                                  lImports[[i]],
-                                                 lFreeform[[i]]))
+                                                 lFreeform[[i]],
+                                                 mathematica))
   return(tagList(lFunctions))
 }
 
@@ -663,7 +674,7 @@ shinyServer(function(input, output) {
       fMakeDistribution(lHeadings,
                         c("normpdf", paste0("-0.5 * log(2 * pi) - log(", eval(parse(text=input$sigma)),
                                             ") - (x - ",
-                                            eval(parse(text=input$mu)), ")^2/(2 * ",
+                                            eval(parse(text=input$mu)), ")^2 / (2 * ",
                                             eval(parse(text=input$sigma)), "^2)"), "normrnd"),
                         list(c(input$mu,input$sigma), c(input$mu,input$sigma), c(input$mu,input$sigma)),
                         list("x", NULL, NULL),
@@ -675,13 +686,17 @@ shinyServer(function(input, output) {
   
   output$mathematicacode <- renderUI({
     if(input$dist=="Normal"){
-      tagList(h2("PDF"),
-              h3("import scipy.stats"),
-              h3(paste0("scipy.stats.norm.pdf(x, ",input$mu,", ",input$sigma,")")),
-              h2("Log PDF"),
-              h3("dnorm(x, mu, sigma, log=TRUE)"),
-              h2("Random sample of size n"),
-              h3("rnorm(n, mu, sigma)"))
+      fMakeDistribution(lHeadings,
+                        c("PDF[NormalDistribution", paste0("-0.5 Log[2 Pi] - Log[", eval(parse(text=input$sigma)),
+                                            "] - (x - ",
+                                            eval(parse(text=input$mu)), ")^2 / (2 ",
+                                            eval(parse(text=input$sigma)), "^2)"), "RandomVariate[NormalDistribution"),
+                        list(c(input$mu,input$sigma), c(input$mu,input$sigma), c(input$mu,input$sigma)),
+                        list(NULL, NULL, NULL),
+                        list("x", NULL, "n"),
+                        list(NULL, NULL, NULL),
+                        list(1, NULL, 1),
+                        TRUE)
     }
   })
   
@@ -748,7 +763,7 @@ shinyServer(function(input, output) {
                                       uiOutput("formulae")),
                              tabPanel("LaTeX", 
                                       uiOutput("latex")),
-                             tabPanel("code", 
+                             tabPanel("Code", 
                                       uiOutput("language"),
                                       uiOutput("code"))
         )
