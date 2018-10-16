@@ -76,7 +76,7 @@ rcoronion<-function(d,eta=1){
   rr
 }
 
-fMakeFunction <- function(mainName, params, prefixparams=NULL,postfixparams=NULL, import=NULL, freeform=NULL, mathematica=FALSE, headingName=NULL){
+fMakeFunction <- function(mainName, params, prefixparams=NULL,postfixparams=NULL, import=NULL, freeform=NULL, mathematica=FALSE, julia=FALSE){
   if(mathematica){
     a_forward_brace <- "["
     a_backward_brace <- "]"
@@ -96,20 +96,25 @@ fMakeFunction <- function(mainName, params, prefixparams=NULL,postfixparams=NULL
     else
       if(!is.null(postfixparams))
         if(!mathematica)
-          words <- paste0(mainName, a_forward_brace, common_prose, ", ", postfix_prose, a_backward_brace)
+          if(!julia)
+            words <- paste0(mainName, a_forward_brace, common_prose, ", ", postfix_prose, a_backward_brace)
+          else
+            words <- paste0(mainName, a_forward_brace, common_prose, "), ", postfix_prose, a_backward_brace)
         else
           words <- paste0(mainName, a_forward_brace, common_prose, "], ", postfix_prose, a_backward_brace)
       else
         words <- paste0(mainName, a_forward_brace, common_prose, a_backward_brace)
     if(is.null(import))
-      lWords <- list(h2(headingName), h3(words, style="color:#d95f02"))
+      lWords <- h3(words, style="color:#d95f02")
     else
-      lWords <- list(h2(headingName), h3(import, style="color:#d95f02"), h3(words, style="color:#d95f02"))
+      lWords <- list(h3(import, style="color:#d95f02"), h3(words, style="color:#d95f02"))
   }else{
-    lWords <- list(h2(headingName), h3(mainName, style="color:#d95f02"))
+    lWords <- h3(mainName, style="color:#d95f02")
   }
   return(lWords)
 }
+
+
 
 # Define server logic for random distribution application
 shinyServer(function(input, output) {
@@ -634,106 +639,161 @@ shinyServer(function(input, output) {
       if(input$property=="pdf")
         fMakeFunction(mainName="dnorm",
                       params=c(input$mu,input$sigma),
-                      prefixparams="x")[[2]]
+                      prefixparams="x")
       else if(input$property=="log_pdf")
         fMakeFunction(mainName="dnorm",
                       params=c(input$mu,input$sigma),
                       prefixparams="x",
-                      postfixparams="log=TRUE")[[2]]
+                      postfixparams="log=TRUE")
+      else if(input$property=="random")
+        fMakeFunction(mainName="rnorm",
+                      params=c(input$mu,input$sigma),
+                      prefixparams="n")
     }
   })
   
   output$pythoncode <- renderUI({
     if(input$dist=="Normal"){
-      fMakeDistribution(lHeadings,
-                        c("scipy.stats.norm.pdf", "scipy.stats.norm.logpdf", "numpy.random.normal"),
-                        list(c(input$mu,input$sigma), c(input$mu,input$sigma), c(input$mu,input$sigma)),
-                        list("x", "x", NULL),
-                        list(NULL, NULL, "n"),
-                        list("import scipy.stats", "import scipy.stats", "import numpy"),
-                        list(1, 1, 1))
+      if(input$property=="pdf")
+        fMakeFunction(mainName="scipy.stats.norm.pdf",
+                      params=c(input$mu,input$sigma),
+                      prefixparams="x")
+      else if(input$property=="log_pdf")
+        fMakeFunction(mainName="scipy.stats.norm.logpdf",
+                      params=c(input$mu,input$sigma),
+                      prefixparams="x")
+      else if(input$property=="random")
+        fMakeFunction(mainName="numpy.random.normal",
+                      import="import numpy",
+                      params=c(input$mu,input$sigma),
+                      postfixparams="n")
     }
   })
   
   output$matlabcode <- renderUI({
     if(input$dist=="Normal"){
-      fMakeDistribution(lHeadings,
-                        c("normpdf", paste0("-0.5 * log(2 * pi) - log(", eval(parse(text=input$sigma)),
-                                            ") - (x - ",
-                                            eval(parse(text=input$mu)), ")^2 / (2 * ",
-                                            eval(parse(text=input$sigma)), "^2)"), "normrnd"),
-                        list(c(input$mu,input$sigma), c(input$mu,input$sigma), c(input$mu,input$sigma)),
-                        list("x", NULL, NULL),
-                        list(NULL, NULL, "[n, 1]"),
-                        list(NULL, NULL, NULL),
-                        list(1, NULL, 1))
+      if(input$property=="pdf")
+        fMakeFunction(mainName="normpdf",
+                      params=c(input$mu,input$sigma),
+                      prefixparams="x")
+      else if(input$property=="log_pdf")
+        fMakeFunction(mainName=paste0("-0.5 * log(2 * pi) - log(", eval(parse(text=input$sigma)),
+                                      ") - (x - ",
+                                      eval(parse(text=input$mu)), ")^2 / (2 * ",
+                                      eval(parse(text=input$sigma)), "^2)"),
+                      params=c(input$mu,input$sigma),
+                      freeform=TRUE)
+      else if(input$property=="random")
+        fMakeFunction(mainName="normrnd",
+                      params=c(input$mu,input$sigma),
+                      postfixparams="[n, 1]")
     }
   })
   
   output$mathematicacode <- renderUI({
     if(input$dist=="Normal"){
-      fMakeDistribution(lHeadings,
-                        c("PDF[NormalDistribution", paste0("-0.5 Log[2 Pi] - Log[", eval(parse(text=input$sigma)),
-                                            "] - (x - ",
-                                            eval(parse(text=input$mu)), ")^2 / (2 ",
-                                            eval(parse(text=input$sigma)), "^2)"), "RandomVariate[NormalDistribution"),
-                        list(c(input$mu,input$sigma), c(input$mu,input$sigma), c(input$mu,input$sigma)),
-                        list(NULL, NULL, NULL),
-                        list("x", NULL, "n"),
-                        list(NULL, NULL, NULL),
-                        list(1, NULL, 1),
-                        TRUE)
+      if(input$property=="pdf")
+        fMakeFunction(mainName="PDF[NormalDistribution",
+                      params=c(input$mu,input$sigma),
+                      postfixparams="x",
+                      mathematica=TRUE)
+      else if(input$property=="log_pdf")
+        fMakeFunction(mainName=paste0("-0.5 Log[2 Pi] - Log[", eval(parse(text=input$sigma)),
+                                      "] - (x - ",
+                                      eval(parse(text=input$mu)), ")^2 / (2 ",
+                                      eval(parse(text=input$sigma)), "^2)"),
+                      freeform=TRUE)
+      else if(input$property=="random")
+        fMakeFunction(mainName="RandomVariate[NormalDistribution",
+                      params=c(input$mu,input$sigma),
+                      postfixparams="n",
+                      mathematica=TRUE)
     }
   })
   
   output$juliacode <- renderUI({
     
     if(input$dist=="Normal"){
-              tagList(h2("PDF"),
-              h3("import scipy.stats"),
-              h3(paste0("scipy.stats.norm.pdf(x, ",input$mu,", ",input$sigma,")")),
-              h2("Log PDF"),
-              h3("dnorm(x, mu, sigma, log=TRUE)"),
-              h2("Random sample of size n"),
-              h3("rnorm(n, mu, sigma)"))
+      if(input$property=="pdf")
+        short <- fMakeFunction(mainName="pdf",
+                               params=c(input$mu,input$sigma),
+                               postfixparams="x",
+                               julia=TRUE)
+      else if(input$property=="log_pdf")
+        short <- fMakeFunction(mainName="logpdf",
+                      params=c(input$mu,input$sigma),
+                      postfixparams="x",
+                      julia=TRUE)
+      else if(input$property=="random")
+        short <- fMakeFunction(mainName="rand(Normal",
+                               params=c(input$mu,input$sigma),
+                               postfixparams="n",
+                               julia=TRUE)
     }
+      
+    tagList(short,
+            h3("Note that code assumes that 'Compat' and 'Distributions' packages are installed by typing:"),
+            h3("Pkg.add(\"Compat\")", style="color:#d95f02"),
+            h3("Pkg.add(\"Distributions\")", style="color:#d95f02"),
+            h3("at Julia command line."))
   })
   
   output$cpluspluscode <- renderUI({
     
     if(input$dist=="Normal"){
-      tagList(h2("PDF"),
-              h3("import scipy.stats"),
-              h3(paste0("scipy.stats.norm.pdf(x, ",input$mu,", ",input$sigma,")")),
-              h2("Log PDF"),
-              h3("dnorm(x, mu, sigma, log=TRUE)"),
-              h2("Random sample of size n"),
-              p(HTML(paste("#include &lt;random&gt;",
-                           "#include &lt;vector&gt",
-                           "#include &lt;math&gt",
-                           "#include &lt;chrono&gt;",
-                           sep="<br/>"))),
-              p(HTML("// unseeded")),
-              p(HTML(paste0("std::vector&lt;double&gt; normal_rng(int n, double mu, double sigma)", "<br/>",
-                            "{", "<br/>",
-                            "unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();", "<br/>",
-                            "std::normal_distribution&lt;double&gt; distribution(",
-                            eval(parse(text=input$mu)), ", ", eval(parse(text=input$sigma)), ");", "<br/>",
-                            "std::vector&lt;double&gt; samples(n);", "<br/>",
-                            "for(int i = 0; i < n; i++)", "<br/>",
-                            "&emsp;", "samples[i] = distribution(generator);", "<br/>",
-                            "return samples;", "<br/>",
-                            "}"))),
-              p(HTML("// seeded")),
-      p(HTML(paste0("std::vector&lt;double&gt; normal_rng(int n, double mu, double sigma, unsigned seed)", "<br/>",
-                    "{", "<br/>",
-                    "std::normal_distribution&lt;double&gt; distribution(",
-                    eval(parse(text=input$mu)), ", ", eval(parse(text=input$sigma)), ");", "<br/>",
-                    "std::vector&lt;double&gt; samples(n);", "<br/>",
-                    "for(int i = 0; i < n; i++)", "<br/>",
-                    "&emsp;", "samples[i] = distribution(generator);", "<br/>",
-                    "return samples;", "<br/>",
-                    "}"))))
+      if(input$property=="pdf")
+        tagList(p(HTML(paste("#include &lt;math&gt",
+                             sep="<br/>")), style="color:#d95f02"),
+                p(HTML(paste("double normal_pdf(int n, double mu, double sigma)",
+                              "{",
+                             paste0("return 1.0 / (std::sqrt(2.0 * M_PI) * ",
+                                    eval(parse(text=input$sigma)),
+                                    ") * exp(-pow(x - ",
+                                    eval(parse(text=input$mu)),
+                                    ", 2.0) / (2 * pow(",
+                                    input$sigma, ", 2.0)));"),
+                             "}",
+                             sep="<br/>")), style="color:#d95f02"))
+      else if(input$property=="log_pdf")
+        tagList(p(HTML(paste("#include &lt;math&gt",
+                             sep="<br/>")), style="color:#d95f02"),
+                p(HTML(paste("double normal_lpdf(int n, double mu, double sigma)",
+                             "{",
+                             paste0("return -0.5 * log(2 * M_PI) - log(",
+                                    eval(parse(text=input$sigma)),
+                                    ") - pow(x - ",
+                                    eval(parse(text=input$mu)),
+                                    ", 2.0) / (2 * pow(",
+                                    input$sigma, ", 2.0)));"),
+                             "}",
+                             sep="<br/>")), style="color:#d95f02"))
+      else if(input$property=="random")
+        tagList(p(HTML(paste("#include &lt;random&gt;",
+                     "#include &lt;vector&gt",
+                     "#include &lt;math&gt",
+                     "#include &lt;chrono&gt;",
+                     sep="<br/>")), style="color:#d95f02"),
+        p(HTML("// unseeded"), style="color:#d95f02"),
+        p(HTML(paste0("std::vector&lt;double&gt; normal_rng(int n, double mu, double sigma)", "<br/>",
+                      "{", "<br/>",
+                      "unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();", "<br/>",
+                      "std::normal_distribution&lt;double&gt; distribution(",
+                      eval(parse(text=input$mu)), ", ", eval(parse(text=input$sigma)), ");", "<br/>",
+                      "std::vector&lt;double&gt; samples(n);", "<br/>",
+                      "for(int i = 0; i < n; i++)", "<br/>",
+                      "&emsp;", "samples[i] = distribution(generator);", "<br/>",
+                      "return samples;", "<br/>",
+                      "}")), style="color:#d95f02"),
+        p(HTML("// seeded"), style="color:#d95f02"),
+        p(HTML(paste0("std::vector&lt;double&gt; normal_rng(int n, double mu, double sigma, unsigned seed)", "<br/>",
+              "{", "<br/>",
+              "std::normal_distribution&lt;double&gt; distribution(",
+              eval(parse(text=input$mu)), ", ", eval(parse(text=input$sigma)), ");", "<br/>",
+              "std::vector&lt;double&gt; samples(n);", "<br/>",
+              "for(int i = 0; i < n; i++)", "<br/>",
+              "&emsp;", "samples[i] = distribution(generator);", "<br/>",
+              "return samples;", "<br/>",
+              "}")), style="color:#d95f02"))
     }
   })
 
@@ -753,7 +813,7 @@ shinyServer(function(input, output) {
     selectInput("property", "Property",
                 c("PDF"="pdf",
                 "Log PDF"="log_pdf",
-                "random sampling"="random"),
+                "random sample of size n"="random"),
                 selected="pdf")
   })
   
