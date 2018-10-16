@@ -29,7 +29,7 @@ std::vector<double> normal_rng(int n, double mu, double sigma){
   return samples;
 }
 // seeded
-std::vector<double> normal_rng(int n, double mu, double sigma, int seed){
+std::vector<double> normal_rng(int n, double mu, double sigma, unsigned seed){
   std::default_random_engine generator(seed);
   std::normal_distribution<double> distribution(mu, sigma);
   std::vector<double> samples(n);

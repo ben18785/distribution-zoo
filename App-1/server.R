@@ -723,31 +723,54 @@ shinyServer(function(input, output) {
               h3("dnorm(x, mu, sigma, log=TRUE)"),
               h2("Random sample of size n"),
               p(HTML(paste("#include &lt;random&gt;",
-                           "#include &lt;vector&gt", sep="<br/>"))),
-              p(HTML(paste0("int main()", "<br/>",
+                           "#include &lt;vector&gt",
+                           "#include &lt;math&gt",
+                           "#include &lt;chrono&gt;",
+                           sep="<br/>"))),
+              p(HTML("// unseeded")),
+              p(HTML(paste0("std::vector&lt;double&gt; normal_rng(int n, double mu, double sigma)", "<br/>",
                             "{", "<br/>",
-                            "std::default_random_engine generator;", "<br/>",
-                            "std::normal_distribution<double> distribution(",
+                            "unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();", "<br/>",
+                            "std::normal_distribution&lt;double&gt; distribution(",
                             eval(parse(text=input$mu)), ", ", eval(parse(text=input$sigma)), ");", "<br/>",
-                            "std::vector<double> samples(n);", "<br/>",
+                            "std::vector&lt;double&gt; samples(n);", "<br/>",
                             "for(int i = 0; i < n; i++)", "<br/>",
                             "&emsp;", "samples[i] = distribution(generator);", "<br/>",
-                            "}"))))
+                            "return samples;", "<br/>",
+                            "}"))),
+              p(HTML("// seeded")),
+      p(HTML(paste0("std::vector&lt;double&gt; normal_rng(int n, double mu, double sigma, unsigned seed)", "<br/>",
+                    "{", "<br/>",
+                    "std::normal_distribution&lt;double&gt; distribution(",
+                    eval(parse(text=input$mu)), ", ", eval(parse(text=input$sigma)), ");", "<br/>",
+                    "std::vector&lt;double&gt; samples(n);", "<br/>",
+                    "for(int i = 0; i < n; i++)", "<br/>",
+                    "&emsp;", "samples[i] = distribution(generator);", "<br/>",
+                    "return samples;", "<br/>",
+                    "}"))))
     }
   })
 
   
   output$language <- renderUI({
-     tagList(selectInput("language", "Language",
+     selectInput("language", "Language",
                  c("R"="R",
-                   "Python"="Python",
-                   "Matlab"="Matlab",
-                   "Mathematica"="Mathematica",
-                   "Julia"="Julia",
-                   "C++"="Cplusplus"),
+                  "Python"="Python",
+                  "Matlab"="Matlab",
+                  "Mathematica"="Mathematica",
+                  "Julia"="Julia",
+                  "C++"="Cplusplus"),
                  selected="R")
-               )
   })
+  
+  output$property <- renderUI({
+    selectInput("property", "Property",
+                c("pdf"="PDF",
+                "log_pdf"="Log PDF",
+                "random"="Random sampling"),
+                selected="pdf")
+  })
+  
   output$code <- renderUI({
     if(is.null(input$language)){
       uiOutput("rcode")
@@ -775,6 +798,7 @@ shinyServer(function(input, output) {
                                       uiOutput("latex")),
                              tabPanel("Code", 
                                       uiOutput("language"),
+                                      uiOutput("property"),
                                       uiOutput("code"))
         )
       }else{
