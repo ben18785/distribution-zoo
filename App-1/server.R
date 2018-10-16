@@ -722,7 +722,17 @@ shinyServer(function(input, output) {
               h2("Log PDF"),
               h3("dnorm(x, mu, sigma, log=TRUE)"),
               h2("Random sample of size n"),
-              h3("rnorm(n, mu, sigma)"))
+              p(HTML(paste("#include &lt;random&gt;",
+                           "#include &lt;vector&gt", sep="<br/>"))),
+              p(HTML(paste0("int main()", "<br/>",
+                            "{", "<br/>",
+                            "std::default_random_engine generator;", "<br/>",
+                            "std::normal_distribution<double> distribution(",
+                            eval(parse(text=input$mu)), ", ", eval(parse(text=input$sigma)), ");", "<br/>",
+                            "std::vector<double> samples(n);", "<br/>",
+                            "for(int i = 0; i < n; i++)", "<br/>",
+                            "&emsp;", "samples[i] = distribution(generator);", "<br/>",
+                            "}"))))
     }
   })
 
