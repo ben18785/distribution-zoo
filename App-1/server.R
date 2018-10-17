@@ -12,6 +12,15 @@ library(grid)
 library(gridExtra)
 library(DirichletReg)
 library(scatterplot3d)
+library(markdown)
+
+fMarkdownMaker <- function(mu){
+  code <- paste0("```{r}", "dnorm(x, ", "mu", ", 1) ```")
+  fileConn<-file("test-markdown.md")
+  writeLines(code, fileConn)
+  close(fileConn)
+}
+
 
 dCustomInverseChiSquared <- function(x,df){
   return(ifelse(x>0,dinvchisq(x,df),0))
@@ -649,6 +658,10 @@ shinyServer(function(input, output) {
         fMakeFunction(mainName="rnorm",
                       params=c(input$mu,input$sigma),
                       prefixparams="n")
+    }else if(input$dist=="Uniform"){
+      if(input$property=="pdf")
+        HTML(markdown::markdownToHTML(text="```{r}
+                                      dnorm(0, 1, 2)", options=c("highlight_code")))
     }
   })
   
@@ -667,6 +680,10 @@ shinyServer(function(input, output) {
                       import="import numpy",
                       params=c(input$mu,input$sigma),
                       postfixparams="n")
+    }else if(input$dist=="Uniform"){
+      if(input$property=="pdf")
+        HTML(markdown::markdownToHTML(text="```{python}
+scipy.stats.norm.logpdf(1,2,3)", options=c("highlight_code")))
     }
   })
   

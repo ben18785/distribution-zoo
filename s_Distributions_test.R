@@ -3,6 +3,19 @@ library(shiny)
 setwd("C:/Users/bclamber/Desktop/distribution-viewer")
 runApp("App-1",display.mode = "showcase")
 
+runApp(list(
+  ui = bootstrapPage(
+    sliderInput("mu", "Mean", min=-30, max=30, value=0, step=0.2),
+    uiOutput('chunk')
+  ),
+  server = function(input, output) {
+    output$chunk <- renderUI({ 
+      HTML(markdown::markdownToHTML(text=paste0("```{r}",
+                                                "\n dnorm(0, ", input$mu,", 2)"), 
+                                    options=c("highlight_code"))) })
+  }
+))
+
 
 n <- 10000
 aMu <- rnorm(n)
