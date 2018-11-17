@@ -626,24 +626,19 @@ shinyServer(function(input, output) {
                     h2("Support"),
                     h2("$$x\\in\\mathbb{R}^+$$"),
                     h2("PDF"),
-                    h2("$$ \\frac{1}{x \\sigma \\sqrt{2 \\pi}} \\text{exp}\\left(-\\frac{(\\text{log } x - \\mu)^2}{2\\sigma^2}\\right)$$"),
+                    h2("$$f(x|\\mu,\\sigma) = \\frac{1}{x \\sigma \\sqrt{2 \\pi}} \\text{exp}\\left(-\\frac{(\\text{log } x - \\mu)^2}{2\\sigma^2}\\right)$$"),
                     h2("CDF"),
-                    h2("$$\\frac{1}{2} + \\frac{1}{2} \\text{erf}\\left(\\frac{\\text{log } x - \\mu}{\\sqrt{2} \\sigma}\\right)$$"),
-                    helpText(a("More information about the log-normal distribution.",
-                               target="_blank",
-                               href="https://en.wikipedia.org/wiki/Log-normal_distribution")))
+                    h2("$$F(x|\\mu,\\sigma) = \\frac{1}{2} + \\frac{1}{2} \\text{erf}\\left(\\frac{\\text{log } x - \\mu}{\\sqrt{2} \\sigma}\\right)$$"))
       }else if(input$dist=='Exponential'){
         withMathJax(h2("Moments"),h2("$$\\mathrm{E}(X) = \\frac{1}{\\lambda}$$"),
                     h2("$$var(X) = \\frac{1}{\\lambda^2}$$"),
                     h2("Support"),
                     h2("$$x\\in\\mathbb{R}^+$$"),
                     h2("PDF"),
-                    h2("$$\\lambda e^{-\\lambda x}$$"),
+                    h2("$$f(x|\\lambda) = \\lambda e^{-\\lambda x}$$"),
                     h2("CDF"),
-                    h2("$$1 - e^{-\\lambda x}$$"),
-                    helpText(a("More information about the exponential distribution.",
-                               target="_blank",
-                               href="https://en.wikipedia.org/wiki/Exponential_distribution")))
+                    h2("$$F(x|\\lambda) = 1 - e^{-\\lambda x}$$")
+                    )
       }
     }
   })
