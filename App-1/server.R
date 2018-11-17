@@ -338,7 +338,7 @@ shinyServer(function(input, output) {
                                     linetype = "longdash",
                                     size=1) +
         theme_classic() +
-        ggtitle(paste0("mean = ", round(aMean, 2), ", var = ", round(aVar, 2))) +
+        ggtitle(paste0("mean = ", round(aMean, 2), ", sd = ", round(sqrt(aVar), 2))) +
         theme(plot.title = element_text(hjust = 0.5, size = 18),
               axis.text = element_text(size=14),
               axis.title = element_text(size=16)) +
@@ -357,7 +357,7 @@ shinyServer(function(input, output) {
                      linetype = "longdash",
                      size=1) +
         theme_classic() +
-        ggtitle(paste0("mean = ", round(aMean, 2), ", var = ", round(aVar, 2))) +
+        ggtitle(paste0("mean = ", round(aMean, 2), ", var = ", round(sqrt(aVar), 2))) +
         theme(plot.title = element_text(hjust = 0.5, size = 18),
               axis.text = element_text(size=14),
               axis.title = element_text(size=16)) +
