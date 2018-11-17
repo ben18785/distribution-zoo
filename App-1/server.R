@@ -639,6 +639,31 @@ shinyServer(function(input, output) {
                     h2("CDF"),
                     h2("$$F(x|\\lambda) = 1 - e^{-\\lambda x}$$")
                     )
+      }else if(input$dist=='Gamma'){
+        withMathJax(h2("Moments"),
+                    h2("$$\\mathrm{E}(X) = \\frac{\\alpha}{\\beta}$$"),
+                    h2("$$var(X) = \\frac{\\alpha}{\\beta^2}$$"),
+                    h2("Support"),
+                    h2("$$x\\in\\mathbb{R}^+$$"),
+                    h2("PDF"),
+                    h2("$$f(x|\\alpha, \\beta) = \\frac{\\beta^\\alpha}{\\Gamma(\\alpha)} x^{\\alpha-1} e^{-\\beta x}$$"),
+                    h2(withMathJax(
+                      helpText(HTML('$$\\color{black}{\\text{where }\\Gamma(w) \\text{ is gamma function}}$$')))),
+                    h2("CDF"),
+                    h2("$$F(x|\\alpha, \\beta) = \\frac{1}{\\Gamma(\\alpha)} \\gamma(\\alpha, \\beta x)$$"),
+                    h2(withMathJax(
+                      helpText(HTML('$$\\color{black}{\\text{where }\\gamma(w,v) \\text{ is the incomplete lower gamma function}}$$'))))
+        )
+      }else if(input$dist=='t'){
+        withMathJax(h2("Moments"),h2("$$\\mathrm{E}(X) = \\frac{1}{\\lambda}$$"),
+                    h2("$$var(X) = \\frac{1}{\\lambda^2}$$"),
+                    h2("Support"),
+                    h2("$$x\\in\\mathbb{R}^+$$"),
+                    h2("PDF"),
+                    h2("$$f(x|\\lambda) = \\lambda e^{-\\lambda x}$$"),
+                    h2("CDF"),
+                    h2("$$F(x|\\lambda) = 1 - e^{-\\lambda x}$$")
+        )
       }
     }
   })
