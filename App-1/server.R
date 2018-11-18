@@ -655,14 +655,29 @@ shinyServer(function(input, output) {
                       helpText(HTML('$$\\color{black}{\\text{where }\\gamma(w,v) \\text{ is the incomplete lower gamma function}}$$'))))
         )
       }else if(input$dist=='t'){
-        withMathJax(h2("Moments"),h2("$$\\mathrm{E}(X) = \\frac{1}{\\lambda}$$"),
-                    h2("$$var(X) = \\frac{1}{\\lambda^2}$$"),
+        withMathJax(h2("Moments"),h2("$$\\mathrm{E}(X) = \\mu, \\text{ if }\\nu>1 \\text{ otherwise undefined}$$"),
+                    h2("$$var(X) = \\frac{\\nu \\sigma^2}{\\nu-2}$$"),
                     h2("Support"),
-                    h2("$$x\\in\\mathbb{R}^+$$"),
+                    h2("$$x\\in\\mathbb{R}$$"),
                     h2("PDF"),
-                    h2("$$f(x|\\lambda) = \\lambda e^{-\\lambda x}$$"),
+                    h2("$$f(x|\\mu, \\sigma, \\nu) = \\frac{\\left(\\frac{\\nu }{\\nu +\\frac{(x-\\mu )^2}{\\sigma ^2}}\\right)^{\\frac{\\nu
+   +1}{2}}}{\\sqrt{\\nu } \\sigma  B\\left(\\frac{\\nu }{2},\\frac{1}{2}\\right)}$$"),
+                    h2(withMathJax(
+                      helpText(HTML('$$\\color{black}{\\text{where } B(u,v) \\text{ is the beta function}}$$')))),
                     h2("CDF"),
-                    h2("$$F(x|\\lambda) = 1 - e^{-\\lambda x}$$")
+                    h2(withMathJax(
+                      helpText(HTML('$$\\color{black}{F(\\mu, \\sigma, \\nu) = \\begin{cases}
+ \\frac{1}{2} I_{\\frac{\\nu  \\sigma ^2}{(x-\\mu )^2+\\nu  \\sigma \
+^2}}\\left(\\frac{\\nu }{2},\\frac{1}{2}\\right), & x\\leq \\mu  \\\\
+ \\frac{1}{2} \\left(I_{\\frac{(x-\\mu )^2}{(x-\\mu )^2+\\nu  \\sigma \
+^2}}\\left(\\frac{1}{2},\\frac{\\nu }{2}\\right)+1\\right), & \
+\\text{Otherwise}
+\\end{cases}}$$')))),
+                    h2(withMathJax(
+                      helpText(HTML('$$\\color{black}{\\text{where } I_w(u,v) \\text{ is the regularised beta function: }}$$')))),
+                    h2('$$I_w(u,v) = \\frac{B(w; u, v)}{B(u,v)}$$'),
+                    h2(withMathJax(
+                      helpText(HTML('$$\\color{black}{\\text{where } B(w; u,v) \\text{ is the incomplete beta function and } B(u,v) \\text{ is the complete beta function}}$$'))))
         )
       }
     }
