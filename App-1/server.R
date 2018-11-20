@@ -734,6 +734,24 @@ shinyServer(function(input, output) {
                     h2(withMathJax(
                       helpText(HTML('$$\\color{black}{\\text{where } B(w; u,v) \\text{ is the incomplete beta function and } B(u,v) \\text{ is the complete beta function}}$$'))))
         )
+      }else if(input$dist=='Cauchy'){
+        withMathJax(h2("Parameters"),
+                    h2(withMathJax(
+                      helpText(HTML('$$\\color{black}{\\text{location or median or mode: }\\mu\\in\\mathbb{R}}$$')))),
+                    h2(withMathJax(
+                      helpText(HTML('$$\\color{black}{\\text{scale: }\\sigma\\in\\mathbb{R}^+}$$')))),
+                    h2("Support"),
+                    h2("$$x\\in \\mathbb{R}$$"),
+                    h2("Moments"),
+                    h2(withMathJax(
+                      helpText(HTML('$$\\color{black}{\\mathrm{E}(X) = \\text{ undefined}}$$')))),
+                    h2(withMathJax(
+                      helpText(HTML('$$\\color{black}{var(X) = \\text{ undefined}}$$')))),
+                    h2("PDF"),
+                    h2("$$f(x|\\mu, \\sigma) = \\frac{1}{\\pi\\sigma\\left[1 + \\left(\\frac{x-\\mu}{\\sigma}\\right)^2\\right]}$$"),
+                    h2("CDF"),
+                    h2("$$F(x|\\mu, \\sigma) = \\frac{1}{2} + \\frac{1}{\\pi}\\text{arctan}\\left(\\frac{x-\\mu}{\\sigma}\\right)$$")
+        )
       }
     }
   })
