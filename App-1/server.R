@@ -679,11 +679,18 @@ shinyServer(function(input, output) {
                       helpText(HTML('$$\\color{black}{\\text{where }\\gamma(w,v) \\text{ is the incomplete lower gamma function}}$$'))))
         )
       }else if(input$dist=='t'){
-        withMathJax(h2("Moments"),
-                    h2("$$\\mathrm{E}(X) = \\mu, \\text{ if }\\nu>1 \\text{ otherwise undefined}$$"),
-                    h2("$$var(X) = \\frac{\\nu \\sigma^2}{\\nu-2}$$"),
+        withMathJax(h2("Parameters"),
+                    h2(withMathJax(
+                      helpText(HTML('$$\\color{black}{\\text{location or median or mode: }\\mu\\in\\mathbb{R}}$$')))),
+                    h2(withMathJax(
+                      helpText(HTML('$$\\color{black}{\\text{scale: }\\sigma\\in\\mathbb{R}^+}$$')))),
+                    h2(withMathJax(
+                      helpText(HTML('$$\\color{black}{\\text{degrees of freedom: }\\nu\\in\\mathbb{R}^+}$$')))),
                     h2("Support"),
                     h2("$$x\\in\\mathbb{R}$$"),
+                    h2("Moments"),
+                    h2("$$\\mathrm{E}(X) = \\mu, \\text{ if }\\nu>1 \\text{ otherwise undefined}$$"),
+                    h2("$$var(X) = \\frac{\\nu \\sigma^2}{\\nu-2}$$"),
                     h2("PDF"),
                     h2("$$f(x|\\mu, \\sigma, \\nu) = \\frac{\\left(\\frac{\\nu }{\\nu +\\frac{(x-\\mu )^2}{\\sigma ^2}}\\right)^{\\frac{\\nu
    +1}{2}}}{\\sqrt{\\nu } \\sigma  B\\left(\\frac{\\nu }{2},\\frac{1}{2}\\right)}$$"),
@@ -705,16 +712,27 @@ shinyServer(function(input, output) {
                       helpText(HTML('$$\\color{black}{\\text{where } B(w; u,v) \\text{ is the incomplete beta function and } B(u,v) \\text{ is the complete beta function}}$$'))))
         )
       }else if(input$dist=='Beta'){
-        withMathJax(h2("Moments"),h2("$$\\mathrm{E}(X) = \\frac{\\alpha}{\\alpha + \\beta}$$"),
-                    h2("$$var(X) = \\frac{\\alpha\\beta}{(\\alpha + \\beta)^2 (\\alpha + \\beta + 1)}$$"),
+        withMathJax(h2("Parameters"),
+                    h2(withMathJax(
+                      helpText(HTML('$$\\color{black}{\\text{shape 1: }\\alpha\\in\\mathbb{R}^+}$$')))),
+                    h2(withMathJax(
+                      helpText(HTML('$$\\color{black}{\\text{shape 2: }\\beta\\in\\mathbb{R}^+}$$')))),
                     h2("Support"),
                     h2("$$x\\in (0, 1)$$"),
+                    h2("Moments"),
+                    h2("$$\\mathrm{E}(X) = \\frac{\\alpha}{\\alpha + \\beta}$$"),
+                    h2("$$var(X) = \\frac{\\alpha\\beta}{(\\alpha + \\beta)^2 (\\alpha + \\beta + 1)}$$"),
                     h2("PDF"),
                     h2("$$f(x|\\alpha, \\beta) = \\frac{x^{\\alpha-1} (1-x)^{\\beta-1}}{B(\\alpha,\\beta)}$$"),
                     h2(withMathJax(
                       helpText(HTML('$$\\color{black}{\\text{where } B(u,v) \\text{ is the beta function}}$$')))),
                     h2("CDF"),
-                    h2("$$F(x|\\alpha,\\beta) = I_x(\\alpha,\\beta)$$")
+                    h2("$$F(x|\\alpha,\\beta) = I_x(\\alpha,\\beta)$$"),
+                    h2(withMathJax(
+                      helpText(HTML('$$\\color{black}{\\text{where } I_w(u,v) \\text{ is the regularised beta function: }}$$')))),
+                    h2('$$I_w(u,v) = \\frac{B(w; u, v)}{B(u,v)}$$'),
+                    h2(withMathJax(
+                      helpText(HTML('$$\\color{black}{\\text{where } B(w; u,v) \\text{ is the incomplete beta function and } B(u,v) \\text{ is the complete beta function}}$$'))))
         )
       }
     }
