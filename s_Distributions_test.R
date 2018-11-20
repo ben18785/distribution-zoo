@@ -1,7 +1,7 @@
 rm(list=ls())
 library(shiny)
 setwd("C:/Users/bclamber/Desktop/distribution-viewer")
-runApp("App-1",display.mode = "showcase")
+runApp("App-1")
 
 runApp(list(
   ui = bootstrapPage(
