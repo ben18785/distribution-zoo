@@ -10,10 +10,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       158,          7]
-NotebookDataLength[     15363,        438]
-NotebookOptionsPosition[     12853,        385]
-NotebookOutlinePosition[     13201,        400]
-CellTagsIndexPosition[     13158,        397]
+NotebookDataLength[     16665,        474]
+NotebookOptionsPosition[     13839,        416]
+NotebookOutlinePosition[     14187,        431]
+CellTagsIndexPosition[     14144,        428]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -381,7 +381,38 @@ Cell[BoxData["\<\"\\\\begin{cases}\\n \\\\frac{\\\\beta }{\\\\alpha -1} & \
 \\\\text{True}\\n\\\\end{cases}\"\>"], "Output",
  CellChangeTimes->{3.7516725125041914`*^9, 
   3.75167258599599*^9},ExpressionUUID->"282147bc-381d-4e97-bfac-9ad1ca974e97"]
-}, Open  ]]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"Variance", "@", 
+    RowBox[{"InverseGammaDistribution", "[", 
+     RowBox[{"\[Alpha]", ",", "\[Beta]"}], "]"}]}], "//", "TeXForm"}], "//", 
+  "ToString"}]], "Input",
+ CellChangeTimes->{{3.7516726903063602`*^9, 
+  3.7516726918801503`*^9}},ExpressionUUID->"22000288-ce46-4470-9534-\
+9f42f19f07a1"],
+
+Cell[BoxData["\<\"\\\\begin{cases}\\n \\\\frac{\\\\beta ^2}{(\\\\alpha -2) \
+(\\\\alpha -1)^2} & \\\\alpha >2 \\\\\\\\\\n \\\\text{Indeterminate} & \
+\\\\text{True}\\n\\\\end{cases}\"\>"], "Output",
+ CellChangeTimes->{
+  3.7516726923238087`*^9},ExpressionUUID->"8e98f1f4-7977-445c-a484-\
+3a17c43ac7cf"]
+}, Open  ]],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"PDF", "[", 
+    RowBox[{
+     RowBox[{"InverseGammaDistribution", "[", 
+      RowBox[{"\[Alpha]", ",", "\[Beta]"}], "]"}], ",", "x"}], "]"}], "//", 
+   "TeXForm"}], "//", "ToString"}]], "Input",ExpressionUUID->"3118deb5-5891-\
+4d7e-a817-d2378132bfbf"]
 },
 WindowSize->{759, 697},
 WindowMargins->{{Automatic, 380}, {24, Automatic}},
@@ -439,10 +470,13 @@ Cell[11754, 356, 357, 5, 109, "Output",ExpressionUUID->"1cf9591e-c84e-4f09-bc7a-
 Cell[CellGroupData[{
 Cell[12148, 366, 386, 10, 28, "Input",ExpressionUUID->"7bf04c15-83e1-455d-8cf5-f44085864463"],
 Cell[12537, 378, 300, 4, 90, "Output",ExpressionUUID->"282147bc-381d-4e97-bfac-9ad1ca974e97"]
-}, Open  ]]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[12874, 387, 343, 9, 28, "Input",ExpressionUUID->"22000288-ce46-4470-9534-9f42f19f07a1"],
+Cell[13220, 398, 302, 5, 90, "Output",ExpressionUUID->"8e98f1f4-7977-445c-a484-3a17c43ac7cf"]
+}, Open  ]],
+Cell[13537, 406, 298, 8, 28, "Input",ExpressionUUID->"3118deb5-5891-4d7e-a817-d2378132bfbf"]
 }
 ]
 *)
-
-(* End of internal cache information *)
 

@@ -672,7 +672,7 @@ shinyServer(function(input, output) {
                     h2("PDF"),
                     h2("$$f(x|\\alpha, \\beta) = \\frac{\\beta^\\alpha}{\\Gamma(\\alpha)} x^{\\alpha-1} e^{-\\beta x}$$"),
                     h2(withMathJax(
-                      helpText(HTML('$$\\color{black}{\\text{where }\\Gamma(w) \\text{ is gamma function}}$$')))),
+                      helpText(HTML('$$\\color{black}{\\text{where }\\Gamma(w) \\text{ is the gamma function}}$$')))),
                     h2("CDF"),
                     h2("$$F(x|\\alpha, \\beta) = \\frac{1}{\\Gamma(\\alpha)} \\gamma(\\alpha, \\beta x)$$"),
                     h2(withMathJax(
@@ -794,7 +794,10 @@ shinyServer(function(input, output) {
                        \\frac{\\beta }{\\alpha -1}, & \\alpha >1 \\\\
                        \\text{Indeterminate}, & \\text{Otherwise}
                        \\end{cases}$$"),
-                    h2("$$var(X) = \\frac{\\alpha}{\\beta^2}$$"),
+                    h2("$$var(X) = \\begin{cases}
+                       \\frac{\\beta ^2}{(\\alpha -2) (\\alpha -1)^2}, & \\alpha >2 \\\\
+                       \\text{Indeterminate}, & \\text{Otherwise}
+                       \\end{cases}$$"),
                     h2("PDF"),
                     h2("$$f(x|\\alpha, \\beta) = \\begin{cases}
                        \\frac{e^{-\\frac{\\beta }{x}} \\left(\\frac{\\beta \
@@ -802,11 +805,17 @@ shinyServer(function(input, output) {
                        0, & \\text{Otherwise}
                        \\end{cases}$$"),
                     h2(withMathJax(
-                      helpText(HTML('$$\\color{black}{\\text{where }\\Gamma(w) \\text{ is gamma function}}$$')))),
+                      helpText(HTML('$$\\color{black}{\\text{where }\\Gamma(w) \\text{ is the gamma function}}$$')))),
                     h2("CDF"),
-                    h2("$$F(x|\\alpha, \\beta) = \\frac{1}{\\Gamma(\\alpha)} \\gamma(\\alpha, \\beta x)$$"),
+                    h2("$$F(x|\\alpha, \\beta) = \\begin{cases}
+                       Q\\left(\\alpha ,\\frac{\\beta }{x}\\right), & x>0 \\\\
+                       0, & \\text{Otherwise}
+                       \\end{cases}$$"),
                     h2(withMathJax(
-                      helpText(HTML('$$\\color{black}{\\text{where }\\gamma(w,v) \\text{ is the incomplete lower gamma function}}$$'))))
+                      helpText(HTML('$$\\color{black}{\\text{where }Q(w,v) \\text{ is the regularised gamma function}}:$$')))),
+                    h2("$$Q(w,v) = \\frac{\\Gamma(u,v)}{\\Gamma(u)}$$"),
+                    h2(withMathJax(
+                      helpText(HTML('$$\\color{black}{\\text{where }\\Gamma(w,v) \\text{ is the incomplete gamma function}}$$'))))
         )
       }
     }
