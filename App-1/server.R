@@ -817,6 +817,26 @@ shinyServer(function(input, output) {
                     h2(withMathJax(
                       helpText(HTML('$$\\color{black}{\\text{where }\\Gamma(w,v) \\text{ is the incomplete gamma function}}$$'))))
         )
+      }else if(input$dist=='LogitNormal'){
+        withMathJax(h2("Parameters"),
+                    h2(withMathJax(
+                      helpText(HTML('$$\\color{black}{\\text{logit mean: }\\mu\\in\\mathbb{R}}$$')))),
+                    h2(withMathJax(
+                      helpText(HTML('$$\\color{black}{\\text{scale: }\\sigma\\in\\mathbb{R}^+}$$')))),
+                    h2("Support"),
+                    h2("$$x\\in\\mathbb{R}^+$$"),
+                    h2("Moments"),
+                    h2("$$\\mathrm{E}(X) = \\text{ No simple analytic expression}$$"),
+                    h2("$$var(X) = \\text{ No simple analytic expression}$$"),
+                    h2("PDF"),
+                    h2("$$f(x|\\mu,\\sigma) = \\frac{1}{\\sigma\\sqrt{2\\pi}} \\text{exp}\\left(-\\frac{(\\text{logit } x - \\mu)^2}{2\\sigma^2}\\right) \\frac{1}{x(1-x)}$$"),
+                    h2(withMathJax(
+                      helpText(HTML('$$\\color{black}{\\text{where }\\text{logit } x = \\text{log}\\left(\\frac{x}{1-x}\\right)}$$')))),
+                    h2("CDF"),
+                    h2("$$F(x|\\mu,\\sigma) = \\frac{1}{2} + \\frac{1}{2} \\text{erf}\\left(\\frac{\\text{logit } x - \\mu}{\\sqrt{2} \\sigma}\\right)$$"),
+                    h2(withMathJax(
+                      helpText(HTML('$$\\color{black}{\\text{where }\\text{erf}(x) = \\frac{2}{\\sqrt{\\pi}}\\int_{0}^{x} e^{-t^2}\\mathrm{d}t \\text{ is the error function}}$$'))))
+        )
       }
     }
   })
@@ -824,13 +844,15 @@ shinyServer(function(input, output) {
   output$latex <- renderUI({
     if (input$dist=='Normal'){
       tagList(h2("Moments"),
-      h3("\\mathrm{E}(X) = \\mu"),
-      h3("var(X) = \\sigma^2"),
+      h2("\\mathrm{E}(X) = \\mu"),
+      h2("var(X) = \\sigma^2"),
       h2("PDF"),
-      h3("f(x|\\mu,\\sigma) = \\frac{1}{\\sqrt{2\\pi\\sigma^2}}\\text{exp}\\left(-\\frac{(x-\\mu)^2}{2\\sigma^2}\\right)"),
+      h2("f(x|\\mu,\\sigma) = \\frac{1}{\\sqrt{2\\pi\\sigma^2}}\\text{exp}\\left(-\\frac{(x-\\mu)^2}{2\\sigma^2}\\right)"),
       h2("CDF"),
-      h3("F(x|\\mu,\\sigma) = \\frac{1}{2}\\left[1+\\text{erf}\\left(\\frac{x-\\mu}{\\sigma\\sqrt{2}}\\right)\\right]"))
-    }
+      h2("F(x|\\mu,\\sigma) = \\frac{1}{2}\\left[1+\\text{erf}\\left(\\frac{x-\\mu}{\\sigma\\sqrt{2}}\\right)\\right]"),
+      h2(withMathJax(
+        helpText(HTML('$$\\color{black}{\\text{where }\\text{erf}(x) = \\frac{2}{\\sqrt{\\pi}}\\int_{0}^{x} e^{-t^2}\\mathrm{d}t \\text{ is the error function}}$$')))))
+      }
     })
   
   output$rcode <- renderUI({
