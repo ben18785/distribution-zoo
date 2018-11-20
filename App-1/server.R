@@ -592,21 +592,29 @@ shinyServer(function(input, output) {
   output$formulae <- renderUI({
     if (input$distType=='Continuous'){
       if (input$dist=='Normal'){
-        
-        withMathJax(h2("Moments"),h2("$$\\mathrm{E}(X) = \\mu$$"),
-                    h2("$$var(X) = \\sigma^2$$"),
+        withMathJax(h2("Parameters"),
+                    h2(withMathJax(
+                      helpText(HTML('$$\\color{black}{\\text{mean: }\\mu\\in\\mathbb{R}}$$')))),
+                    h2(withMathJax(
+                      helpText(HTML('$$\\color{black}{\\text{standard deviation: }\\sigma\\in\\mathbb{R}^+}$$')))),
                     h2("Support"),
                     h2("$$x\\in\\mathbb{R}$$"),
+                    h2("Moments"),
+                    h2("$$\\mathrm{E}(X) = \\mu$$"),
+                    h2("$$var(X) = \\sigma^2$$"),
                     h2("PDF"),
                     h2("$$f(x|\\mu,\\sigma) = \\frac{1}{\\sqrt{2\\pi\\sigma^2}} 
                              \\text{exp}\\left(-\\frac{(x-\\mu)^2}{2\\sigma^2}\\right)$$"),
                     h2("CDF"),
                     h2("$$F(x|\\mu,\\sigma) = \\frac{1}{2}\\left[1+\\text{erf}\\left(\\frac{x-\\mu}{\\sigma\\sqrt{2}}\\right)\\right]$$"))
       }else if(input$dist=='Uniform'){
-        withMathJax(h2("Moments"),h2("$$\\mathrm{E}(X) = \\frac{1}{2}(a + b)$$"),
-                    h2("$$var(X) = \\frac{1}{12}(b - a)$$"),
+        withMathJax(h2("Parameters"),
+                    h2("$$-\\infty<a<b<+\\infty$$"),
                     h2("Support"),
                     h2("$$x\\in[a,b]$$"),
+                    h2("Moments"),
+                    h2("$$\\mathrm{E}(X) = \\frac{1}{2}(a + b)$$"),
+                    h2("$$var(X) = \\frac{1}{12}(b - a)$$"),
                     h2("PDF"),
                     h2(withMathJax(
                       helpText(HTML('$$\\color{black}{f(x|a,b)=\\begin{cases}
@@ -622,10 +630,16 @@ shinyServer(function(input, output) {
                                \\end{cases}\\!}$$')))
       ))
       }else if(input$dist=='LogNormal'){
-        withMathJax(h2("Moments"),h2("$$\\mathrm{E}(X) = \\text{exp}(\\mu + \\frac{\\sigma^2}{2})$$"),
-                    h2("$$var(X) = \\left[\\text{exp}(\\sigma^2) - 1\\right] \\text{exp}(2\\mu + \\sigma^2)$$"),
+        withMathJax(h2("Parameters"),
+                    h2(withMathJax(
+                      helpText(HTML('$$\\color{black}{\\text{log mean: }\\mu\\in\\mathbb{R}}$$')))),
+                    h2(withMathJax(
+                      helpText(HTML('$$\\color{black}{\\text{scale: }\\sigma\\in\\mathbb{R}^+}$$')))),
                     h2("Support"),
                     h2("$$x\\in\\mathbb{R}^+$$"),
+                    h2("Moments"),
+                    h2("$$\\mathrm{E}(X) = \\text{exp}(\\mu + \\frac{\\sigma^2}{2})$$"),
+                    h2("$$var(X) = \\left[\\text{exp}(\\sigma^2) - 1\\right] \\text{exp}(2\\mu + \\sigma^2)$$"),
                     h2("PDF"),
                     h2("$$f(x|\\mu,\\sigma) = \\frac{1}{x \\sigma \\sqrt{2 \\pi}} \\text{exp}\\left(-\\frac{(\\text{log } x - \\mu)^2}{2\\sigma^2}\\right)$$"),
                     h2("CDF"),
