@@ -645,10 +645,14 @@ shinyServer(function(input, output) {
                     h2("CDF"),
                     h2("$$F(x|\\mu,\\sigma) = \\frac{1}{2} + \\frac{1}{2} \\text{erf}\\left(\\frac{\\text{log } x - \\mu}{\\sqrt{2} \\sigma}\\right)$$"))
       }else if(input$dist=='Exponential'){
-        withMathJax(h2("Moments"),h2("$$\\mathrm{E}(X) = \\frac{1}{\\lambda}$$"),
-                    h2("$$var(X) = \\frac{1}{\\lambda^2}$$"),
+        withMathJax(h2("Parameters"),
+                    h2(withMathJax(
+                      helpText(HTML('$$\\color{black}{\\text{rate: }\\lambda\\in\\mathbb{R}^+}$$')))),
                     h2("Support"),
                     h2("$$x\\in\\mathbb{R}^+$$"),
+                    h2("Moments"),
+                    h2("$$\\mathrm{E}(X) = \\frac{1}{\\lambda}$$"),
+                    h2("$$var(X) = \\frac{1}{\\lambda^2}$$"),
                     h2("PDF"),
                     h2("$$f(x|\\lambda) = \\lambda e^{-\\lambda x}$$"),
                     h2("CDF"),
