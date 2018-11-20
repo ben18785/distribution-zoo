@@ -752,6 +752,35 @@ shinyServer(function(input, output) {
                     h2("CDF"),
                     h2("$$F(x|\\mu, \\sigma) = \\frac{1}{2} + \\frac{1}{\\pi}\\text{arctan}\\left(\\frac{x-\\mu}{\\sigma}\\right)$$")
         )
+      }else if(input$dist=='HalfCauchy'){
+        withMathJax(h2("Parameters"),
+                    h2(withMathJax(
+                      helpText(HTML('$$\\color{black}{\\text{location: }\\mu\\in\\mathbb{R}}$$')))),
+                    h2(withMathJax(
+                      helpText(HTML('$$\\color{black}{\\text{scale: }\\sigma\\in\\mathbb{R}^+}$$')))),
+                    h2("Support"),
+                    h2("$$x\\in \\mathbb{R}^+$$"),
+                    h2("Moments"),
+                    h2(withMathJax(
+                      helpText(HTML('$$\\color{black}{\\mathrm{E}(X) = \\text{ undefined}}$$')))),
+                    h2(withMathJax(
+                      helpText(HTML('$$\\color{black}{var(X) = \\text{ undefined}}$$')))),
+                    h2("PDF"),
+                    h2("$$f(x|\\mu, \\sigma) = \\begin{cases}
+                       \\frac{1}{\\pi  \\sigma  \\left(\\frac{\\text{arctan}\\left(\\frac{\\mu \
+                       }{\\sigma }\\right)}{\\pi }+\\frac{1}{2}\\right) \
+                         \\left(\\frac{(x-\\mu )^2}{\\sigma ^2}+1\\right)}, & x>0 \\\\
+                       0, & \\text{Otherwise}
+                       \\end{cases}$$"),
+                    h2("CDF"),
+                    h2("$$F(x|\\mu, \\sigma) = \\begin{cases}
+                       \\frac{\\frac{\\text{arctan}\\left(\\frac{\\mu }{\\sigma \
+                       }\\right)}{\\pi }+\\frac{\\text{arctan}\\left(\\frac{x-\\mu }{\\sigma \
+                       }\\right)}{\\pi }}{\\frac{\\text{arctan}\\left(\\frac{\\mu }{\\sigma \
+                       }\\right)}{\\pi }+\\frac{1}{2}}, & x>0 \\\\
+                       0, & \\text{Otherwise}
+                       \\end{cases}$$")
+        )
       }
     }
   })
