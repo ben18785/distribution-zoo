@@ -680,6 +680,18 @@ shinyServer(function(input, output) {
                     h2(withMathJax(
                       helpText(HTML('$$\\color{black}{\\text{where } B(w; u,v) \\text{ is the incomplete beta function and } B(u,v) \\text{ is the complete beta function}}$$'))))
         )
+      }else if(input$dist=='Beta'){
+        withMathJax(h2("Moments"),h2("$$\\mathrm{E}(X) = \\frac{\\alpha}{\\alpha + \\beta}$$"),
+                    h2("$$var(X) = \\frac{\\alpha\\beta}{(\\alpha + \\beta)^2 (\\alpha + \\beta + 1)}$$"),
+                    h2("Support"),
+                    h2("$$x\\in (0, 1)$$"),
+                    h2("PDF"),
+                    h2("$$f(x|\\alpha, \\beta) = \\frac{x^{\\alpha-1} (1-x)^{\\beta-1}}{B(\\alpha,\\beta)}$$"),
+                    h2(withMathJax(
+                      helpText(HTML('$$\\color{black}{\\text{where } B(u,v) \\text{ is the beta function}}$$')))),
+                    h2("CDF"),
+                    h2("$$F(x|\\alpha,\\beta) = I_x(\\alpha,\\beta)$$")
+        )
       }
     }
   })
