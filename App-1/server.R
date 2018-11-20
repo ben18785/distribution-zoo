@@ -781,6 +781,33 @@ shinyServer(function(input, output) {
                        0, & \\text{Otherwise}
                        \\end{cases}$$")
         )
+      }else if(input$dist=='InverseGamma'){
+        withMathJax(h2("Parameters"),
+                    h2(withMathJax(
+                      helpText(HTML('$$\\color{black}{\\text{shape: }\\alpha\\in\\mathbb{R}^+}$$')))),
+                    h2(withMathJax(
+                      helpText(HTML('$$\\color{black}{\\text{scale: }\\beta\\in\\mathbb{R}^+}$$')))),
+                    h2("Support"),
+                    h2("$$x\\in\\mathbb{R}^+$$"),
+                    h2("Moments"),
+                    h2("$$\\mathrm{E}(X) = \\begin{cases}
+                       \\frac{\\beta }{\\alpha -1}, & \\alpha >1 \\\\
+                       \\text{Indeterminate}, & \\text{Otherwise}
+                       \\end{cases}$$"),
+                    h2("$$var(X) = \\frac{\\alpha}{\\beta^2}$$"),
+                    h2("PDF"),
+                    h2("$$f(x|\\alpha, \\beta) = \\begin{cases}
+                       \\frac{e^{-\\frac{\\beta }{x}} \\left(\\frac{\\beta \
+                       }{x}\\right)^{\\alpha }}{x \\Gamma (\\alpha )}, & x>0 \\\\
+                       0, & \\text{Otherwise}
+                       \\end{cases}$$"),
+                    h2(withMathJax(
+                      helpText(HTML('$$\\color{black}{\\text{where }\\Gamma(w) \\text{ is gamma function}}$$')))),
+                    h2("CDF"),
+                    h2("$$F(x|\\alpha, \\beta) = \\frac{1}{\\Gamma(\\alpha)} \\gamma(\\alpha, \\beta x)$$"),
+                    h2(withMathJax(
+                      helpText(HTML('$$\\color{black}{\\text{where }\\gamma(w,v) \\text{ is the incomplete lower gamma function}}$$'))))
+        )
       }
     }
   })
