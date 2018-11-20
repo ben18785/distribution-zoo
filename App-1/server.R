@@ -659,11 +659,16 @@ shinyServer(function(input, output) {
                     h2("$$F(x|\\lambda) = 1 - e^{-\\lambda x}$$")
                     )
       }else if(input$dist=='Gamma'){
-        withMathJax(h2("Moments"),
-                    h2("$$\\mathrm{E}(X) = \\frac{\\alpha}{\\beta}$$"),
-                    h2("$$var(X) = \\frac{\\alpha}{\\beta^2}$$"),
+        withMathJax(h2("Parameters"),
+                    h2(withMathJax(
+                      helpText(HTML('$$\\color{black}{\\text{shape: }\\alpha\\in\\mathbb{R}^+}$$')))),
+                    h2(withMathJax(
+                      helpText(HTML('$$\\color{black}{\\text{rate: }\\beta\\in\\mathbb{R}^+}$$')))),
                     h2("Support"),
                     h2("$$x\\in\\mathbb{R}^+$$"),
+                    h2("Moments"),
+                    h2("$$\\mathrm{E}(X) = \\frac{\\alpha}{\\beta}$$"),
+                    h2("$$var(X) = \\frac{\\alpha}{\\beta^2}$$"),
                     h2("PDF"),
                     h2("$$f(x|\\alpha, \\beta) = \\frac{\\beta^\\alpha}{\\Gamma(\\alpha)} x^{\\alpha-1} e^{-\\beta x}$$"),
                     h2(withMathJax(
@@ -674,7 +679,8 @@ shinyServer(function(input, output) {
                       helpText(HTML('$$\\color{black}{\\text{where }\\gamma(w,v) \\text{ is the incomplete lower gamma function}}$$'))))
         )
       }else if(input$dist=='t'){
-        withMathJax(h2("Moments"),h2("$$\\mathrm{E}(X) = \\mu, \\text{ if }\\nu>1 \\text{ otherwise undefined}$$"),
+        withMathJax(h2("Moments"),
+                    h2("$$\\mathrm{E}(X) = \\mu, \\text{ if }\\nu>1 \\text{ otherwise undefined}$$"),
                     h2("$$var(X) = \\frac{\\nu \\sigma^2}{\\nu-2}$$"),
                     h2("Support"),
                     h2("$$x\\in\\mathbb{R}$$"),
