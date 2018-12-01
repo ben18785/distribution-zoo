@@ -3,6 +3,36 @@ library(shiny)
 setwd("C:/Users/bclamber/Desktop/distribution-viewer")
 runApp("App-1", launch.browser = T)
 
+prismDependencies <- tags$head(
+  tags$script(src = "https://cdnjs.cloudflare.com/ajax/libs/prism/1.8.4/prism.min.js"),
+  tags$link(rel = "stylesheet", type = "text/css",
+            href = "https://cdnjs.cloudflare.com/ajax/libs/prism/1.8.4/themes/prism.min.css")
+)
+prismLanguageDependencies <- function(languages) {
+  lapply(languages, function(x) {
+    tags$head(
+      tags$script(
+        src = paste0("https://cdnjs.cloudflare.com/ajax/libs/prism/1.8.4/components/prism-",
+                     x, ".min.js")
+      )
+    )
+  })
+}
+
+## format code with tags and language
+prismAddTags <- function(code, language = "r") {
+  paste0("<pre><code class = 'language-", language, "'>",
+         code, 
+         "</code></pre>")
+}
+prismCodeBlock <- function(code, language = "r") {
+  tagList(
+    HTML(prismAddTags(code, language = language)),
+    tags$script("Prism.highlightAll()")
+  )
+}
+
+
 runApp(list(
   ui = bootstrapPage(
     sliderInput("mu", "Mean", min=-30, max=30, value=0, step=0.2),
@@ -10,11 +40,77 @@ runApp(list(
   ),
   server = function(input, output) {
     output$chunk <- renderUI({ 
-      HTML(markdown::markdownToHTML(text=paste0("```{r}",
-                                                "\n dnorm(0, ", input$mu,", 2)"), 
-                                    options=c("highlight_code"))) })
+      prismCodeBlock(
+        code=paste0("dnorm(0, ", input$mu,", 2)"),
+        language="r") })
   }
 ))
+
+
+prismDependencies <- tags$head(
+  tags$script(src = "https://cdnjs.cloudflare.com/ajax/libs/prism/1.8.4/prism.min.js"),
+  tags$link(rel = "stylesheet", type = "text/css",
+            href = "https://cdnjs.cloudflare.com/ajax/libs/prism/1.8.4/themes/prism.min.css")
+)
+prismLanguageDependencies <- function(languages) {
+  lapply(languages, function(x) {
+    tags$head(
+      tags$script(
+        src = paste0("https://cdnjs.cloudflare.com/ajax/libs/prism/1.8.4/components/prism-",
+                     x, ".min.js")
+      )
+    )
+  })
+}
+
+## format code with tags and language
+prismAddTags <- function(code, language = "r") {
+  paste0("<pre><code class = 'language-", language, "'>",
+         code, 
+         "</code></pre>")
+}
+prismCodeBlock <- function(code, language = "r") {
+  tagList(
+    HTML(prismAddTags(code, language = language)),
+    tags$script("Prism.highlightAll()")
+  )
+}
+
+## run app
+library(shiny)
+runApp(list(
+  ui = bootstrapPage(
+    prismDependencies,
+    prismLanguageDependencies(c("sql", "r", "python")),
+    sliderInput("mu", "Mean", min=-30, max=30, value=0, step=0.2),
+    uiOutput('r_chunk'),
+    uiOutput('python_chunk'),
+    uiOutput('sql_chunk')
+  ),
+  server = function(input, output) {
+    output$r_chunk <- renderUI({ 
+      prismCodeBlock(
+        code = paste0("# this is R code\ndnorm(0, ", input$mu,", 2)"),
+        language = "r"
+      )
+    })
+    output$python_chunk <- renderUI({
+      prismCodeBlock(
+        code = '# this is python code
+        # Say hello, world.
+        print ("Hello, world!")',
+        language = "python"
+      )
+    })
+    output$sql_chunk <- renderUI({
+      prismCodeBlock(
+        code = "-- this is SQL code
+        SELECT * FROM mytable WHERE 1=2",
+        language = "sql"
+      )
+    })
+  }
+    ))
 
 
 n <- 10000

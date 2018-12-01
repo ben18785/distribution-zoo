@@ -123,6 +123,43 @@ fMakeFunction <- function(mainName, params, prefixparams=NULL,postfixparams=NULL
   return(lWords)
 }
 
+fMakeFunctionPaste <- function(mainName, params, prefixparams=NULL,postfixparams=NULL, import=NULL, freeform=NULL, mathematica=FALSE, julia=FALSE){
+  if(mathematica){
+    a_forward_brace <- "["
+    a_backward_brace <- "]"
+  }else{
+    a_forward_brace <- "("
+    a_backward_brace <- ")"
+  }
+  if(is.null(freeform)){
+    common_prose <- paste(sapply(params, function(x) eval(parse(text=x))), collapse=", ")
+    prefix_prose <- paste(prefixparams,  collapse = ", ")
+    postfix_prose <- paste(postfixparams,  collapse = ", ")
+    if(!is.null(prefixparams))
+      if(!is.null(postfixparams))
+        words <- paste0(mainName, a_forward_brace, prefix_prose, ", ", common_prose, ", ", postfix_prose, a_backward_brace)
+    else
+      words <- paste0(mainName, a_forward_brace, prefix_prose, ", ", common_prose, a_backward_brace)
+    else
+      if(!is.null(postfixparams))
+        if(!mathematica)
+          if(!julia)
+            words <- paste0(mainName, a_forward_brace, common_prose, ", ", postfix_prose, a_backward_brace)
+    else
+      words <- paste0(mainName, a_forward_brace, common_prose, "), ", postfix_prose, a_backward_brace)
+    else
+      words <- paste0(mainName, a_forward_brace, common_prose, "], ", postfix_prose, a_backward_brace)
+    else
+      words <- paste0(mainName, a_forward_brace, common_prose, a_backward_brace)
+    if(is.null(import))
+      lWords <- words
+    else
+      lWords <- list(import, words)
+  }else{
+    lWords <- mainName
+  }
+  return(lWords)
+}
 
 
 # Define server logic for random distribution application
@@ -859,9 +896,10 @@ shinyServer(function(input, output) {
   output$rcode <- renderUI({
     if(input$dist=="Normal"){
       if(input$property=="pdf")
-        fMakeFunction(mainName="dnorm",
+        prismCodeBlock(fMakeFunctionPaste(mainName="dnorm",
                       params=c(input$mu,input$sigma),
-                      prefixparams="x")
+                      prefixparams="x"),
+                      language = "r")
       else if(input$property=="log_pdf")
         fMakeFunction(mainName="dnorm",
                       params=c(input$mu,input$sigma),
