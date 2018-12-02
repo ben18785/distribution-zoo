@@ -16,19 +16,6 @@ prismLanguageDependencies <- function(languages) {
   })
 }
 
-## format code with tags and language
-prismAddTags <- function(code, language = "r") {
-  paste0("<pre><code class = 'language-", language, "'>",
-         code, 
-         "</code></pre>")
-}
-prismCodeBlock <- function(code, language = "r") {
-  tagList(
-    HTML(prismAddTags(code, language = language)),
-    tags$script("Prism.highlightAll()")
-  )
-}
-
 
 # Define UI for random distribution application 
 shinyUI(fluidPage(

@@ -14,13 +14,25 @@ library(DirichletReg)
 library(scatterplot3d)
 library(markdown)
 
+## format code with tags and language
+prismAddTags <- function(code, language = "r") {
+  paste0("<pre><code class = 'language-", language, "'>",
+         code, 
+         "</code></pre>")
+}
+prismCodeBlock <- function(code, language = "r") {
+  tagList(
+    HTML(prismAddTags(code, language = language)),
+    tags$script("Prism.highlightAll()")
+  )
+}
+
 fMarkdownMaker <- function(mu){
   code <- paste0("```{r}", "dnorm(x, ", "mu", ", 1) ```")
   fileConn<-file("test-markdown.md")
   writeLines(code, fileConn)
   close(fileConn)
 }
-
 
 dCustomInverseChiSquared <- function(x,df){
   return(ifelse(x>0,dinvchisq(x,df),0))
