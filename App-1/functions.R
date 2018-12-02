@@ -156,3 +156,66 @@ fMakeFunctionPaste <- function(mainName, params, prefixparams=NULL,postfixparams
   }
   return(lWords)
 }
+
+
+fCalculateMeanFull <- function(input){
+  lExtra <- if (input$distType=='Continuous'){
+    switch(input$dist,
+           Normal=input$mu,
+           Uniform = 0.5 * (input$a + input$b),
+           LogNormal = exp(input$meanlog+0.5*input$sdlog^2),
+           Exponential = 1/input$rate,
+           Gamma= input$shape / input$rateGam,
+           t = ifelse(input$nuT>1,input$muT,NA),
+           Beta=input$alpha/(input$alpha+input$beta),
+           Cauchy=NA,
+           HalfCauchy=NA,
+           InverseGamma=ifelse(input$shapeIG>1,input$scaleIG/(input$shapeIG-1),NA),
+           InverseChiSquared=ifelse(input$dfIC>2,1/(input$dfIC-2),NA),
+           LogitNormal=integrate(function(x) x * (1/(input$sigmaLogitN * sqrt(2 * pi))) * (1/(x * (1 - x))) * exp(- (log(x/(1-x)) - input$muLogitN)^2 / (2 * input$sigmaLogitN^2)),0,1)[[1]],
+           1)
+  } else if (input$distType=='Discrete'){
+    switch(input$dist1,
+           Bernoulli=input$probBer,
+           Binomial=input$sizeBin * input$probBin,
+           Poisson=input$lambdaPois,
+           NegativeBinomial=input$meanNB,
+           BetaBinomial=input$sizeBetaBin * input$shapeBetaBin1 / (input$shapeBetaBin1 + input$shapeBetaBin2),
+           paste("mean=1,sd=1")
+    )
+  }
+}
+
+fCalculateVarianceFull <- function(input){
+  if(input$distType=='Continuous'){
+    aMeanLogitNormal <- integrate(function(x) x * (1/(input$sigmaLogitN * sqrt(2 * pi))) * (1/(x * (1 - x))) * exp(- (log(x/(1-x)) - input$muLogitN)^2 / (2 * input$sigmaLogitN^2)),0,1)[[1]]
+    a2LogitNormal <- integrate(function(x) x^2 * (1/(input$sigmaLogitN * sqrt(2 * pi))) * (1/(x * (1 - x))) * exp(- (log(x/(1-x)) - input$muLogitN)^2 / (2 * input$sigmaLogitN^2)),0,1)[[1]]
+    aVar <- switch(input$dist,
+                   Normal=input$sigma^2,
+                   Uniform = (1/12) * (input$b - input$a)^2,
+                   LogNormal = exp(input$sdlog^2 - 1) * exp(2 * input$meanlog + input$sdlog^2),
+                   Exponential = 1/input$rate^2,
+                   Gamma= input$shape / input$rateGam^2,
+                   t = ifelse(input$nuT > 2,
+                              input$nuT / (input$nuT - 2), NA),
+                   Beta=(input$alpha * input$beta) / ((input$alpha+input$beta)^2 * (input$alpha+input$beta + 1)),
+                   Cauchy=NA,
+                   HalfCauchy=NA,
+                   InverseGamma=ifelse(input$shapeIG > 2,
+                                       input$scaleIG/((input$shapeIG-1)^2 * (input$shapeIG-2)),NA),
+                   InverseChiSquared=ifelse(input$dfIC > 4,
+                                            2 / ((input$dfIC-2)^2 * (input$dfIC-4)),NA),
+                   LogitNormal=a2LogitNormal-aMeanLogitNormal^2,
+                   1)
+  }else if (input$distType=='Discrete'){
+    aVar <- switch(input$dist1,
+                   Bernoulli=input$probBer * (1 - input$probBer),
+                   Binomial=input$sizeBin * input$probBin * (1 - input$probBer),
+                   Poisson=input$lambdaPois,
+                   NegativeBinomial=input$meanNB + (input$meanNB^2 / input$dispersionNB),
+                   BetaBinomial=input$sizeBetaBin * input$shapeBetaBin1 * input$shapeBetaBin2 *(input$shapeBetaBin1 + input$shapeBetaBin2 + input$sizeBetaBin) / ((input$shapeBetaBin1 + input$shapeBetaBin2)^2 * (input$shapeBetaBin1 + input$shapeBetaBin2 + 1))
+    )
+  }
+  
+  return(aVar)
+}

@@ -16,6 +16,7 @@ library(markdown)
 
 source("functions.R")
 source("formulae.R")
+source("formulae.R")
 
 # Define server logic for random distribution application
 shinyServer(function(input, output) {
@@ -145,65 +146,12 @@ shinyServer(function(input, output) {
   })
   
   fCalculateMean <- reactive({
+    lExtra <- fCalculateMeanFull(input)
     
-    lExtra <- if (input$distType=='Continuous'){
-        switch(input$dist,
-           Normal=input$mu,
-           Uniform = 0.5 * (input$a + input$b),
-           LogNormal = exp(input$meanlog+0.5*input$sdlog^2),
-           Exponential = 1/input$rate,
-           Gamma= input$shape / input$rateGam,
-           t = ifelse(input$nuT>1,input$muT,NA),
-           Beta=input$alpha/(input$alpha+input$beta),
-           Cauchy=NA,
-           HalfCauchy=NA,
-           InverseGamma=ifelse(input$shapeIG>1,input$scaleIG/(input$shapeIG-1),NA),
-           InverseChiSquared=ifelse(input$dfIC>2,1/(input$dfIC-2),NA),
-           LogitNormal=integrate(function(x) x * (1/(input$sigmaLogitN * sqrt(2 * pi))) * (1/(x * (1 - x))) * exp(- (log(x/(1-x)) - input$muLogitN)^2 / (2 * input$sigmaLogitN^2)),0,1)[[1]],
-           1)
-    } else if (input$distType=='Discrete'){
-      switch(input$dist1,
-             Bernoulli=input$probBer,
-             Binomial=input$sizeBin * input$probBin,
-             Poisson=input$lambdaPois,
-             NegativeBinomial=input$meanNB,
-             BetaBinomial=input$sizeBetaBin * input$shapeBetaBin1 / (input$shapeBetaBin1 + input$shapeBetaBin2),
-             paste("mean=1,sd=1")
-             )
-    }
   })
   
   fCalculateVariance <- reactive({
-    if(input$distType=='Continuous'){
-      aMeanLogitNormal <- integrate(function(x) x * (1/(input$sigmaLogitN * sqrt(2 * pi))) * (1/(x * (1 - x))) * exp(- (log(x/(1-x)) - input$muLogitN)^2 / (2 * input$sigmaLogitN^2)),0,1)[[1]]
-      a2LogitNormal <- integrate(function(x) x^2 * (1/(input$sigmaLogitN * sqrt(2 * pi))) * (1/(x * (1 - x))) * exp(- (log(x/(1-x)) - input$muLogitN)^2 / (2 * input$sigmaLogitN^2)),0,1)[[1]]
-    aVar <- switch(input$dist,
-             Normal=input$sigma^2,
-             Uniform = (1/12) * (input$b - input$a)^2,
-             LogNormal = exp(input$sdlog^2 - 1) * exp(2 * input$meanlog + input$sdlog^2),
-             Exponential = 1/input$rate^2,
-             Gamma= input$shape / input$rateGam^2,
-             t = ifelse(input$nuT > 2,
-                        input$nuT / (input$nuT - 2), NA),
-             Beta=(input$alpha * input$beta) / ((input$alpha+input$beta)^2 * (input$alpha+input$beta + 1)),
-             Cauchy=NA,
-             HalfCauchy=NA,
-             InverseGamma=ifelse(input$shapeIG > 2,
-                                 input$scaleIG/((input$shapeIG-1)^2 * (input$shapeIG-2)),NA),
-             InverseChiSquared=ifelse(input$dfIC > 4,
-                                      2 / ((input$dfIC-2)^2 * (input$dfIC-4)),NA),
-             LogitNormal=a2LogitNormal-aMeanLogitNormal^2,
-              1)
-    }else if (input$distType=='Discrete'){
-    aVar <- switch(input$dist1,
-                   Bernoulli=input$probBer * (1 - input$probBer),
-                   Binomial=input$sizeBin * input$probBin * (1 - input$probBer),
-                   Poisson=input$lambdaPois,
-                   NegativeBinomial=input$meanNB + (input$meanNB^2 / input$dispersionNB),
-                   BetaBinomial=input$sizeBetaBin * input$shapeBetaBin1 * input$shapeBetaBin2 *(input$shapeBetaBin1 + input$shapeBetaBin2 + input$sizeBetaBin) / ((input$shapeBetaBin1 + input$shapeBetaBin2)^2 * (input$shapeBetaBin1 + input$shapeBetaBin2 + 1))
-                   )
-    }
-    
+    aVar <- fCalculateVarianceFull(input)
     return(aVar)
   })
   # Generate a plot of the data. Also uses the inputs to build
@@ -390,95 +338,6 @@ shinyServer(function(input, output) {
   
   output$plotCDF <- renderPlot({
     
-    aDist <- dataCDF()
-    aMean <- fCalculateMean()
-    if (input$distType=='Continuous'){
-      aVar <- fCalculateVariance()
-    lScale <- fScale()
-    aLen <- length(lScale)
-    lExtra <- fExtraFunctionInputs()
-    
-    lPDF <- unlist(lapply(lScale, function(x) eval(parse(text=paste("aDist(x,",lExtra,")")))))
-    qplot(lScale,lPDF,geom="path",
-          xlab="X",ylab="cumulative probability",
-          xlim=c(lScale[1],lScale[aLen]))+
-      geom_line(color='darkblue',size=1) +
-      geom_vline(xintercept=aMean,
-                            colour="orange",
-                            linetype = "longdash",
-                            size=1) +
-      theme_classic() +
-      theme(plot.title = element_text(hjust = 0.5, size = 18),
-            axis.text = element_text(size=14),
-            axis.title = element_text(size=16)) +
-      ylim(0, NA) +
-      ggtitle(paste0("mean = ", round(aMean, 2), ", var = ", round(aVar, 2)))
-
-    } else if (input$distType=='Discrete'){
-      aVar <- fCalculateVariance()
-      lExtra <- fExtra1FunctionInputs()
-      lScale <- fScale1()
-      aLen <- length(lScale)
-      lPMF <- unlist(lapply(lScale, function(x) eval(parse(text=paste("aDist(x,",lExtra,")")))))
-      dataF <- data.frame(a=lScale,pmf=lPMF)
-      ggplot(data=dataF, aes(x=factor(a), y=pmf)) +
-        geom_bar(stat="identity", position=position_dodge(),fill="darkblue", colour="black") + xlab('X')+ 
-        geom_vline(xintercept=(1+aMean),
-                   colour="orange",
-                   linetype = "longdash",
-                   size=1) +
-        theme_classic() +
-        theme(plot.title = element_text(hjust = 0.5, size = 18),
-              axis.text = element_text(size=14),
-              axis.title = element_text(size=16)) +
-        ylim(0, NA) +
-        ylab('cumulate probability') +
-        ggtitle(paste0("mean = ", round(aMean, 2), ", var = ", round(aVar, 2)))
-    }else if (input$dist2=='MultivariateNormal'){
-      lMean <- c(input$meanXN,input$meanYN)
-      lSigma <- matrix(c(input$sigmaXN^2,input$sigmaXN * input$sigmaYN * input$rhoxyN,
-                         input$sigmaXN * input$sigmaYN * input$rhoxyN, input$sigmaYN^2),
-                       nrow = 2,ncol = 2)
-      lScale <- fScaleMVR()
-      aLen <- length(lScale)
-      x.points <- lScale
-      y.points <- x.points
-      z <- matrix(0,nrow=aLen,ncol=aLen)
-      for (i in 1:aLen) {
-        for (j in 1:aLen) {
-          z[i,j] <- pmvnorm(lower=c(-Inf,-Inf),upper=c(x.points[i],y.points[j]),
-                            mean=lMean,sigma=lSigma)
-        }
-      }
-      dataF <- melt(z)
-      dataF$X1<-rep(x.points,aLen)
-      dataF$X2 <- unlist(lapply(x.points,function(x) rep(x,aLen)))
-      names(dataF) <- c("x", "y", "cdf")
-      ggplot(dataF, aes(x, y, z = cdf))+ geom_tile(aes(fill = cdf)) + stat_contour()+
-        xlim(c(-input$rangeN,input$rangeN)) + ylim(c(-input$rangeN,input$rangeN)) 
-    }else if (input$dist2=='MultivariateT'){
-      lMean <- c(input$meanXT,input$meanYT)
-      lSigma <- matrix(c(input$sigmaXT^2,input$sigmaXT * input$sigmaYT * input$rhoxyT,
-                         input$sigmaXT * input$sigmaYT * input$rhoxyT, input$sigmaYT^2),
-                       nrow = 2,ncol = 2)
-      lScale <- fScaleMVR()
-      aLen <- length(lScale)
-      x.points <- lScale
-      y.points <- x.points
-      z <- matrix(0,nrow=aLen,ncol=aLen)
-      for (i in 1:aLen) {
-        for (j in 1:aLen) {
-          z[i,j] <- mvtnorm::pmvt(lower=c(-Inf,-Inf),upper=c(x.points[i],y.points[j]),
-                                  delta=lMean,sigma=lSigma,df=input$dfMVT)
-        }
-      }
-      dataF <- melt(z)
-      dataF$X1<-rep(x.points,aLen)
-      dataF$X2 <- unlist(lapply(x.points,function(x) rep(x,aLen)))
-      names(dataF) <- c("x", "y", "cdf")
-      ggplot(dataF, aes(x, y, z = cdf))+ geom_tile(aes(fill = cdf)) + stat_contour()+
-        xlim(c(-input$rangeN,input$rangeN)) + ylim(c(-input$rangeN,input$rangeN)) 
-    }
   })
   
   output$formulae <- renderUI({
