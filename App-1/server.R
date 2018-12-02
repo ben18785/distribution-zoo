@@ -16,7 +16,7 @@ library(markdown)
 
 source("functions.R")
 source("formulae.R")
-source("formulae.R")
+source("CDF.R")
 
 # Define server logic for random distribution application
 shinyServer(function(input, output) {
@@ -337,7 +337,26 @@ shinyServer(function(input, output) {
   })
   
   output$plotCDF <- renderPlot({
-    
+    aDist <- dataCDF()
+    aMean <- fCalculateMean()
+    if (input$distType=='Continuous'){
+      aVar <- fCalculateVariance()
+      lScale <- fScale()
+      lExtra <- fExtraFunctionInputs()
+    }else if(input$distType=='Discrete'){
+      lExtra <- fExtra1FunctionInputs()
+      aVar <- fCalculateVariance()
+      lScale <- fScale1()
+    }else if (input$dist2=='MultivariateNormal'){
+      lScale <- fScaleMVR()
+      lExtra <- vector()
+      aVar <- -99
+    }else if (input$dist2=='MultivariateT'){
+      lScale <- fScaleMVR()
+      lExtra <- vector()
+      aVar <- -99
+    }
+    fPlotCDF(input, aDist, aMean, aVar, lScale, lExtra)
   })
   
   output$formulae <- renderUI({
