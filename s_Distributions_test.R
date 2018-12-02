@@ -3,35 +3,6 @@ library(shiny)
 setwd("C:/Users/bclamber/Desktop/distribution-viewer")
 runApp("App-1", launch.browser = T)
 
-prismDependencies <- tags$head(
-  tags$script(src = "https://cdnjs.cloudflare.com/ajax/libs/prism/1.8.4/prism.min.js"),
-  tags$link(rel = "stylesheet", type = "text/css",
-            href = "https://cdnjs.cloudflare.com/ajax/libs/prism/1.8.4/themes/prism.min.css")
-)
-prismLanguageDependencies <- function(languages) {
-  lapply(languages, function(x) {
-    tags$head(
-      tags$script(
-        src = paste0("https://cdnjs.cloudflare.com/ajax/libs/prism/1.8.4/components/prism-",
-                     x, ".min.js")
-      )
-    )
-  })
-}
-
-## format code with tags and language
-prismAddTags <- function(code, language = "r") {
-  paste0("<pre><code class = 'language-", language, "'>",
-         code, 
-         "</code></pre>")
-}
-prismCodeBlock <- function(code, language = "r") {
-  tagList(
-    HTML(prismAddTags(code, language = language)),
-    tags$script("Prism.highlightAll()")
-  )
-}
-
 
 runApp(list(
   ui = bootstrapPage(
