@@ -18,6 +18,8 @@ source("functions.R")
 source("formulae.R")
 source("CDF.R")
 source("PDF.R")
+source("latex.R")
+source("r_code.R")
 
 # Define server logic for random distribution application
 shinyServer(function(input, output) {
@@ -213,39 +215,11 @@ shinyServer(function(input, output) {
   })
   
   output$latex <- renderUI({
-    if (input$dist=='Normal'){
-      tagList(h2("Moments"),
-      h2("\\mathrm{E}(X) = \\mu"),
-      h2("var(X) = \\sigma^2"),
-      h2("PDF"),
-      h2("f(x|\\mu,\\sigma) = \\frac{1}{\\sqrt{2\\pi\\sigma^2}}\\text{exp}\\left(-\\frac{(x-\\mu)^2}{2\\sigma^2}\\right)"),
-      h2("CDF"),
-      h2("F(x|\\mu,\\sigma) = \\frac{1}{2}\\left[1+\\text{erf}\\left(\\frac{x-\\mu}{\\sigma\\sqrt{2}}\\right)\\right]")
-      )
-      }
+    fLatex(input)
     })
   
   output$rcode <- renderUI({
-    if(input$dist=="Normal"){
-      if(input$property=="pdf")
-        prismCodeBlock(fMakeFunctionPaste(mainName="dnorm",
-                      params=c(input$mu,input$sigma),
-                      prefixparams="x"),
-                      language = "r")
-      else if(input$property=="log_pdf")
-        fMakeFunction(mainName="dnorm",
-                      params=c(input$mu,input$sigma),
-                      prefixparams="x",
-                      postfixparams="log=TRUE")
-      else if(input$property=="random")
-        fMakeFunction(mainName="rnorm",
-                      params=c(input$mu,input$sigma),
-                      prefixparams="n")
-    }else if(input$dist=="Uniform"){
-      if(input$property=="pdf")
-        HTML(markdown::markdownToHTML(text="```{r}
-                                      dnorm(0, 1, 2)", options=c("highlight_code")))
-    }
+    fRcode(input)
   })
   
   output$pythoncode <- renderUI({
