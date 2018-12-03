@@ -1,8 +1,8 @@
 fCpluspluscode <- function(input){
-  
+  text <- 
   if(input$dist=="Normal"){
     if(input$property=="pdf")
-      text <- paste("#include &lt;math&gt",
+      paste("#include &lt;math&gt",
               paste("double normal_pdf(int n, double mu, double sigma)",
                            "{",
                            paste0("return 1.0 / (std::sqrt(2.0 * M_PI) * ",
@@ -15,7 +15,7 @@ fCpluspluscode <- function(input){
                            sep="\n"),
               sep="\n")
     else if(input$property=="log_pdf")
-      text <- paste("#include &lt;math&gt",
+      paste("#include &lt;math&gt",
                 paste("double normal_lpdf(int n, double mu, double sigma)",
                            "{",
                            paste0("return -0.5 * log(2 * M_PI) - log(",
@@ -27,7 +27,7 @@ fCpluspluscode <- function(input){
                            "}",
                            sep="\n"), sep="\n")
     else if(input$property=="random")
-      text <- paste("#include &lt;random&gt;",
+      paste("#include &lt;random&gt;",
                            "#include &lt;vector&gt",
                            "#include &lt;math&gt",
                            "#include &lt;chrono&gt;",
