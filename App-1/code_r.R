@@ -1,20 +1,23 @@
 
+fPrismR <- function(text){
+  return(prismCodeBlock(text, language = "r"))
+}
+
 fRcode <- function(input){
   if(input$dist=="Normal"){
     if(input$property=="pdf")
-      prismCodeBlock(fMakeFunctionPaste(mainName="dnorm",
+      fPrismR(fMakeFunctionPaste(mainName="dnorm",
                                         params=c(input$mu,input$sigma),
-                                        prefixparams="x"),
-                     language = "r")
+                                        prefixparams="x"))
     else if(input$property=="log_pdf")
-      fMakeFunction(mainName="dnorm",
+      fPrismR(fMakeFunction(mainName="dnorm",
                     params=c(input$mu,input$sigma),
                     prefixparams="x",
-                    postfixparams="log=TRUE")
+                    postfixparams="log=TRUE"))
     else if(input$property=="random")
-      fMakeFunction(mainName="rnorm",
+      fPrismR(fMakeFunction(mainName="rnorm",
                     params=c(input$mu,input$sigma),
-                    prefixparams="n")
+                    prefixparams="n"))
   }else if(input$dist=="Uniform"){
     if(input$property=="pdf")
       HTML(markdown::markdownToHTML(text="```{r}

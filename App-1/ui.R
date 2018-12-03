@@ -23,7 +23,7 @@ shinyUI(fluidPage(
   # Application title
   titlePanel("Distribution explorer"),
   prismDependencies,
-  prismLanguageDependencies(c("sql", "r", "python")),
+  prismLanguageDependencies(c("sql", "r", "python", "latex")),
   
   # Sidebar with controls to select the random distribution type
   # and number of observations to generate. Note the use of the
