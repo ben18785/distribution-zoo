@@ -201,16 +201,32 @@ shinyServer(function(input, output) {
   output$cpluspluscode <- renderUI({
     fCpluspluscode(input)
   })
+  
+  output$stancode <- renderUI({
+  })
+  
+  output$BUGScode <- renderUI({
+  })
 
+  output$JAGScode <- renderUI({
+  })
+  
+  output$ccode <- renderUI({
+  })
   
   output$language <- renderUI({
      selectInput("language", "Language",
-                 c("R"="R",
-                  "Python"="Python",
-                  "Matlab"="Matlab",
-                  "Mathematica"="Mathematica",
-                  "Julia"="Julia",
-                  "C++"="Cplusplus"),
+                 c("BUGS"="BUGS",
+                   "C++"="Cplusplus",
+                   "C"="C",
+                   "JAGS"="JAGS",
+                   "Julia"="Julia",
+                   "Mathematica"="Mathematica",
+                   "Matlab"="Matlab",
+                   "Python"="Python",
+                   "R"="R",
+                   "Stan"="Stan"
+                  ),
                  selected="R")
   })
   
@@ -232,7 +248,11 @@ shinyServer(function(input, output) {
              Matlab=uiOutput("matlabcode"),
              Mathematica=uiOutput("mathematicacode"),
              Julia=uiOutput("juliacode"),
-             Cplusplus=uiOutput("cpluspluscode"))
+             C=uiOutput("ccode"),
+             Cplusplus=uiOutput("cpluspluscode"),
+             Stan=uiOutput("stancode"),
+             BUGS=uiOutput("BUGScode"),
+             JAGS=uiOutput("JAGScode"))
     }
   })
   
