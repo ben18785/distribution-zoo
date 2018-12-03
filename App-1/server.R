@@ -214,11 +214,15 @@ shinyServer(function(input, output) {
   output$ccode <- renderUI({
   })
   
+  output$fortrancode <- renderUI({
+  })
+  
   output$language <- renderUI({
      selectInput("language", "Language",
                  c("BUGS"="BUGS",
                    "C++"="Cplusplus",
                    "C"="C",
+                   "Fortran"="Fortran",
                    "JAGS"="JAGS",
                    "Julia"="Julia",
                    "Mathematica"="Mathematica",
@@ -246,6 +250,7 @@ shinyServer(function(input, output) {
              R=uiOutput("rcode"),
              Python=uiOutput("pythoncode"),
              Matlab=uiOutput("matlabcode"),
+             Fortran=uiOutput("fortrancode"),
              Mathematica=uiOutput("mathematicacode"),
              Julia=uiOutput("juliacode"),
              C=uiOutput("ccode"),
