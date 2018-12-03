@@ -150,7 +150,7 @@ fMakeFunctionPaste <- function(mainName, params, prefixparams=NULL,postfixparams
     if(is.null(import))
       lWords <- words
     else
-      lWords <- list(import, words)
+      lWords <- paste(import, words, sep="\n")
   }else{
     lWords <- mainName
   }

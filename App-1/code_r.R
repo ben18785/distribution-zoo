@@ -10,12 +10,12 @@ fRcode <- function(input){
                                         params=c(input$mu,input$sigma),
                                         prefixparams="x"))
     else if(input$property=="log_pdf")
-      fPrismR(fMakeFunction(mainName="dnorm",
+      fPrismR(fMakeFunctionPaste(mainName="dnorm",
                     params=c(input$mu,input$sigma),
                     prefixparams="x",
                     postfixparams="log=TRUE"))
     else if(input$property=="random")
-      fPrismR(fMakeFunction(mainName="rnorm",
+      fPrismR(fMakeFunctionPaste(mainName="rnorm",
                     params=c(input$mu,input$sigma),
                     prefixparams="n"))
   }else if(input$dist=="Uniform"){
