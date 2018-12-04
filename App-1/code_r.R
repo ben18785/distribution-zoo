@@ -16,9 +16,19 @@ fRcode <- function(input){
                       params=c(input$mu,input$sigma),
                       prefixparams="n")
     }else if(input$dist=="Uniform"){
-      if(input$property=="pdf")
-        HTML(markdown::markdownToHTML(text="```{r}
-                                      dnorm(0, 1, 2)", options=c("highlight_code")))
+        if(input$property=="pdf")
+          fMakeFunctionPaste(mainName="dunif",
+                             params=c(input$a,input$b),
+                             prefixparams="x")
+        else if(input$property=="log_pdf")
+          fMakeFunctionPaste(mainName="dunif",
+                           params=c(input$a,input$b),
+                           prefixparams="x",
+                           postfixparams="log=TRUE")
+      else if(input$property=="random")
+        fMakeFunctionPaste(mainName="runif",
+                           params=c(input$a,input$b),
+                           prefixparams="n")
     }
   return(prismCodeBlock(text, language = "r"))
 }
