@@ -27,7 +27,10 @@ pCustomInverseChiSquared <- function(x,df){
 }
 
 dCustomHalfCauchy <- function(x,location,scale){
-  return(dcauchy(x,location,scale))
+  if(x >= 0)
+    return(1.0 / (pi * (1 + ((x-location)/scale)^2) * scale * (0.5 + atan(location / scale) / pi)))
+  else
+    return(0.0)
 }
 
 pCustomHalfCauchy <- function(x,location,scale){
