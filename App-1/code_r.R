@@ -16,19 +16,26 @@ fRHelper <- function(mainName, params, input, import=NULL){
 
 fRcode <- function(input){
   text <-
-    switch(input$dist,
-           Normal=fRHelper("norm", c(input$mu, input$sigma), input),
-           Uniform=fRHelper("unif", c(input$a, input$b), input),
-           LogNormal=fRHelper("lnorm", c(input$meanlog,input$sdlog), input),
-           Exponential=fRHelper("exp", input$rate, input),
-           Gamma=fRHelper("gamma", c(input$shape, input$rateGam), input),
-           t=fRHelper("st", c(input$muT,input$sigmaT, input$nuT), input, import="library(LaplacesDemon)"),
-           Beta=fRHelper("beta", c(input$alpha,input$beta), input),
-           Cauchy=fRHelper("cauchy", c(input$locationC,input$scaleC), input),
-           HalfCauchy=fRHelper("halfcauchy", c(input$locationHC,input$scaleHC), input, import="library(LaplacesDemon)"),
-           InverseGamma=fRHelper("invgamma", c(input$shapeIG, 1.0 / input$scaleIG), input, import="library(actuar)"),
-           InverseChiSquared=fRHelper("invchisq", input$dfIC, input, import="library(LaplacesDemon)"),
-           LogitNormal=fRHelper("logitnorm", c(input$muLogitN, input$sigmaLogitN), input, import="library(logitnorm)"))
+    if(input$distType=='Continuous'){
+      switch(input$dist,
+             Normal=fRHelper("norm", c(input$mu, input$sigma), input),
+             Uniform=fRHelper("unif", c(input$a, input$b), input),
+             LogNormal=fRHelper("lnorm", c(input$meanlog,input$sdlog), input),
+             Exponential=fRHelper("exp", input$rate, input),
+             Gamma=fRHelper("gamma", c(input$shape, input$rateGam), input),
+             t=fRHelper("st", c(input$muT,input$sigmaT, input$nuT), input, import="library(LaplacesDemon)"),
+             Beta=fRHelper("beta", c(input$alpha,input$beta), input),
+             Cauchy=fRHelper("cauchy", c(input$locationC,input$scaleC), input),
+             HalfCauchy=fRHelper("halfcauchy", c(input$locationHC,input$scaleHC), input, import="library(LaplacesDemon)"),
+             InverseGamma=fRHelper("invgamma", c(input$shapeIG, 1.0 / input$scaleIG), input, import="library(actuar)"),
+             InverseChiSquared=fRHelper("invchisq", input$dfIC, input, import="library(LaplacesDemon)"),
+             LogitNormal=fRHelper("logitnorm", c(input$muLogitN, input$sigmaLogitN), input, import="library(logitnorm)"))
+    }else if(input$distType=='Discrete'){
+      switch(input$dist1,
+             Bernoulli=fRHelper("binom", c(1, input$probBer), input),
+             Binomial=fRHelper("binom", c(1, input$probBer), input),
+             )
+    }
            
   
   return(prismCodeBlock(text, language = "r"))
