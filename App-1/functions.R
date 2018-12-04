@@ -81,44 +81,6 @@ rcoronion<-function(d,eta=1){
   rr
 }
 
-fMakeFunction <- function(mainName, params, prefixparams=NULL,postfixparams=NULL, import=NULL, freeform=NULL, mathematica=FALSE, julia=FALSE){
-  if(mathematica){
-    a_forward_brace <- "["
-    a_backward_brace <- "]"
-  }else{
-    a_forward_brace <- "("
-    a_backward_brace <- ")"
-  }
-  if(is.null(freeform)){
-    common_prose <- paste(sapply(params, function(x) eval(parse(text=x))), collapse=", ")
-    prefix_prose <- paste(prefixparams,  collapse = ", ")
-    postfix_prose <- paste(postfixparams,  collapse = ", ")
-    if(!is.null(prefixparams))
-      if(!is.null(postfixparams))
-        words <- paste0(mainName, a_forward_brace, prefix_prose, ", ", common_prose, ", ", postfix_prose, a_backward_brace)
-    else
-      words <- paste0(mainName, a_forward_brace, prefix_prose, ", ", common_prose, a_backward_brace)
-    else
-      if(!is.null(postfixparams))
-        if(!mathematica)
-          if(!julia)
-            words <- paste0(mainName, a_forward_brace, common_prose, ", ", postfix_prose, a_backward_brace)
-    else
-      words <- paste0(mainName, a_forward_brace, common_prose, "), ", postfix_prose, a_backward_brace)
-    else
-      words <- paste0(mainName, a_forward_brace, common_prose, "], ", postfix_prose, a_backward_brace)
-    else
-      words <- paste0(mainName, a_forward_brace, common_prose, a_backward_brace)
-    if(is.null(import))
-      lWords <- h3(words, style="color:#d95f02")
-    else
-      lWords <- list(h3(import, style="color:#d95f02"), h3(words, style="color:#d95f02"))
-  }else{
-    lWords <- h3(mainName, style="color:#d95f02")
-  }
-  return(lWords)
-}
-
 fMakeFunctionPaste <- function(mainName, params, prefixparams=NULL,postfixparams=NULL, import=NULL, freeform=NULL, mathematica=FALSE, julia=FALSE){
   if(mathematica){
     a_forward_brace <- "["
