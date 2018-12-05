@@ -17,8 +17,8 @@ changeName rateGam gamma_rate
 changeName muT t_mu
 changeName sigmaT t_sigma
 changeName nuT t_nu
-changeName alpha beta_a
 changeName beta beta_b
+changeName alpha beta_a
 changeName locationC cauchy_location
 changeName scaleC cauchy_scale
 changeName locationHC halfcauchy_location
