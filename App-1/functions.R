@@ -153,8 +153,10 @@ fCalculateMeanFull <- function(input){
 
 fCalculateVarianceFull <- function(input){
   if(input$distType=='Continuous'){
-    aMeanLogitNormal <- integrate(function(x) x * (1/(input$sigmaLogitN * sqrt(2 * pi))) * (1/(x * (1 - x))) * exp(- (log(x/(1-x)) - input$muLogitN)^2 / (2 * input$sigmaLogitN^2)),0,1)[[1]]
-    a2LogitNormal <- integrate(function(x) x^2 * (1/(input$sigmaLogitN * sqrt(2 * pi))) * (1/(x * (1 - x))) * exp(- (log(x/(1-x)) - input$muLogitN)^2 / (2 * input$sigmaLogitN^2)),0,1)[[1]]
+    if(input$dist=='LogitNormal'){
+      aMeanLogitNormal <- integrate(function(x) x * (1/(input$sigmaLogitN * sqrt(2 * pi))) * (1/(x * (1 - x))) * exp(- (log(x/(1-x)) - input$muLogitN)^2 / (2 * input$sigmaLogitN^2)),0,1)[[1]]
+      a2LogitNormal <- integrate(function(x) x^2 * (1/(input$sigmaLogitN * sqrt(2 * pi))) * (1/(x * (1 - x))) * exp(- (log(x/(1-x)) - input$muLogitN)^2 / (2 * input$sigmaLogitN^2)),0,1)[[1]]
+    }
     aVar <- switch(input$dist,
                    Normal=input$sigma^2,
                    Uniform = (1/12) * (input$b - input$a)^2,
