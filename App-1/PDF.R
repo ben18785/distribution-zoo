@@ -91,7 +91,8 @@ fPlotPDF <- function(input, aDist, aMean, aVar, lScale, lExtra){
       geom_raster(aes(fill=pdf),interpolate = TRUE) +
       scale_fill_distiller("density", palette = "Spectral") +
       geom_contour(colour = "white") +
-      xlim(c(-input$multivariatenormal_range,input$multivariatenormal_range)) + ylim(c(-input$multivariatenormal_range,input$multivariatenormal_range)) +
+      xlim(c(-input$multivariatet_range,input$multivariatet_range)) +
+      ylim(c(-input$multivariatet_range,input$multivariatet_range)) +
       theme_classic() +
       theme(plot.title = element_text(hjust = 0.5, size = 18),
             axis.text = element_text(size=14),

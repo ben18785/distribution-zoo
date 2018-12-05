@@ -136,7 +136,7 @@ shinyUI(fluidPage(
                        sliderInput("multivariatet_sigmay", "Sigma y", min=0, max=5, value=1, step=0.2),
                        sliderInput("multivariatet_rho", "Correlation component", min=-1, max=1, value=0,step=0.2),
                        sliderInput("multivariatet_df", "Degrees of freedom", min=0, max=50, value=10,step=0.2),
-                       sliderInput("multivariatenormal_range", "Range of plot", min=0, max=100, value=10)),
+                       sliderInput("multivariatet_range", "Range of plot", min=0, max=100, value=10)),
       conditionalPanel(condition="input.distType=='Multivariate'&&input.dist2=='Wishart'",
                        sliderInput("wishart_dimension", "Dimensions", min=4, max=20, value=4),
                        sliderInput("wishart_df", "Degrees of freedom", min=4, max=100, value=8, step=0.2),
