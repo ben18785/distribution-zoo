@@ -33,7 +33,9 @@ fRcode <- function(input){
     }else if(input$distType=='Discrete'){
       switch(input$dist1,
              Bernoulli=fRHelper("binom", c(1, input$bernoulli_prob), input),
-             Binomial=fRHelper("binom", c(1, input$bernoulli_prob), input),
+             Binomial=fRHelper("binom", c(input$binomial_size, input$binomial_prob), input),
+             Poisson=fRHelper("pois", input$poisson_lambda, input),
+             NegativeBinomial=fRHelper("nbinom", c(input$negativebinomial_mean, input$negativebinomial_dispersion), input)
              )
     }
            
