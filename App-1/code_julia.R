@@ -3,17 +3,17 @@ fJuliacode <- function(input){
     if(input$dist=="Normal"){
       if(input$property=="pdf")
         fMakeFunctionPaste(mainName="pdf",
-                               params=c(input$mu,input$sigma),
+                               params=c(input$normal_mu,input$normal_sigma),
                                postfixparams="x",
                                julia=TRUE)
       else if(input$property=="log_pdf")
         fMakeFunctionPaste(mainName="logpdf",
-                               params=c(input$mu,input$sigma),
+                               params=c(input$normal_mu,input$normal_sigma),
                                postfixparams="x",
                                julia=TRUE)
       else if(input$property=="random")
         fMakeFunctionPaste(mainName="rand(Normal",
-                               params=c(input$mu,input$sigma),
+                               params=c(input$normal_mu,input$normal_sigma),
                                postfixparams="n",
                                julia=TRUE)
     }

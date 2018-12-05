@@ -39,9 +39,9 @@ fPlotCDF <- function(input, aDist, aMean, aVar, lScale, lExtra){
       ylab('cumulate probability') +
       ggtitle(paste0("mean = ", round(aMean, 2), ", var = ", round(aVar, 2)))
   }else if (input$dist2=='MultivariateNormal'){
-    lMean <- c(input$meanXN,input$meanYN)
-    lSigma <- matrix(c(input$sigmaXN^2,input$sigmaXN * input$sigmaYN * input$rhoxyN,
-                       input$sigmaXN * input$sigmaYN * input$rhoxyN, input$sigmaYN^2),
+    lMean <- c(input$multivariatenormal_mux,input$multivariatenormal_muy)
+    lSigma <- matrix(c(input$multivariatenormal_sigmax^2,input$multivariatenormal_sigmax * input$multivariatenormal_sigmay * input$multivariatenormal_rho,
+                       input$multivariatenormal_sigmax * input$multivariatenormal_sigmay * input$multivariatenormal_rho, input$multivariatenormal_sigmay^2),
                      nrow = 2,ncol = 2)
     aLen <- length(lScale)
     x.points <- lScale
@@ -58,11 +58,11 @@ fPlotCDF <- function(input, aDist, aMean, aVar, lScale, lExtra){
     dataF$X2 <- unlist(lapply(x.points,function(x) rep(x,aLen)))
     names(dataF) <- c("x", "y", "cdf")
     ggplot(dataF, aes(x, y, z = cdf))+ geom_tile(aes(fill = cdf)) + stat_contour()+
-      xlim(c(-input$rangeN,input$rangeN)) + ylim(c(-input$rangeN,input$rangeN)) 
+      xlim(c(-input$multivariatenormal_range,input$multivariatenormal_range)) + ylim(c(-input$multivariatenormal_range,input$multivariatenormal_range)) 
   }else if (input$dist2=='MultivariateT'){
-    lMean <- c(input$meanXT,input$meanYT)
-    lSigma <- matrix(c(input$sigmaXT^2,input$sigmaXT * input$sigmaYT * input$rhoxyT,
-                       input$sigmaXT * input$sigmaYT * input$rhoxyT, input$sigmaYT^2),
+    lMean <- c(input$multivariatet_mux,input$multivariatet_muy)
+    lSigma <- matrix(c(input$multivariatet_sigmax^2,input$multivariatet_sigmax * input$multivariatet_sigmay * input$multivariatet_rho,
+                       input$multivariatet_sigmax * input$multivariatet_sigmay * input$multivariatet_rho, input$multivariatet_sigmay^2),
                      nrow = 2,ncol = 2)
     aLen <- length(lScale)
     x.points <- lScale
@@ -71,7 +71,7 @@ fPlotCDF <- function(input, aDist, aMean, aVar, lScale, lExtra){
     for (i in 1:aLen) {
       for (j in 1:aLen) {
         z[i,j] <- mvtnorm::pmvt(lower=c(-Inf,-Inf),upper=c(x.points[i],y.points[j]),
-                                delta=lMean,sigma=lSigma,df=input$dfMVT)
+                                delta=lMean,sigma=lSigma,df=input$multivariatet_df)
       }
     }
     dataF <- melt(z)
@@ -79,6 +79,6 @@ fPlotCDF <- function(input, aDist, aMean, aVar, lScale, lExtra){
     dataF$X2 <- unlist(lapply(x.points,function(x) rep(x,aLen)))
     names(dataF) <- c("x", "y", "cdf")
     ggplot(dataF, aes(x, y, z = cdf))+ geom_tile(aes(fill = cdf)) + stat_contour()+
-      xlim(c(-input$rangeN,input$rangeN)) + ylim(c(-input$rangeN,input$rangeN)) 
+      xlim(c(-input$multivariatenormal_range,input$multivariatenormal_range)) + ylim(c(-input$multivariatenormal_range,input$multivariatenormal_range)) 
   }
 }

@@ -109,7 +109,7 @@ shinyServer(function(input, output) {
   })
   
   fScaleMVR <- reactive({
-    lSeq <- seq(-input$rangeN,input$rangeN,2*input$rangeN/100)
+    lSeq <- seq(-input$multivariatenormal_range,input$multivariatenormal_range,2*input$multivariatenormal_range/100)
     return(lSeq)
   })
   

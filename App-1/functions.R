@@ -126,26 +126,26 @@ fMakeFunctionPaste <- function(mainName, params, prefixparams=NULL,postfixparams
 fCalculateMeanFull <- function(input){
   lExtra <- if (input$distType=='Continuous'){
     switch(input$dist,
-           Normal=input$mu,
-           Uniform = 0.5 * (input$a + input$b),
-           LogNormal = exp(input$meanlog+0.5*input$sdlog^2),
-           Exponential = 1/input$rate,
-           Gamma= input$shape / input$rateGam,
-           t = ifelse(input$nuT>1,input$muT,NA),
-           Beta=input$alpha/(input$alpha+input$beta),
+           Normal=input$normal_mu,
+           Uniform = 0.5 * (input$uniform_a + input$uniform_b),
+           LogNormal = exp(input$lognormal_mu+0.5*input$lognormal_sigma^2),
+           Exponential = 1/input$exponential_rate,
+           Gamma= input$gamma_shape / input$gamma_rate,
+           t = ifelse(input$t_nu>1,input$t_mu,NA),
+           Beta=input$beta_a/(input$beta_a+input$beta_b),
            Cauchy=NA,
            HalfCauchy=NA,
-           InverseGamma=ifelse(input$shapeIG>1,input$scaleIG/(input$shapeIG-1),NA),
-           InverseChiSquared=ifelse(input$dfIC>2,1/(input$dfIC-2),NA),
-           LogitNormal=integrate(function(x) x * (1/(input$sigmaLogitN * sqrt(2 * pi))) * (1/(x * (1 - x))) * exp(- (log(x/(1-x)) - input$muLogitN)^2 / (2 * input$sigmaLogitN^2)),0,1)[[1]],
+           InverseGamma=ifelse(input$inversegamma_shape>1,input$inversegamma_scale/(input$inversegamma_shape-1),NA),
+           InverseChiSquared=ifelse(input$inversechisquared_df>2,1/(input$inversechisquared_df-2),NA),
+           LogitNormal=integrate(function(x) x * (1/(input$logitnormal_sigma * sqrt(2 * pi))) * (1/(x * (1 - x))) * exp(- (log(x/(1-x)) - input$logitnormal_mu)^2 / (2 * input$logitnormal_sigma^2)),0,1)[[1]],
            1)
   } else if (input$distType=='Discrete'){
     switch(input$dist1,
-           Bernoulli=input$probBer,
-           Binomial=input$sizeBin * input$probBin,
-           Poisson=input$lambdaPois,
-           NegativeBinomial=input$meanNB,
-           BetaBinomial=input$sizeBetaBin * input$shapeBetaBin1 / (input$shapeBetaBin1 + input$shapeBetaBin2),
+           Bernoulli=input$bernoulli_prob,
+           Binomial=input$binomial_size * input$binomial_prob,
+           Poisson=input$poisson_lambda,
+           NegativeBinomial=input$negativebinomial_mean,
+           BetaBinomial=input$betabinomial_size * input$betabinomial_shape1 / (input$betabinomial_shape1 + input$betabinomial_shape2),
            paste("mean=1,sd=1")
     )
   }
@@ -154,33 +154,33 @@ fCalculateMeanFull <- function(input){
 fCalculateVarianceFull <- function(input){
   if(input$distType=='Continuous'){
     if(input$dist=='LogitNormal'){
-      aMeanLogitNormal <- integrate(function(x) x * (1/(input$sigmaLogitN * sqrt(2 * pi))) * (1/(x * (1 - x))) * exp(- (log(x/(1-x)) - input$muLogitN)^2 / (2 * input$sigmaLogitN^2)),0,1)[[1]]
-      a2LogitNormal <- integrate(function(x) x^2 * (1/(input$sigmaLogitN * sqrt(2 * pi))) * (1/(x * (1 - x))) * exp(- (log(x/(1-x)) - input$muLogitN)^2 / (2 * input$sigmaLogitN^2)),0,1)[[1]]
+      aMeanLogitNormal <- integrate(function(x) x * (1/(input$logitnormal_sigma * sqrt(2 * pi))) * (1/(x * (1 - x))) * exp(- (log(x/(1-x)) - input$logitnormal_mu)^2 / (2 * input$logitnormal_sigma^2)),0,1)[[1]]
+      a2LogitNormal <- integrate(function(x) x^2 * (1/(input$logitnormal_sigma * sqrt(2 * pi))) * (1/(x * (1 - x))) * exp(- (log(x/(1-x)) - input$logitnormal_mu)^2 / (2 * input$logitnormal_sigma^2)),0,1)[[1]]
     }
     aVar <- switch(input$dist,
-                   Normal=input$sigma^2,
-                   Uniform = (1/12) * (input$b - input$a)^2,
-                   LogNormal = exp(input$sdlog^2 - 1) * exp(2 * input$meanlog + input$sdlog^2),
-                   Exponential = 1/input$rate^2,
-                   Gamma= input$shape / input$rateGam^2,
-                   t = ifelse(input$nuT > 2,
-                              input$nuT / (input$nuT - 2), NA),
-                   Beta=(input$alpha * input$beta) / ((input$alpha+input$beta)^2 * (input$alpha+input$beta + 1)),
+                   Normal=input$normal_sigma^2,
+                   Uniform = (1/12) * (input$uniform_b - input$uniform_a)^2,
+                   LogNormal = exp(input$lognormal_sigma^2 - 1) * exp(2 * input$lognormal_mu + input$lognormal_sigma^2),
+                   Exponential = 1/input$exponential_rate^2,
+                   Gamma= input$gamma_shape / input$gamma_rate^2,
+                   t = ifelse(input$t_nu > 2,
+                              input$t_nu / (input$t_nu - 2), NA),
+                   Beta=(input$beta_a * input$beta_b) / ((input$beta_a+input$beta_b)^2 * (input$beta_a+input$beta_b + 1)),
                    Cauchy=NA,
                    HalfCauchy=NA,
-                   InverseGamma=ifelse(input$shapeIG > 2,
-                                       input$scaleIG/((input$shapeIG-1)^2 * (input$shapeIG-2)),NA),
-                   InverseChiSquared=ifelse(input$dfIC > 4,
-                                            2 / ((input$dfIC-2)^2 * (input$dfIC-4)),NA),
+                   InverseGamma=ifelse(input$inversegamma_shape > 2,
+                                       input$inversegamma_scale/((input$inversegamma_shape-1)^2 * (input$inversegamma_shape-2)),NA),
+                   InverseChiSquared=ifelse(input$inversechisquared_df > 4,
+                                            2 / ((input$inversechisquared_df-2)^2 * (input$inversechisquared_df-4)),NA),
                    LogitNormal=a2LogitNormal-aMeanLogitNormal^2,
                    1)
   }else if (input$distType=='Discrete'){
     aVar <- switch(input$dist1,
-                   Bernoulli=input$probBer * (1 - input$probBer),
-                   Binomial=input$sizeBin * input$probBin * (1 - input$probBer),
-                   Poisson=input$lambdaPois,
-                   NegativeBinomial=input$meanNB + (input$meanNB^2 / input$dispersionNB),
-                   BetaBinomial=input$sizeBetaBin * input$shapeBetaBin1 * input$shapeBetaBin2 *(input$shapeBetaBin1 + input$shapeBetaBin2 + input$sizeBetaBin) / ((input$shapeBetaBin1 + input$shapeBetaBin2)^2 * (input$shapeBetaBin1 + input$shapeBetaBin2 + 1))
+                   Bernoulli=input$bernoulli_prob * (1 - input$bernoulli_prob),
+                   Binomial=input$binomial_size * input$binomial_prob * (1 - input$bernoulli_prob),
+                   Poisson=input$poisson_lambda,
+                   NegativeBinomial=input$negativebinomial_mean + (input$negativebinomial_mean^2 / input$negativebinomial_dispersion),
+                   BetaBinomial=input$betabinomial_size * input$betabinomial_shape1 * input$betabinomial_shape2 *(input$betabinomial_shape1 + input$betabinomial_shape2 + input$betabinomial_size) / ((input$betabinomial_shape1 + input$betabinomial_shape2)^2 * (input$betabinomial_shape1 + input$betabinomial_shape2 + 1))
     )
   }
   
