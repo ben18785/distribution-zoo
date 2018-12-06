@@ -1,9 +1,9 @@
 
-fRHelper <- function(mainName, params, input, import=NULL){
+fRHelper <- function(mainName, params, input, import=NULL, named_arguments=NULL){
   switch(input$property,
         pdf=fMakeFunctionPaste(mainName=paste0("d", mainName),
                                params=params, prefixparams="x",
-                               import=import),
+                               import=import, named_arguments=named_arguments),
         log_pdf=fMakeFunctionPaste(mainName=paste0("d", mainName),
                                    params=params, prefixparams="x",
                                    postfixparams="log=TRUE",
@@ -35,7 +35,8 @@ fRcode <- function(input){
              Bernoulli=fRHelper("binom", c(1, input$bernoulli_prob), input),
              Binomial=fRHelper("binom", c(input$binomial_size, input$binomial_prob), input),
              Poisson=fRHelper("pois", input$poisson_lambda, input),
-             NegativeBinomial=fRHelper("nbinom", c(input$negativebinomial_mean, input$negativebinomial_dispersion), input)
+             NegativeBinomial=fRHelper("nbinom", c(input$negativebinomial_mean, input$negativebinomial_dispersion), input,
+                                       named_arguments=c("mu", "size"))
              )
     }
            

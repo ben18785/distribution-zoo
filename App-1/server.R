@@ -13,6 +13,7 @@ library(gridExtra)
 library(DirichletReg)
 library(scatterplot3d)
 library(markdown)
+library(tidyverse)
 
 source("functions.R")
 source("formulae.R")

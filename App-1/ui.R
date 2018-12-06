@@ -116,7 +116,7 @@ shinyUI(fluidPage(
                        sliderInput("poisson_range", "Range", min=0, max=100, value=40)),
       conditionalPanel(condition="input.distType=='Discrete'&&input.dist1=='NegativeBinomial'",
                        sliderInput("negativebinomial_mean", "Mean", min=0, max=50, value=10, step=0.2),
-                       sliderInput("negativebinomial_dispersion", "Dispersion", min=0, max=100, value=3,step=0.2),
+                       sliderInput("negativebinomial_dispersion", "Inverse-dispersion", min=0, max=100, value=3,step=0.2),
                        sliderInput("negativebinomial_range", "Range", min=0, max=100, value=40)),
       conditionalPanel(condition="input.distType=='Discrete'&&input.dist1=='BetaBinomial'",
                        sliderInput("betabinomial_size", "Size", min=0, max=50, value=10),
