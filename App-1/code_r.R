@@ -7,10 +7,37 @@ fRHelper <- function(mainName, params, input, import=NULL, named_arguments=NULL)
         log_pdf=fMakeFunctionPaste(mainName=paste0("d", mainName),
                                    params=params, prefixparams="x",
                                    postfixparams="log=TRUE",
-                                   import=import),
+                                   import=import, named_arguments=named_arguments),
         random=fMakeFunctionPaste(mainName=paste0("r", mainName),
                                   params=params, prefixparams="n",
-                                  import=import))
+                                  import=import, named_arguments=named_arguments))
+}
+
+dBetaBinomialCode <- paste("# function definition",
+                           "dbetabinom <- function(x, size, alpha, beta, log=FALSE){",
+                           "  if(!log)",
+                           "    return(choose(size, x) * beta(x + alpha, size - x + beta) / beta(alpha, beta))",
+                           "  else",
+                           "    return(log(choose(size, x) * beta(x + alpha, size - x + beta) / beta(alpha, beta)))",
+                           "}",
+                           "# calling function",
+                           sep="\n")
+rBetaBinomialCode <- paste("# function definition",
+                           "rbetabinom <- function(n, size, alpha, beta){",
+                           "  theta <- rbeta(n, alpha, beta)",
+                           "  return(rbinom(n, size, theta))",
+                           "}",
+                           "# calling function",
+                           sep="\n")
+dBetaBinomialFull <- function(size, shape1, shape2, input){
+  if(input$property!="random")
+    paste(dBetaBinomialCode,
+        fRHelper("betabinom", c(size, shape1, shape2), input),
+        sep="\n")
+  else
+    paste(rBetaBinomialCode,
+          fRHelper("betabinom", c(size, shape1, shape2), input),
+          sep="\n")
 }
 
 
@@ -36,7 +63,8 @@ fRcode <- function(input){
              Binomial=fRHelper("binom", c(input$binomial_size, input$binomial_prob), input),
              Poisson=fRHelper("pois", input$poisson_lambda, input),
              NegativeBinomial=fRHelper("nbinom", c(input$negativebinomial_mean, input$negativebinomial_dispersion), input,
-                                       named_arguments=c("mu", "size"))
+                                       named_arguments=c("mu", "size")),
+             BetaBinomial=dBetaBinomialFull(input$betabinomial_size, input$betabinomial_shape1, input$betabinomial_shape2, input)
              )
     }
            
