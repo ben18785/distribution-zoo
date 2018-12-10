@@ -115,6 +115,18 @@ dMVTFull <- function(mux, muy, sigmax, sigmay, rho, df, input){
           sep="\n")
 }
 
+dMultinomialFull <- function(prob1, prob2, prob3, input){
+  if(input$property!="random"){
+    fRHelper("multinom", c(input$multinomial_prob1, input$multinomial_prob2, input$multinomial_prob3), input,
+             named_arguments=c("prob"))
+  }else{
+    fMakeFunctionPaste("rmultinom",
+                       params=c(input$multinomial_prob1, input$multinomial_prob2, input$multinomial_prob3),
+                       prefixparams=c("n", "size"),
+                       named_arguments=c("prob"))
+  }
+}
+
 fRcode <- function(input){
   text <-
     if(input$distType=='Continuous'){
@@ -152,7 +164,8 @@ fRcode <- function(input){
                                     input$multivariatet_sigmax,
                                     input$multivariatet_sigmay,
                                     input$multivariatet_rho, 
-                                    input$multivariatet_df, input)
+                                    input$multivariatet_df, input),
+             Multinomial=dMultinomialFull(input$multinomial_prob1, input$multinomial_prob2, input$multinomial_prob3, input)
       )
     }
            

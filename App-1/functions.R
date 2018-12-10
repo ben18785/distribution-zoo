@@ -99,7 +99,12 @@ fMakeFunctionPaste <- function(mainName, params, prefixparams=NULL,postfixparams
     else{
       vars <- map_dbl(params,function(x) eval(parse(text=x)))
       named_arguments1 <- map_chr(named_arguments, ~paste0(.,"="))
-      common_prose <- paste(map2_chr(named_arguments1, vars, function(x,y) paste0(x,y)), collapse=", ")
+      if(length(named_arguments1) > 1)
+        common_prose <- paste(map2_chr(named_arguments1, vars, function(x,y) paste0(x,y)), collapse=", ")
+      else{
+        common_prose <- paste0(named_arguments1, "c(", paste0(vars, collapse=", "), ")")
+      }
+        
     }
       
     prefix_prose <- paste(prefixparams,  collapse = ", ")
