@@ -42,7 +42,7 @@ dBetaBinomialFull <- function(size, shape1, shape2, input){
 
 
 dmvnorm2DCode <-
-  paste("# 2d mvtnormal pdf",
+  paste("# 2d mvt normal pdf",
         "library(mvtnorm)",
         "dmvrnorm2D <- function(x, mux, muy, sigmax, sigmay, rho, log=FALSE){",
         "  return(dmvnorm(x, c(mux, muy),",
@@ -54,13 +54,41 @@ dmvnorm2DCode <-
         "# calling function (note x must be 2d)",
         sep = "\n")
 rmvnorm2DCode <-
-  paste("# 2d mvtnormal random samples",
+  paste("# 2d mvt normal random samples",
         "library(mvtnorm)",
         "rmvrnorm2D <- function(n, mux, muy, sigmax, sigmay, rho){",
         "  return(rmvnorm(n, c(mux, muy),",
         "                 matrix(c(sigmax^2, sigmax * sigmay * rho,",
         "                          sigmax * sigmay * rho, sigmay^2),",
         "                        ncol = 2)))",
+        "}",
+        "# calling function",
+        sep = "\n")
+
+
+dmvt2DCode <-
+  paste("# 2d mvt Student-t distribution pdf",
+        "library(mvtnorm)",
+        "dmvt2D <- function(x, mux, muy, sigmax, sigmay, rho, df, log=FALSE){",
+        "  return(dmvt(x, c(mux, muy),",
+        "              matrix(c(sigmax^2, sigmax * sigmay * rho,",
+        "                       sigmax * sigmay * rho, sigmay^2),",
+        "                     ncol = 2),",
+        "              df,",
+        "              log))",
+        "}",
+        "# calling function (note x must be 2d)",
+        sep = "\n")
+rmvt2DCode <-
+  paste("# 2d mvt Student-t random samples (note argument order different to pdf)",
+        "library(mvtnorm)",
+        "rmvt2D <- function(n, mux, muy, sigmax, sigmay, rho, df){",
+        "  return(rmvt(n,",
+        "              matrix(c(sigmax^2, sigmax * sigmay * rho,",
+        "                       sigmax * sigmay * rho, sigmay^2),",
+        "                     ncol = 2),",
+        "              df,",
+        "              c(mux, muy)))",
         "}",
         "# calling function",
         sep = "\n")
@@ -73,6 +101,17 @@ dMVNormalFull <- function(mux, muy, sigmax, sigmay, rho, input){
   else
     paste(rmvnorm2DCode,
           fRHelper("mvrnorm2D", c(mux, muy, sigmax, sigmay, rho), input),
+          sep="\n")
+}
+
+dMVTFull <- function(mux, muy, sigmax, sigmay, rho, df, input){
+  if(input$property!="random")
+    paste(dmvt2DCode,
+          fRHelper("mvt2D", c(mux, muy, sigmax, sigmay, rho, df), input),
+          sep="\n")
+  else
+    paste(rmvt2DCode,
+          fRHelper("mvt2D", c(mux, muy, sigmax, sigmay, rho, df), input),
           sep="\n")
 }
 
@@ -107,7 +146,13 @@ fRcode <- function(input){
                                               input$multivariatenormal_muy,
                                               input$multivariatenormal_sigmax,
                                               input$multivariatenormal_sigmay,
-                                              input$multivariatenormal_rho, input)
+                                              input$multivariatenormal_rho, input),
+             MultivariateT=dMVTFull(input$multivariatet_mux,
+                                    input$multivariatet_muy,
+                                    input$multivariatet_sigmax,
+                                    input$multivariatet_sigmay,
+                                    input$multivariatet_rho, 
+                                    input$multivariatet_df, input)
       )
     }
            
