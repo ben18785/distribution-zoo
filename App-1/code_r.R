@@ -66,6 +66,15 @@ fRcode <- function(input){
                                        named_arguments=c("mu", "size")),
              BetaBinomial=dBetaBinomialFull(input$betabinomial_size, input$betabinomial_shape1, input$betabinomial_shape2, input)
              )
+    }else if(input$distType=='Multivariate'){
+      switch(input$dist2,
+             MultivariateNormal,
+             MultivariateT,
+             Wishart,
+             InverseWishart,
+             Dirichlet,
+             Multinomial,
+             LKJ)
     }
            
   

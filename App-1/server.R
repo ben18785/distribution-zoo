@@ -288,7 +288,13 @@ shinyServer(function(input, output) {
                              tabPanel("Plot of PDF", plotOutput("plot"),
                                       uiOutput("runningQuantities")),
                              tabPanel("Formulae", 
-                                      uiOutput("formulae"))
+                                      uiOutput("formulae")),
+                             tabPanel("LaTeX", 
+                                      uiOutput("latex")),
+                             tabPanel("Code", 
+                                      uiOutput("language"),
+                                      uiOutput("property"),
+                                      uiOutput("code"))
         )
       }
   })
