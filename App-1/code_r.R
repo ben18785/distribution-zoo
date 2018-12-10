@@ -127,6 +127,27 @@ dMultinomialFull <- function(prob1, prob2, prob3, input){
   }
 }
 
+dWishartFull <- function(df, input){
+  switch(input$property,
+         pdf=fMakeFunctionPaste(mainName="dwishart",
+                                params=df, prefixparams="x",
+                                import=paste("library(LaplacesDemon)",
+                                             "# note x should be symmetric positive-definite matrix of same dimensions as S (also sym, pos-def)",
+                                             sep="\n"),
+                                postfixparams = "S"),
+         log_pdf=fMakeFunctionPaste(mainName="dwishart",
+                                params=df, prefixparams="x",
+                                import=paste("library(LaplacesDemon)",
+                                             "# note x should be symmetric positive-definite matrix of same dimensions as S (also sym, pos-def)",
+                                             sep="\n"),
+                                postfixparams=c("S", "log=TRUE")),
+         random=fMakeFunctionPaste(mainName="rWishart",
+                                params=df, prefixparams="n",
+                                import=paste("# note S is symmetric positive-definite matrix",
+                                             sep="\n"),
+                                postfixparams = "S"))
+}
+
 fRcode <- function(input){
   text <-
     if(input$distType=='Continuous'){
@@ -165,7 +186,8 @@ fRcode <- function(input){
                                     input$multivariatet_sigmay,
                                     input$multivariatet_rho, 
                                     input$multivariatet_df, input),
-             Multinomial=dMultinomialFull(input$multinomial_prob1, input$multinomial_prob2, input$multinomial_prob3, input)
+             Multinomial=dMultinomialFull(input$multinomial_prob1, input$multinomial_prob2, input$multinomial_prob3, input),
+             Wishart=dWishartFull(input$wishart_df, input)
       )
     }
            
