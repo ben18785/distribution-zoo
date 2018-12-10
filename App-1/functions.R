@@ -84,7 +84,7 @@ rcoronion<-function(d,eta=1){
   rr
 }
 
-fMakeFunctionPaste <- function(mainName, params, prefixparams=NULL,postfixparams=NULL, import=NULL, freeform=NULL, mathematica=FALSE, julia=FALSE, named_arguments=NULL){
+fMakeFunctionPaste <- function(mainName, params, prefixparams=NULL,postfixparams=NULL, import=NULL, freeform=NULL, mathematica=FALSE, julia=FALSE, named_arguments=NULL, vector_params=FALSE){
   if(mathematica){
     a_forward_brace <- "["
     a_backward_brace <- "]"
@@ -95,6 +95,8 @@ fMakeFunctionPaste <- function(mainName, params, prefixparams=NULL,postfixparams
   if(is.null(freeform)){
     if(is.null(named_arguments)){
       common_prose <- paste(sapply(params, function(x) eval(parse(text=x))), collapse=", ")
+      if(vector_params)
+        common_prose <- paste0("c(", common_prose, ")")
     }
     else{
       vars <- map_dbl(params,function(x) eval(parse(text=x)))

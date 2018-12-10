@@ -1,16 +1,19 @@
 
-fRHelper <- function(mainName, params, input, import=NULL, named_arguments=NULL){
+fRHelper <- function(mainName, params, input, import=NULL, named_arguments=NULL, vector_params=FALSE){
   switch(input$property,
         pdf=fMakeFunctionPaste(mainName=paste0("d", mainName),
                                params=params, prefixparams="x",
-                               import=import, named_arguments=named_arguments),
+                               import=import, named_arguments=named_arguments,
+                               vector_params=vector_params),
         log_pdf=fMakeFunctionPaste(mainName=paste0("d", mainName),
                                    params=params, prefixparams="x",
                                    postfixparams="log=TRUE",
-                                   import=import, named_arguments=named_arguments),
+                                   import=import, named_arguments=named_arguments,
+                                   vector_params=vector_params),
         random=fMakeFunctionPaste(mainName=paste0("r", mainName),
                                   params=params, prefixparams="n",
-                                  import=import, named_arguments=named_arguments))
+                                  import=import, named_arguments=named_arguments,
+                                  vector_params=vector_params))
 }
 
 dBetaBinomialCode <- paste("# function definition",
@@ -231,7 +234,10 @@ fRcode <- function(input){
              Multinomial=dMultinomialFull(input$multinomial_prob1, input$multinomial_prob2, input$multinomial_prob3, input),
              Wishart=dWishartFull(input$wishart_df, input),
              InverseWishart=dInverseWishartFull(input$inversewishart_df, input),
-             LKJ=dLKJFull(input$lkj_eta, input$lkj_dimension, input)
+             LKJ=dLKJFull(input$lkj_eta, input$lkj_dimension, input),
+             Dirichlet=if_else(input$dirichlet_dimension==2, fRHelper("dirichlet", c(input$dirichlet_alpha1, input$dirichlet_alpha2), input, vector_params = TRUE, import="library(LaplacesDemon)"),
+                               if_else(input$dirichlet_dimension==3, fRHelper("dirichlet", c(input$dirichlet_alpha1, input$dirichlet_alpha2, input$dirichlet_alpha3), input, vector_params = TRUE, import="library(LaplacesDemon)"),
+                                       if_else(input$dirichlet_dimension==4, fRHelper("dirichlet", c(input$dirichlet_alpha1, input$dirichlet_alpha2, input$dirichlet_alpha3, input$dirichlet_alpha4), input, vector_params = TRUE, import="library(LaplacesDemon)"), "test")))
       )
     }
            
