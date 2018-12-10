@@ -162,11 +162,12 @@ dInverseWishartFull <- function(df, input){
                                                  "# note x should be symmetric positive-definite matrix of same dimensions as S (also sym, pos-def)",
                                                  sep="\n"),
                                     postfixparams=c("S", "log=TRUE")),
-         random=fMakeFunctionPaste(mainName="rWishart",
-                                   params=df, prefixparams="n",
-                                   import=paste("# note S is symmetric positive-definite matrix",
+         random=fMakeFunctionPaste(mainName="lapply(seq(1, n, 1), function(i) rinvwishart",
+                                   params=df,
+                                   import=paste("library(LaplacesDemon)",
+                                                "# note S is symmetric positive-definite matrix",
                                                 sep="\n"),
-                                   postfixparams = "S"))
+                                   postfixparams = "S)"))
 }
 
 fRcode <- function(input){
@@ -208,7 +209,8 @@ fRcode <- function(input){
                                     input$multivariatet_rho, 
                                     input$multivariatet_df, input),
              Multinomial=dMultinomialFull(input$multinomial_prob1, input$multinomial_prob2, input$multinomial_prob3, input),
-             Wishart=dWishartFull(input$wishart_df, input)
+             Wishart=dWishartFull(input$wishart_df, input),
+             InverseWishart=dInverseWishartFull(input$inversewishart_df, input)
       )
     }
            
