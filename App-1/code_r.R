@@ -41,6 +41,41 @@ dBetaBinomialFull <- function(size, shape1, shape2, input){
 }
 
 
+dmvnorm2DCode <-
+  paste("# 2d mvtnormal pdf",
+        "library(mvtnorm)",
+        "dmvrnorm2D <- function(x, mux, muy, sigmax, sigmay, rho, log=FALSE){",
+        "  return(dmvnorm(x, c(mux, muy),",
+        "                 matrix(c(sigmax^2, sigmax * sigmay * rho,",
+        "                          sigmax * sigmay * rho, sigmay^2),",
+        "                         ncol = 2),",
+        "                 log))",
+        "}",
+        "# calling function (note x must be 2d)",
+        sep = "\n")
+rmvnorm2DCode <-
+  paste("# 2d mvtnormal random samples",
+        "library(mvtnorm)",
+        "rmvrnorm2D <- function(n, mux, muy, sigmax, sigmay, rho){",
+        "  return(rmvnorm(n, c(mux, muy),",
+        "                 matrix(c(sigmax^2, sigmax * sigmay * rho,",
+        "                          sigmax * sigmay * rho, sigmay^2),",
+        "                        ncol = 2)))",
+        "}",
+        "# calling function",
+        sep = "\n")
+
+dMVNormalFull <- function(mux, muy, sigmax, sigmay, rho, input){
+  if(input$property!="random")
+    paste(dmvnorm2DCode,
+          fRHelper("mvrnorm2D", c(mux, muy, sigmax, sigmay, rho), input),
+          sep="\n")
+  else
+    paste(rmvnorm2DCode,
+          fRHelper("mvrnorm2D", c(mux, muy, sigmax, sigmay, rho), input),
+          sep="\n")
+}
+
 fRcode <- function(input){
   text <-
     if(input$distType=='Continuous'){
@@ -68,13 +103,12 @@ fRcode <- function(input){
              )
     }else if(input$distType=='Multivariate'){
       switch(input$dist2,
-             MultivariateNormal,
-             MultivariateT,
-             Wishart,
-             InverseWishart,
-             Dirichlet,
-             Multinomial,
-             LKJ)
+             MultivariateNormal=dMVNormalFull(input$multivariatenormal_mux,
+                                              input$multivariatenormal_muy,
+                                              input$multivariatenormal_sigmax,
+                                              input$multivariatenormal_sigmay,
+                                              input$multivariatenormal_rho, input)
+      )
     }
            
   
