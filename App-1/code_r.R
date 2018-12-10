@@ -148,6 +148,27 @@ dWishartFull <- function(df, input){
                                 postfixparams = "S"))
 }
 
+dInverseWishartFull <- function(df, input){
+  switch(input$property,
+         pdf=fMakeFunctionPaste(mainName="dinvwishart",
+                                params=df, prefixparams="x",
+                                import=paste("library(LaplacesDemon)",
+                                             "# note x should be symmetric positive-definite matrix of same dimensions as S (also sym, pos-def)",
+                                             sep="\n"),
+                                postfixparams = "S"),
+         log_pdf=fMakeFunctionPaste(mainName="dinvwishart",
+                                    params=df, prefixparams="x",
+                                    import=paste("library(LaplacesDemon)",
+                                                 "# note x should be symmetric positive-definite matrix of same dimensions as S (also sym, pos-def)",
+                                                 sep="\n"),
+                                    postfixparams=c("S", "log=TRUE")),
+         random=fMakeFunctionPaste(mainName="rWishart",
+                                   params=df, prefixparams="n",
+                                   import=paste("# note S is symmetric positive-definite matrix",
+                                                sep="\n"),
+                                   postfixparams = "S"))
+}
+
 fRcode <- function(input){
   text <-
     if(input$distType=='Continuous'){
