@@ -170,6 +170,26 @@ dInverseWishartFull <- function(df, input){
                                    postfixparams = "S)"))
 }
 
+dLKJFull <- function(eta, dimensions, input){
+  switch(input$property,
+         pdf=fMakeFunctionPaste(mainName="dlkjcorr",
+                                params=eta, prefixparams="x",
+                                import=paste("library(rethinking)",
+                                             "# note x should be symmetric positive-definite matrix with unit diagonals (i.e. a correlation matrix)",
+                                             sep="\n")),
+         log_pdf=fMakeFunctionPaste(mainName="dlkjcorr",
+                                    params=eta, prefixparams="x",
+                                    import=paste("library(rethinking)",
+                                                 "# note x should be symmetric positive-definite matrix with unit diagonals (i.e. a correlation matrix)",
+                                                 sep="\n"),
+                                    postfixparams = "log=TRUE"),
+         random=paste0(fMakeFunctionPaste(mainName="lapply(seq(1, n, 1), function(i) rlkjcorr",
+                                   params=c(dimensions, eta),
+                                   prefixparams =1,
+                                   import="library(rethinking)"), ")")
+         )
+}
+
 fRcode <- function(input){
   text <-
     if(input$distType=='Continuous'){
@@ -210,7 +230,8 @@ fRcode <- function(input){
                                     input$multivariatet_df, input),
              Multinomial=dMultinomialFull(input$multinomial_prob1, input$multinomial_prob2, input$multinomial_prob3, input),
              Wishart=dWishartFull(input$wishart_df, input),
-             InverseWishart=dInverseWishartFull(input$inversewishart_df, input)
+             InverseWishart=dInverseWishartFull(input$inversewishart_df, input),
+             LKJ=dLKJFull(input$lkj_eta, input$lkj_dimension, input)
       )
     }
            
