@@ -1,24 +1,30 @@
+fPythonHelper <- function(mainName, mainName1, params, input, import=NULL, import1=NULL, named_arguments=NULL, vector_params=FALSE){
+  switch(input$property,
+         pdf=fMakeFunctionPaste(mainName=paste0("scipy.stats.", mainName, ".pdf"),
+                                params=params, prefixparams="x",
+                                import=import, named_arguments=named_arguments,
+                                vector_params=vector_params),
+         log_pdf=fMakeFunctionPaste(mainName=paste0("scipy.stats.", mainName, ".logpdf"),
+                                    params=params, prefixparams="x",
+                                    import=import, named_arguments=named_arguments,
+                                    vector_params=vector_params),
+         random=fMakeFunctionPaste(mainName=paste0("numpy.random.", mainName1),
+                                   params=params, postfixparams="n",
+                                   import=import1, named_arguments=named_arguments,
+                                   vector_params=vector_params))
+}
+
+
 
 fPythoncode <- function(input){
   text <-
-    if(input$dist=="Normal"){
-      if(input$property=="pdf")
-        fMakeFunctionPaste(mainName="scipy.stats.norm.pdf",
-                      params=c(input$normal_mu,input$normal_sigma),
-                      prefixparams="x")
-      else if(input$property=="log_pdf")
-        fMakeFunctionPaste(mainName="scipy.stats.norm.logpdf",
-                      params=c(input$normal_mu,input$normal_sigma),
-                      prefixparams="x")
-      else if(input$property=="random")
-        fMakeFunctionPaste(mainName="numpy.random.normal",
-                      import="import numpy",
-                      params=c(input$normal_mu,input$normal_sigma),
-                      postfixparams="n")
-    }else if(input$dist=="Uniform"){
-      if(input$property=="pdf")
-        HTML(markdown::markdownToHTML(text="```{python}
-                                      scipy.stats.norm.logpdf(1,2,3)", options=c("highlight_code")))
+    if(input$distType=='Continuous'){
+      switch(input$dist,
+             Normal=fPythonHelper("norm", "normal",
+                                  c(input$normal_mu, input$normal_sigma),
+                                  input, import="import scipy.stats",
+                                  import1="import numpy")
+      )
     }
   return(prismCodeBlock(text, language = "python"))
 }
