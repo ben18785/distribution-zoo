@@ -40,6 +40,26 @@ fLognormal <- function(input){
   )
 }
 
+
+fExponential <- function(input){
+  switch(input$property,
+         pdf=fPythonHelper("expon", "expon",
+                c(0, 1 / input$exponential_rate),
+                input, import="import scipy.stats",
+                import1="import scipy.stats",
+                named_arguments = c("loc", "scale")),
+         log_pdf=fPythonHelper("expon", "expon",
+                               c(0, 1 / input$exponential_rate),
+                               input, import="import scipy.stats",
+                               import1="import scipy.stats",
+                               named_arguments = c("loc", "scale")),
+         random=fMakeFunctionPaste(mainName="numpy.random.exponential",
+                                   params=1 / input$exponential_rate,
+                                   import="import numpy",
+                                   postfixparams="n")
+  )
+}
+
 fPythoncode <- function(input){
   text <-
     if(input$distType=='Continuous'){
@@ -52,7 +72,8 @@ fPythoncode <- function(input){
                                   c(input$uniform_a, input$uniform_b),
                                   input, import="import scipy.stats",
                                   import1="import scipy.stats"),
-             LogNormal=fLognormal(input)
+             LogNormal=fLognormal(input),
+             Exponential=fExponential(input)
       )
     }
   return(prismCodeBlock(text, language = "python"))
