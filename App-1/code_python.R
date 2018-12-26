@@ -23,6 +23,10 @@ fPythoncode <- function(input){
              Normal=fPythonHelper("norm", "normal",
                                   c(input$normal_mu, input$normal_sigma),
                                   input, import="import scipy.stats",
+                                  import1="import numpy"),
+             Uniform=fPythonHelper("uniform", "uniform",
+                                  c(input$uniform_a, input$uniform_b),
+                                  input, import="import scipy.stats",
                                   import1="import numpy")
       )
     }
