@@ -8,26 +8,51 @@ fPythonHelper <- function(mainName, mainName1, params, input, import=NULL, impor
                                     params=params, prefixparams="x",
                                     import=import, named_arguments=named_arguments,
                                     vector_params=vector_params),
-         random=fMakeFunctionPaste(mainName=paste0("numpy.random.", mainName1),
+         random=fMakeFunctionPaste(mainName=paste0("scipy.stats.", mainName1, ".rvs"),
                                    params=params, postfixparams="n",
                                    import=import1, named_arguments=named_arguments,
                                    vector_params=vector_params))
 }
 
-
+fLognormal <- function(input){
+  mainName <- "lognorm"
+  mainName1 <- "lognorm"
+  import <- "import scipy.stats"
+  import1 <- "import scipy.stats"
+  named_arguments <- NULL
+  vector_params <- NULL
+  named_arguments <- c("scale", "s")
+  params <- c(exp(input$lognormal_mu), input$lognormal_sigma)
+  switch(input$property,
+         pdf=fMakeFunctionPaste(mainName=paste0("scipy.stats.", mainName, ".pdf"),
+                                params=params, prefixparams="x",
+                                import=import, named_arguments=named_arguments,
+                                vector_params=vector_params),
+         log_pdf=fMakeFunctionPaste(mainName=paste0("scipy.stats.", mainName, ".logpdf"),
+                                    params=params, prefixparams="x",
+                                    import=import, named_arguments=named_arguments,
+                                    vector_params=vector_params),
+         random=fMakeFunctionPaste(mainName=paste0("scipy.stats.", mainName1, ".rvs"),
+                                   params=c(exp(input$lognormal_mu), input$lognormal_sigma),
+                                   import=import1, named_arguments=c("scale", "s"),
+                                   postfixparams="size=n",
+                                   vector_params=vector_params)
+  )
+}
 
 fPythoncode <- function(input){
   text <-
     if(input$distType=='Continuous'){
       switch(input$dist,
-             Normal=fPythonHelper("norm", "normal",
+             Normal=fPythonHelper("norm", "norm",
                                   c(input$normal_mu, input$normal_sigma),
                                   input, import="import scipy.stats",
-                                  import1="import numpy"),
+                                  import1="import scipy.stats"),
              Uniform=fPythonHelper("uniform", "uniform",
                                   c(input$uniform_a, input$uniform_b),
                                   input, import="import scipy.stats",
-                                  import1="import numpy")
+                                  import1="import scipy.stats"),
+             LogNormal=fLognormal(input)
       )
     }
   return(prismCodeBlock(text, language = "python"))
