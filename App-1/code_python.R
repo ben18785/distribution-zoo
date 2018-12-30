@@ -60,6 +60,25 @@ fExponential <- function(input){
   )
 }
 
+fGamma <- function(input){
+  switch(input$property,
+         pdf=fPythonHelper("gamma", "gamma",
+                           c(input$gamma_shape, 0, 1.0 / input$gamma_rate),
+                           input, import="import scipy.stats",
+                           import1="import scipy.stats",
+                           named_arguments = c("a", "loc", "scale")),
+         log_pdf=fPythonHelper("gamma", "gamma",
+                               c(input$gamma_shape, 0, 1.0 / input$gamma_rate),
+                               input, import="import scipy.stats",
+                               import1="import scipy.stats",
+                               named_arguments = c("a", "loc", "scale")),
+         random=fMakeFunctionPaste(mainName="numpy.random.gamma",
+                                   params=c(input$gamma_shape, 1.0 / input$gamma_rate),
+                                   import="import numpy",
+                                   postfixparams="n")
+  )
+}
+
 fPythoncode <- function(input){
   text <-
     if(input$distType=='Continuous'){
@@ -73,7 +92,8 @@ fPythoncode <- function(input){
                                   input, import="import scipy.stats",
                                   import1="import scipy.stats"),
              LogNormal=fLognormal(input),
-             Exponential=fExponential(input)
+             Exponential=fExponential(input),
+             Gamma=fGamma(input)
       )
     }
   return(prismCodeBlock(text, language = "python"))
