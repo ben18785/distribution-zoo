@@ -116,7 +116,11 @@ fPythoncode <- function(input){
                                    c(input$t_nu, input$t_mu, input$t_sigma),
                                    input, import="import scipy.stats",
                                    import1="import scipy.stats"),
-             Beta=fBeta(input)
+             Beta=fBeta(input),
+             Cauchy=fPythonHelper("cauchy", "cauchy",
+                             c(input$cauchy_location, input$cauchy_scale),
+                             input, import="import scipy.stats",
+                             import1="import scipy.stats"),
       )
     }
   return(prismCodeBlock(text, language = "python"))
