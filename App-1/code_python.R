@@ -121,6 +121,10 @@ fPythoncode <- function(input){
                              c(input$cauchy_location, input$cauchy_scale),
                              input, import="import scipy.stats",
                              import1="import scipy.stats"),
+             HalfCauchy=fPythonHelper("halfcauchy", "halfcauchy",
+                                  c(input$halfcauchy_location, input$halfcauchy_scale),
+                                  input, import="import scipy.stats",
+                                  import1="import scipy.stats")
       )
     }
   return(prismCodeBlock(text, language = "python"))
