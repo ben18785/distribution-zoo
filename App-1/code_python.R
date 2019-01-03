@@ -93,7 +93,11 @@ fPythoncode <- function(input){
                                   import1="import scipy.stats"),
              LogNormal=fLognormal(input),
              Exponential=fExponential(input),
-             Gamma=fGamma(input)
+             Gamma=fGamma(input),
+             t=fPythonHelper("t", "t",
+                                   c(input$t_nu, input$t_mu, input$t_sigma),
+                                   input, import="import scipy.stats",
+                                   import1="import scipy.stats")
       )
     }
   return(prismCodeBlock(text, language = "python"))
