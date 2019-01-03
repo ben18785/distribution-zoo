@@ -79,6 +79,26 @@ fGamma <- function(input){
   )
 }
 
+fInverseGamma <- function(input){
+  switch(input$property,
+         pdf=fPythonHelper("invgamma", "invgamma",
+                           c(input$inversegamma_shape, 0, input$inversegamma_scale),
+                           input, import="import scipy.stats",
+                           import1="import scipy.stats",
+                           named_arguments = c("a", "loc", "scale")),
+         log_pdf=fPythonHelper("invgamma", "invgamma",
+                               c(input$inversegamma_shape, 0, input$inversegamma_scale),
+                               input, import="import scipy.stats",
+                               import1="import scipy.stats",
+                               named_arguments = c("a", "loc", "scale")),
+         random=fMakeFunctionPaste(mainName="scipy.stats.invgamma.rvs",
+                                   params=c(input$inversegamma_shape, 0, input$inversegamma_scale),
+                                   import="import scipy.stats",
+                                   postfixparams="size=n",
+                                   named_arguments = c("a", "loc", "scale"))
+  )
+}
+
 
 fBeta <- function(input){
   switch(input$property,
@@ -124,7 +144,8 @@ fPythoncode <- function(input){
              HalfCauchy=fPythonHelper("halfcauchy", "halfcauchy",
                                   c(input$halfcauchy_location, input$halfcauchy_scale),
                                   input, import="import scipy.stats",
-                                  import1="import scipy.stats")
+                                  import1="import scipy.stats"),
+             InverseGamma=fInverseGamma(input)
       )
     }
   return(prismCodeBlock(text, language = "python"))
