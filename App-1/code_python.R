@@ -79,6 +79,24 @@ fGamma <- function(input){
   )
 }
 
+
+fBeta <- function(input){
+  switch(input$property,
+    pdf=fPythonHelper("beta", "beta",
+                     c(input$beta_a, input$beta_b),
+                     input, import="import scipy.stats",
+                     import1="import scipy.stats"),
+    log_pdf=fPythonHelper("beta", "beta",
+                          c(input$beta_a, input$beta_b),
+                          input, import="import scipy.stats",
+                          import1="import scipy.stats"),
+    random=fMakeFunctionPaste(mainName="numpy.random.beta",
+                              params=c(input$beta_a, input$beta_b),
+                              import="import numpy",
+                              postfixparams="n")
+  )
+}
+
 fPythoncode <- function(input){
   text <-
     if(input$distType=='Continuous'){
@@ -97,7 +115,8 @@ fPythoncode <- function(input){
              t=fPythonHelper("t", "t",
                                    c(input$t_nu, input$t_mu, input$t_sigma),
                                    input, import="import scipy.stats",
-                                   import1="import scipy.stats")
+                                   import1="import scipy.stats"),
+             Beta=fBeta(input)
       )
     }
   return(prismCodeBlock(text, language = "python"))
