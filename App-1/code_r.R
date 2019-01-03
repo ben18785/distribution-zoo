@@ -16,6 +16,45 @@ fRHelper <- function(mainName, params, input, import=NULL, named_arguments=NULL,
                                   vector_params=vector_params))
 }
 
+dHalfCauchyCode <- paste(
+  "dhalfcauchy <- function(x, location, scale, log=FALSE){",
+  "  if(x >= 0)",
+  "    val <- 1.0 / (pi * (1 + ((x-location)/scale)^2) * scale * (0.5 + atan(location / scale) / pi))",
+  "  else",
+  "    val <- 0.0",
+  "  if(!log)",
+  "    return(val)",
+  "  else",
+  "    return(log(val))",
+  "}",
+  "# calling function",
+  sep = "\n")
+
+rHalfCauchyCode <- paste(
+  "rhalfcauchy <- function(n, location, scale){",
+  "  r <- vector(length=n)",
+  "  for(i in 1:n){",
+  "    r_1 <- rcauchy(1, location, scale)",
+  "    while(r_1 < 0)",
+  "      r_1 <- rcauchy(1, location, scale)",
+  "    r[i] <- r_1",
+  "  }",
+  "  return(r)
+  }",
+  "# calling function",
+  sep = "\n")
+
+dHalfCauchyFull <- function(location, scale, input){
+  if(input$property!="random")
+    paste(dHalfCauchyCode,
+          fRHelper("halfcauchy", c(location, scale), input),
+          sep="\n")
+  else
+    paste(rHalfCauchyCode,
+          fRHelper("halfcauchy", c(location, scale), input),
+          sep="\n")
+}
+
 dBetaBinomialCode <- paste("# function definition",
                            "dbetabinom <- function(x, size, alpha, beta, log=FALSE){",
                            "  if(!log)",
@@ -205,7 +244,7 @@ fRcode <- function(input){
              t=fRHelper("st", c(input$t_mu,input$t_sigma, input$t_nu), input, import="library(LaplacesDemon)"),
              Beta=fRHelper("beta", c(input$beta_a,input$beta_b), input),
              Cauchy=fRHelper("cauchy", c(input$cauchy_location,input$cauchy_scale), input),
-             HalfCauchy=fRHelper("halfcauchy", c(input$halfcauchy_location,input$halfcauchy_scale), input, import="library(LaplacesDemon)"),
+             HalfCauchy=dHalfCauchyFull(input$halfcauchy_location, input$halfcauchy_scale, input),
              InverseGamma=fRHelper("invgamma", c(input$inversegamma_shape, 1.0 / input$inversegamma_scale), input, import="library(actuar)"),
              InverseChiSquared=fRHelper("invchisq", input$inversechisquared_df, input, import="library(LaplacesDemon)"),
              LogitNormal=fRHelper("logitnorm", c(input$logitnormal_mu, input$logitnormal_sigma), input, import="library(logitnorm)"))
