@@ -285,6 +285,53 @@ fNegativeBinomialFull <- function(input){
   )
 }
 
+dBetaBinomial <- paste(
+  "import scipy.special",
+  "def betabinomial_pmf(x, size, a, b):",
+  "    return scipy.special.comb(size, x) * scipy.special.beta(x + a, size - x + b) / scipy.special.beta(a, b)",
+  "# calling function",
+  sep="\n"
+)
+
+dBetaBinomial_log <- paste(
+  "import scipy.special",
+  "def betabinomial_logpmf(x, size, a, b):",
+  "    return (gammaln(size + 1) + gammaln(x + a) + gammaln(size - x + b) + gammaln(a + b) - \
+        (gammaln(x + 1) + gammaln(size - x + 1) + gammaln(a) + gammaln(b) + gammaln(size + a + b)))",
+  "# calling function",
+  sep="\n"
+)
+
+rBetaBinomial <- paste(
+  "import scipy.stats",
+  "def betabinomial_rvs(size, a, b, n=1):",
+  "    thetas = scipy.stats.beta.rvs(a, b, 0, 1, n)",
+  "    x = [scipy.stats.binom.rvs(size, theta, 0, 1)[0] for theta in thetas]",
+  "    return x",
+  "# calling function",
+  sep="\n"
+)
+
+fBetaBinomialFull <- function(input){
+  switch(input$property,
+         pdf=paste(dBetaBinomial,
+                   fMakeFunctionPaste(mainName="betabinomial_pmf",
+                                      params=c(input$betabinomial_size, input$betabinomial_shape1, input$betabinomial_shape2),
+                                      prefixparams="x"),
+                   sep="\n"),
+         log_pdf=paste(dBetaBinomial_log,
+                       fMakeFunctionPaste(mainName="betabinomial_logpmf",
+                                          params=c(input$betabinomial_size, input$betabinomial_shape1, input$betabinomial_shape2),
+                                          prefixparams="x"),
+                       sep="\n"),
+         random=paste(rBetaBinomial,
+                      fMakeFunctionPaste(mainName="betabinomial_rvs",
+                                         params=c(input$betabinomial_size, input$betabinomial_shape1, input$betabinomial_shape2),
+                                         postfixparams="n"),
+                      sep="\n")
+  )
+}
+
 fPythoncode <- function(input){
   text <-
     if(input$distType=='Continuous'){
@@ -334,7 +381,8 @@ fPythoncode <- function(input){
                                            params1=c(input$poisson_lambda, 0),
                                            input, import="import scipy.stats",
                                            import1="import scipy.stats"),
-             NegativeBinomial=fNegativeBinomialFull(input)
+             NegativeBinomial=fNegativeBinomialFull(input),
+             BetaBinomial=fBetaBinomialFull(input)
       )
     }
   return(prismCodeBlock(text, language = "python"))
