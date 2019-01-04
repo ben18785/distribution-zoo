@@ -389,6 +389,54 @@ fMultivariateNormalFull <- function(input){
   )
 }
 
+dStudentt <- paste(
+  "import scipy.special",
+  "import numpy",
+  "# general Student t",
+  "def studentt_pdf(x, mu, sigma, nu):",
+  "    p = len(mu)",
+  "    first = scipy.special.gamma(0.5 * (nu + p)) / (scipy.special.gamma(nu / 2.0) * nu**(float(p) / 2) * numpy.pi**(float(p) / 2) * numpy.linalg.det(sigma))",
+  "    x_minus_mu = numpy.array(x) - numpy.array(mu)",
+  "    sigma_inv = numpy.linalg.inv(sigma)",
+  "    second = (1 + (1.0 / float(nu)) * numpy.matmul(numpy.matmul(x_minus_mu, sigma_inv), numpy.transpose(x_minus_mu)))**(-0.5 * (nu + p))",
+  "    return first * second",
+  "# 2d Student t",
+  "def studentt2d_pdf(x, mux, muy, sigmax, sigmay, rho, nu):",
+  "    return studentt_pdf(x, [mux, muy], [[sigmax**2, sigmax * sigmay * rho], [sigmax * sigmay * rho, sigmay**2]], nu)"
+)
+
+dStudentt <- paste(
+  "import scipy.special",
+  "import numpy",
+  "# general Student t",
+  "def studentt_pdf(x, mu, sigma, nu):",
+  "    p = len(mu)",
+  "    first = scipy.special.gamma(0.5 * (nu + p)) / (scipy.special.gamma(nu / 2.0) * nu**(float(p) / 2) * numpy.pi**(float(p) / 2) * numpy.linalg.det(sigma))",
+  "    x_minus_mu = numpy.array(x) - numpy.array(mu)",
+  "    sigma_inv = numpy.linalg.inv(sigma)",
+  "    second = (1 + (1.0 / float(nu)) * numpy.matmul(numpy.matmul(x_minus_mu, sigma_inv), numpy.transpose(x_minus_mu)))**(-0.5 * (nu + p))",
+  "    return first * second",
+  "# 2d Student t",
+  "def studentt2d_pdf(x, mux, muy, sigmax, sigmay, rho, nu):",
+  "    return studentt_pdf(x, [mux, muy], [[sigmax**2, sigmax * sigmay * rho], [sigmax * sigmay * rho, sigmay**2]], nu)"
+)
+
+dStudentt_log <- paste(
+  "import scipy.special",
+  "import numpy",
+  "# general Student t",
+  "def studentt_logpdf(x, mu, sigma, nu):",
+  "    p = len(mu)",
+  "    first = scipy.special.gamma(0.5 * (nu + p)) / (scipy.special.gamma(nu / 2.0) * nu**(float(p) / 2) * numpy.pi**(float(p) / 2) * numpy.linalg.det(sigma))",
+  "    x_minus_mu = numpy.array(x) - numpy.array(mu)",
+  "    sigma_inv = numpy.linalg.inv(sigma)",
+  "    second = (1 + (1.0 / float(nu)) * numpy.matmul(numpy.matmul(x_minus_mu, sigma_inv), numpy.transpose(x_minus_mu)))**(-0.5 * (nu + p))",
+  "    return numpy.log(first) + numpy.log(second)",
+  "# 2d Student t",
+  "def studentt2d_logpdf(x, mux, muy, sigmax, sigmay, rho, nu):",
+  "    return studentt_logpdf(x, [mux, muy], [[sigmax**2, sigmax * sigmay * rho], [sigmax * sigmay * rho, sigmay**2]], nu)"
+)
+
 fPythoncode <- function(input){
   text <-
     if(input$distType=='Continuous'){
