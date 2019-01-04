@@ -273,7 +273,12 @@ fPythoncode <- function(input){
                                      params=input$bernoulli_prob,
                                      params1=c(input$bernoulli_prob, 0),
                                      input, import="import scipy.stats",
-                                     import1="import scipy.stats")
+                                     import1="import scipy.stats"),
+             Binomial=fPythonHelperDiscrete("binom", "binom",
+                                            params=c(input$binomial_size, input$binomial_prob),
+                                            params1=c(input$binomial_size, input$binomial_prob, 0),
+                                            input, import="import scipy.stats",
+                                            import1="import scipy.stats")
       )
     }
   return(prismCodeBlock(text, language = "python"))
