@@ -14,6 +14,22 @@ fPythonHelper <- function(mainName, mainName1, params, input, import=NULL, impor
                                    vector_params=vector_params))
 }
 
+fPythonHelperDiscrete <- function(mainName, mainName1, params, params1, input, import=NULL, import1=NULL, named_arguments=NULL, vector_params=FALSE){
+  switch(input$property,
+         pdf=fMakeFunctionPaste(mainName=paste0("scipy.stats.", mainName, ".pmf"),
+                                params=params, prefixparams="x",
+                                import=import, named_arguments=named_arguments,
+                                vector_params=vector_params),
+         log_pdf=fMakeFunctionPaste(mainName=paste0("scipy.stats.", mainName, ".logpmf"),
+                                    params=params, prefixparams="x",
+                                    import=import, named_arguments=named_arguments,
+                                    vector_params=vector_params),
+         random=fMakeFunctionPaste(mainName=paste0("scipy.stats.", mainName1, ".rvs"),
+                                   params=params1, postfixparams="n",
+                                   import=import1, named_arguments=named_arguments,
+                                   vector_params=vector_params))
+}
+
 fLognormal <- function(input){
   mainName <- "lognorm"
   mainName1 <- "lognorm"
@@ -250,6 +266,14 @@ fPythoncode <- function(input){
              InverseGamma=fInverseGamma(input),
              InverseChiSquared=fInverseChiSquaredFull(input),
              LogitNormal=fLogitNormalFull(input)
+      )
+    }else if(input$distType=='Discrete'){
+      switch(input$dist1,
+             Bernoulli=fPythonHelperDiscrete("bernoulli", "bernoulli",
+                                     params=input$bernoulli_prob,
+                                     params1=c(input$bernoulli_prob, 0),
+                                     input, import="import scipy.stats",
+                                     import1="import scipy.stats")
       )
     }
   return(prismCodeBlock(text, language = "python"))
