@@ -7,7 +7,7 @@ fScaleFull <- function(input) {
   if (input$dist%in% lAllReal){
     lScale <- seq(-input$n,input$n,2*input$n/200)
   } else if (input$dist%in% lUpperReal){
-    lScale <- seq(0,input$n,input$n/200)
+    lScale <- seq(0,input$n,input$n/400)
   } else{
     lScale <- seq(0,1,1/200)
   }
