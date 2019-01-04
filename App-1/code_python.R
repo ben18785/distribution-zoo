@@ -332,6 +332,63 @@ fBetaBinomialFull <- function(input){
   )
 }
 
+
+dMultivariateNormal <- paste(
+  "import scipy.stats",
+  "def normal2d_pdf(x, mux, muy, sigmax, sigmay, rho):",
+  "    return scipy.stats.multivariate_normal.pdf(x, [mux, muy], [[sigmax**2, sigmax * sigmay * rho], [sigmax * sigmay * rho, sigmay**2]])",
+  "# calling function",
+  sep="\n"
+)
+
+dMultivariateNormal_log <- paste(
+  "import scipy.stats",
+  "def normal2d_logpdf(x, mux, muy, sigmax, sigmay, rho):",
+  "    return scipy.stats.multivariate_normal.logpdf(x, [mux, muy], [[sigmax**2, sigmax * sigmay * rho], [sigmax * sigmay * rho, sigmay**2]])",
+  "# calling function",
+  sep="\n"
+)
+
+rMultivariateNormal <- paste(
+  "import scipy.stats",
+  "def normal2d_rvs(mux, muy, sigmax, sigmay, rho, n=1):",
+  "    return scipy.stats.multivariate_normal.rvs([mux, muy], [[sigmax**2, sigmax * sigmay * rho], [sigmax * sigmay * rho, sigmay**2]], n)",
+  "# calling function",
+  sep="\n"
+)
+
+fMultivariateNormalFull <- function(input){
+  switch(input$property,
+         pdf=paste(dMultivariateNormal,
+                   fMakeFunctionPaste(mainName="normal2d_pdf",
+                                      params=c(input$multivariatenormal_mux,
+                                               input$multivariatenormal_muy,
+                                               input$multivariatenormal_sigmax,
+                                               input$multivariatenormal_sigmay,
+                                               input$multivariatenormal_rho),
+                                      prefixparams="x"),
+                   sep="\n"),
+         log_pdf=paste(dMultivariateNormal_log,
+                       fMakeFunctionPaste(mainName="normal2d_logpdf",
+                                          params=c(input$multivariatenormal_mux,
+                                                   input$multivariatenormal_muy,
+                                                   input$multivariatenormal_sigmax,
+                                                   input$multivariatenormal_sigmay,
+                                                   input$multivariatenormal_rho),
+                                          prefixparams="x"),
+                       sep="\n"),
+         random=paste(rMultivariateNormal,
+                      fMakeFunctionPaste(mainName="normal2d_rvs",
+                                         params=c(input$multivariatenormal_mux,
+                                                  input$multivariatenormal_muy,
+                                                  input$multivariatenormal_sigmax,
+                                                  input$multivariatenormal_sigmay,
+                                                  input$multivariatenormal_rho),
+                                         postfixparams="n"),
+                      sep="\n")
+  )
+}
+
 fPythoncode <- function(input){
   text <-
     if(input$distType=='Continuous'){
@@ -383,6 +440,10 @@ fPythoncode <- function(input){
                                            import1="import scipy.stats"),
              NegativeBinomial=fNegativeBinomialFull(input),
              BetaBinomial=fBetaBinomialFull(input)
+      )
+    } else if(input$distType=="Multivariate"){
+      switch(input$dist2,
+             MultivariateNormal=fMultivariateNormalFull(input)      
       )
     }
   return(prismCodeBlock(text, language = "python"))
