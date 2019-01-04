@@ -117,6 +117,55 @@ fBeta <- function(input){
   )
 }
 
+dInverseChiSquared <- paste(
+  "import numpy",
+  "import scipy.special",
+  "def inversechisquared_pdf(x, df):",
+  "    temp = df / 2.0",
+  "    val = (2**(-temp) / scipy.special.gamma(temp)) * x**-(temp + 1) * numpy.exp(-1.0 / (2 * x))",
+  "    return val",
+  "# calling function",
+  sep="\n"
+)
+
+dInverseChiSquared_log <- paste(
+  "import numpy",
+  "import scipy.special",
+  "def inversechisquared_logpdf(x, df):",
+  "    temp = df / 2.0",
+  "    val = (2**(-temp) / scipy.special.gamma(temp)) * x**-(temp + 1) * numpy.exp(-1.0 / (2 * x))",
+  "    return numpy.log(val)",
+  "# calling function",
+  sep="\n"
+)
+
+rInverseChiSquared <- paste(
+  "import scipy.stats",
+  "def inversechisquared_rvs(df, n=1):",
+  "    r = scipy.stats.chi2.rvs(df, 0, 1, n)",
+  "    return 1.0 / r",
+  "# calling function",
+  sep="\n"
+)
+
+
+fInverseChiSquaredFull <- function(input){
+  switch(input$property,
+         pdf=paste(dInverseChiSquared,
+                   fMakeFunctionPaste(mainName="inversechisquared_pdf",
+                                params=input$inversechisquared_df, prefixparams="x"),
+                   sep="\n"),
+         log_pdf=paste(dInverseChiSquared_log,
+                       fMakeFunctionPaste(mainName="inversechisquared_logpdf",
+                                          params=input$inversechisquared_df, prefixparams="x"),
+                       sep="\n"),
+         random=paste(rInverseChiSquared,
+                     fMakeFunctionPaste(mainName="inversechisquared_rvs",
+                                        params=input$inversechisquared_df, postfixparams="n"),
+                     sep="\n")
+  )
+}
+
 fPythoncode <- function(input){
   text <-
     if(input$distType=='Continuous'){
@@ -145,7 +194,8 @@ fPythoncode <- function(input){
                                   c(input$halfcauchy_location, input$halfcauchy_scale),
                                   input, import="import scipy.stats",
                                   import1="import scipy.stats"),
-             InverseGamma=fInverseGamma(input)
+             InverseGamma=fInverseGamma(input),
+             InverseChiSquared=fInverseChiSquaredFull(input)
       )
     }
   return(prismCodeBlock(text, language = "python"))
