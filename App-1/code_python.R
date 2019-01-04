@@ -278,7 +278,12 @@ fPythoncode <- function(input){
                                             params=c(input$binomial_size, input$binomial_prob),
                                             params1=c(input$binomial_size, input$binomial_prob, 0),
                                             input, import="import scipy.stats",
-                                            import1="import scipy.stats")
+                                            import1="import scipy.stats"),
+             Poisson=fPythonHelperDiscrete("poisson", "poisson",
+                                           params=input$poisson_lambda,
+                                           params1=c(input$poisson_lambda, 0),
+                                           input, import="import scipy.stats",
+                                           import1="import scipy.stats")
       )
     }
   return(prismCodeBlock(text, language = "python"))
