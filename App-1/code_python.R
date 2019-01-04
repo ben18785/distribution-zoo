@@ -166,6 +166,59 @@ fInverseChiSquaredFull <- function(input){
   )
 }
 
+dLogitNormal <- paste(
+  "import numpy",
+  "import scipy.special",
+  "def logitnormal_pdf(x, mu, sigma):",
+  "    temp = ((scipy.special.logit(x) - mu)**2 / (2 * sigma**2))",
+  "    return (1.0 / sigma) * (1.0 / numpy.sqrt(2 * numpy.pi)) * np.exp(-temp) * (1.0 / (x * (1.0 - x)))",
+  "# calling function",
+  sep="\n"
+)
+
+dLogitNormal_log <- paste(
+  "import numpy",
+  "import scipy.special",
+  "def logitnormal_logpdf(x, mu, sigma):",
+  "    temp = ((scipy.special.logit(x) - mu)**2 / (2 * sigma**2))",
+  "    return numpy.log((1.0 / sigma) * (1.0 / numpy.sqrt(2 * numpy.pi)) * np.exp(-temp) * (1.0 / (x * (1.0 - x))))",
+  "# calling function",
+  sep="\n"
+)
+
+rLogitNormal <- paste(
+  "import scipy.stats",
+  "import numpy",
+  "def logistic(x):",
+  "    return 1.0 / (1.0 + numpy.exp(-x))",
+  "def logitnormal_rvs(mu, sigma, n=1):",
+  "    x = scipy.stats.norm.rvs(mu, sigma, n)",
+  "    p = [logistic(z) for z in x]",
+  "    return p",
+  "# calling function",
+  sep="\n"
+)
+
+fLogitNormalFull <- function(input){
+  switch(input$property,
+         pdf=paste(dLogitNormal,
+                   fMakeFunctionPaste(mainName="logitnormal_pdf",
+                                      params=c(input$logitnormal_mu, input$logitnormal_sigma),
+                                      prefixparams="x"),
+                   sep="\n"),
+         log_pdf=paste(dLogitNormal_log,
+                       fMakeFunctionPaste(mainName="logitnormal_logpdf",
+                                          params=c(input$logitnormal_mu, input$logitnormal_sigma),
+                                          prefixparams="x"),
+                       sep="\n"),
+         random=paste(rLogitNormal,
+                      fMakeFunctionPaste(mainName="logitnormal_rvs",
+                                         params=c(input$logitnormal_mu, input$logitnormal_sigma),
+                                         postfixparams="n"),
+                      sep="\n")
+  )
+}
+
 fPythoncode <- function(input){
   text <-
     if(input$distType=='Continuous'){
@@ -195,7 +248,8 @@ fPythoncode <- function(input){
                                   input, import="import scipy.stats",
                                   import1="import scipy.stats"),
              InverseGamma=fInverseGamma(input),
-             InverseChiSquared=fInverseChiSquaredFull(input)
+             InverseChiSquared=fInverseChiSquaredFull(input),
+             LogitNormal=fLogitNormalFull(input)
       )
     }
   return(prismCodeBlock(text, language = "python"))
