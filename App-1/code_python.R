@@ -235,6 +235,56 @@ fLogitNormalFull <- function(input){
   )
 }
 
+dNegativeBinomial <- paste(
+  "import scipy.stats",
+  "def negativebinomial_pmf(x, mu, kappa):",
+  "    n = kappa",
+  "    p = float(kappa) / (kappa + mu)",
+  "    return scipy.stats.nbinom.pmf(x, n, p)",
+  "# calling function",
+  sep="\n"
+)
+
+dNegativeBinomial_log <- paste(
+  "import scipy.stats",
+  "def negativebinomial_logpmf(x, mu, kappa):",
+  "    n = kappa",
+  "    p = float(kappa) / (kappa + mu)",
+  "    return scipy.stats.nbinom.logpmf(x, n, p)",
+  "# calling function",
+  sep="\n"
+)
+
+rNegativeBinomial <- paste(
+  "import scipy.stats",
+  "def negativebinomial_rvs(mu, kappa, n=1):",
+  "    n1 = kappa",
+  "    p = float(kappa) / (kappa + mu)",
+  "    return scipy.stats.nbinom.rvs(n1, p, 0, n)",
+  "# calling function",
+  sep="\n"
+)
+
+fNegativeBinomialFull <- function(input){
+  switch(input$property,
+         pdf=paste(dNegativeBinomial,
+                   fMakeFunctionPaste(mainName="negativebinomial_pmf",
+                                      params=c(input$negativebinomial_mean, input$negativebinomial_dispersion),
+                                      prefixparams="x"),
+                   sep="\n"),
+         log_pdf=paste(dNegativeBinomial_log,
+                       fMakeFunctionPaste(mainName="negativebinomial_logpmf",
+                                          params=c(input$negativebinomial_mean, input$negativebinomial_dispersion),
+                                          prefixparams="x"),
+                       sep="\n"),
+         random=paste(rNegativeBinomial,
+                      fMakeFunctionPaste(mainName="negativebinomial_rvs",
+                                         params=c(input$negativebinomial_mean, input$negativebinomial_dispersion),
+                                         postfixparams="n"),
+                      sep="\n")
+  )
+}
+
 fPythoncode <- function(input){
   text <-
     if(input$distType=='Continuous'){
@@ -283,7 +333,8 @@ fPythoncode <- function(input){
                                            params=input$poisson_lambda,
                                            params1=c(input$poisson_lambda, 0),
                                            input, import="import scipy.stats",
-                                           import1="import scipy.stats")
+                                           import1="import scipy.stats"),
+             NegativeBinomial=fNegativeBinomialFull(input)
       )
     }
   return(prismCodeBlock(text, language = "python"))
