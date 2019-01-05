@@ -1,17 +1,20 @@
-fPythonHelper <- function(mainName, mainName1, params, input, import=NULL, import1=NULL, named_arguments=NULL, vector_params=FALSE){
+fPythonHelper <- function(mainName, mainName1, params, input, import=NULL, import1=NULL, named_arguments=NULL, vector_params=FALSE, python_vector=FALSE){
   switch(input$property,
          pdf=fMakeFunctionPaste(mainName=paste0("scipy.stats.", mainName, ".pdf"),
                                 params=params, prefixparams="x",
                                 import=import, named_arguments=named_arguments,
-                                vector_params=vector_params),
+                                vector_params=vector_params,
+                                python_vector=python_vector),
          log_pdf=fMakeFunctionPaste(mainName=paste0("scipy.stats.", mainName, ".logpdf"),
                                     params=params, prefixparams="x",
                                     import=import, named_arguments=named_arguments,
-                                    vector_params=vector_params),
+                                    vector_params=vector_params,
+                                    python_vector=python_vector),
          random=fMakeFunctionPaste(mainName=paste0("scipy.stats.", mainName1, ".rvs"),
                                    params=params, postfixparams="n",
                                    import=import1, named_arguments=named_arguments,
-                                   vector_params=vector_params))
+                                   vector_params=vector_params,
+                                   python_vector=python_vector))
 }
 
 fPythonHelperDiscrete <- function(mainName, mainName1, params, params1, input, import=NULL, import1=NULL, named_arguments=NULL, vector_params=FALSE){
@@ -549,6 +552,27 @@ fInverseWishart <- function(input){
   )
 }
 
+fDirichlet <- function(input){
+  if(input$dirichlet_dimension==2)
+    fPythonHelper("dirichlet", "dirichlet",
+                c(input$dirichlet_alpha1, input$dirichlet_alpha2),
+                input, import="import scipy.stats",
+                import1="import scipy.stats", vector_params = T,
+                python_vector = T)
+  else if(input$dirichlet_dimension==3)
+    fPythonHelper("dirichlet", "dirichlet",
+                  c(input$dirichlet_alpha1, input$dirichlet_alpha2, input$dirichlet_alpha3),
+                  input, import="import scipy.stats",
+                  import1="import scipy.stats", vector_params = T,
+                  python_vector = T)
+  else if(input$dirichlet_dimension==4)
+    fPythonHelper("dirichlet", "dirichlet",
+                  c(input$dirichlet_alpha1, input$dirichlet_alpha2, input$dirichlet_alpha3, input$dirichlet_alpha4),
+                  input, import="import scipy.stats",
+                  import1="import scipy.stats", vector_params = T,
+                  python_vector = T)
+}
+
 fPythoncode <- function(input){
   text <-
     if(input$distType=='Continuous'){
@@ -607,7 +631,8 @@ fPythoncode <- function(input){
              MultivariateT=fStudenttFull(input),
              Multinomial=fMultinomial(input),
              Wishart=fWishart(input),
-             InverseWishart=fInverseWishart(input)
+             InverseWishart=fInverseWishart(input),
+             Dirichlet=fDirichlet(input)
       )
     }
   return(prismCodeBlock(text, language = "python"))
