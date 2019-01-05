@@ -22,6 +22,7 @@ source("PDF.R")
 source("code_latex.R")
 source("code_r.R")
 source("code_python.R")
+source("code_stan.R")
 source("code_matlab.R")
 source("code_mathematica.R")
 source("code_julia.R")
@@ -209,6 +210,7 @@ shinyServer(function(input, output) {
   })
   
   output$stancode <- renderUI({
+    fStanCode(input)
   })
   
   output$BUGScode <- renderUI({
