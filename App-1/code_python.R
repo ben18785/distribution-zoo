@@ -511,6 +511,24 @@ fMultinomial <- function(input){
   )
 }
 
+fWishart <- function(input){
+  switch(input$property,
+         pdf=fMakeFunctionPaste(mainName="scipy.stats.wishart.pdf",
+                                params=input$wishart_df,
+                                prefixparams="x",
+                                postfixparams = "S",
+                                import="import scipy.stats\n# note x should be symmetric positive-definite matrix of same dimensions as S (also sym, pos-def)"),
+         log_pdf=fMakeFunctionPaste(mainName="scipy.stats.wishart.logpdf",
+                                params=input$wishart_df,
+                                prefixparams="x",
+                                postfixparams = "S",
+                                import="import scipy.stats\n# note x should be symmetric positive-definite matrix of same dimensions as S (also sym, pos-def)"),
+         random=fMakeFunctionPaste(mainName="scipy.stats.wishart.rvs",
+                                   params=input$wishart_df,
+                                   postfixparams = c("S", "n"),
+                                   import="import scipy.stats\n# note x should be symmetric positive-definite matrix of same dimensions as S (also sym, pos-def)")
+  )
+}
 
 fPythoncode <- function(input){
   text <-
@@ -568,7 +586,8 @@ fPythoncode <- function(input){
       switch(input$dist2,
              MultivariateNormal=fMultivariateNormalFull(input),
              MultivariateT=fStudenttFull(input),
-             Multinomial=fMultinomial(input)
+             Multinomial=fMultinomial(input),
+             Wishart=fWishart(input)
       )
     }
   return(prismCodeBlock(text, language = "python"))
