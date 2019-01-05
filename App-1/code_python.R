@@ -478,6 +478,39 @@ fStudenttFull <- function(input){
   )
 }
 
+fMultinomial <- function(input){
+  a_sum <- sum(c(input$multinomial_prob1,
+             input$multinomial_prob2,
+             input$multinomial_prob3))
+  lparams <- c(input$multinomial_prob1,
+               input$multinomial_prob2,
+               input$multinomial_prob3) / a_sum
+  switch(input$property,
+         pdf=fMakeFunctionPaste(mainName="scipy.stats.multinomial.pmf",
+                                params=lparams,
+                                prefixparams="x",
+                                vector_params = T,
+                                python_vector=T,
+                                import="import scipy.stats",
+                                other_params=input$multinomial_size),
+         log_pdf=fMakeFunctionPaste(mainName="float(scipy.stats.multinomial.logpmf",
+                                    params=lparams,
+                                    prefixparams="x",
+                                    vector_params = T,
+                                    python_vector=T,
+                                    import="import scipy.stats",
+                                    other_params=input$multinomial_size,
+                                    end_brace = T),
+         random=fMakeFunctionPaste(mainName="scipy.stats.multinomial.rvs",
+                                   params=lparams,
+                                   postfixparams="n",
+                                   vector_params = T,
+                                   python_vector=T,
+                                   import="import scipy.stats",
+                                   other_params=input$multinomial_size)
+  )
+}
+
 
 fPythoncode <- function(input){
   text <-
@@ -534,7 +567,8 @@ fPythoncode <- function(input){
     } else if(input$distType=="Multivariate"){
       switch(input$dist2,
              MultivariateNormal=fMultivariateNormalFull(input),
-             MultivariateT=fStudenttFull(input)
+             MultivariateT=fStudenttFull(input),
+             Multinomial=fMultinomial(input)
       )
     }
   return(prismCodeBlock(text, language = "python"))

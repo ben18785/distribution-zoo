@@ -84,7 +84,7 @@ rcoronion<-function(d,eta=1){
   rr
 }
 
-fMakeFunctionPaste <- function(mainName, params, prefixparams=NULL,postfixparams=NULL, import=NULL, freeform=NULL, mathematica=FALSE, julia=FALSE, named_arguments=NULL, vector_params=FALSE){
+fMakeFunctionPaste <- function(mainName, params, prefixparams=NULL,postfixparams=NULL, import=NULL, freeform=NULL, mathematica=FALSE, julia=FALSE, named_arguments=NULL, vector_params=FALSE, python_vector=FALSE, other_params=FALSE, end_brace=FALSE){
   if(mathematica){
     a_forward_brace <- "["
     a_backward_brace <- "]"
@@ -95,8 +95,15 @@ fMakeFunctionPaste <- function(mainName, params, prefixparams=NULL,postfixparams
   if(is.null(freeform)){
     if(is.null(named_arguments)){
       common_prose <- paste(sapply(params, function(x) eval(parse(text=x))), collapse=", ")
-      if(vector_params)
-        common_prose <- paste0("c(", common_prose, ")")
+      if(vector_params){
+        if(!python_vector)
+          common_prose <- paste0("c(", common_prose, ")")
+        else{
+          common_prose <- paste0("[", common_prose, "]")
+          if(other_params)
+            common_prose <- paste0(other_params, ", ", common_prose)
+        }
+      }
     }
     else{
       vars <- map_dbl(params,function(x) eval(parse(text=x)))
@@ -134,6 +141,8 @@ fMakeFunctionPaste <- function(mainName, params, prefixparams=NULL,postfixparams
   }else{
     lWords <- mainName
   }
+  if(end_brace)
+    lWords <- paste0(lWords, a_backward_brace)
   return(lWords)
 }
 
