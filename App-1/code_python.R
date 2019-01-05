@@ -573,6 +573,97 @@ fDirichlet <- function(input){
                   python_vector = T)
 }
 
+dLKJ <- paste(
+  "import scipy.special",
+  "import numpy",
+  "def lkj_pdf(x, eta):",
+  "    det = numpy.linalg.det(x)**(eta - 1)",
+  "    a_sum = 0",
+  "    b_sum = 1",
+  "    d = len(x)",
+  "    k = 1",
+  "    for i in range(d - 1):",
+  "        a_sum += (2 * eta - 2 + d - k) * (d - k)",
+  "        b_sum *= scipy.special.beta(eta + 0.5 * (d - k - 1), eta + 0.5 * (d - k - 1))**(d - k)",
+  "        k += 1",
+  "    a_sum = 2**a_sum",
+  "    return a_sum * b_sum * det",
+  "# calling function",
+  sep="\n"
+)
+
+dLKJ_log <- paste(
+  "import scipy.special",
+  "import numpy",
+  "def lkj_logpdf(x, eta):",
+  "    det = numpy.linalg.det(x)**(eta - 1)",
+  "    a_sum = 0",
+  "    b_sum = 1",
+  "    d = len(x)",
+  "    k = 1",
+  "    for i in range(d - 1):",
+  "        a_sum += (2 * eta - 2 + d - k) * (d - k)",
+  "        b_sum *= scipy.special.beta(eta + 0.5 * (d - k - 1), eta + 0.5 * (d - k - 1))**(d - k)",
+  "        k += 1",
+  "    a_sum = 2**a_sum",
+  "    return numpy.log(a_sum) + numpy.log(b_sum) + numpy.log(det)",
+  "# calling function",
+  sep="\n"
+)
+
+rLKJ <- paste(
+  "import scipy.stats",
+  "import numpy",
+  "def lkj_rvs(eta, d, n=1):",
+  "    r_list = []",
+  "    for i in range(n):",
+  "        if d==1:",
+  "            r = numpy.array(1)",
+  "        elif d==2:",
+  "            rho = 2 * scipy.stats.beta.rvs(eta, eta, 0, 1, 1) - 1",
+  "            r = numpy.array([[1, rho], [rho, 1]])",
+  "        else:",
+  "            beta = eta + (d - 2.0) / 2.0",
+  "            u = float(scipy.stats.beta.rvs(beta, beta, 0, 1, 1))",
+  "            r_12 = 2 * u - 1",
+  "            r = numpy.array([[1, r_12], [r_12, 1]])",
+  "            for m in range(1, d - 1):",
+  "                beta -= 0.5",
+  "                y = scipy.stats.beta.rvs((m + 1) / 2.0, beta, 0, 1, 1)",
+  "                a = scipy.stats.norm.rvs(0, 1, (m + 1))",
+  "                anorm = numpy.sqrt(numpy.sum(a**2))",
+  "                u = a / anorm",
+  "                w = numpy.sqrt(y) * u",
+  "                A = scipy.linalg.cholesky(r)",
+  "                z = numpy.matmul(w, A)",
+  "                z.shape = (len(z), 1)",
+  "                r = numpy.block([[r, z], [z.transpose(), 1]])",
+  "        r_list.append(r)",
+  "    return r_list",
+  "# calling function",
+  sep="\n"
+)
+
+fLKJ <- function(input){
+  switch(input$property,
+         pdf=paste(dLKJ,
+                   fMakeFunctionPaste(mainName="lkj_pdf",
+                                      params=input$lkj_eta, 
+                                      prefixparams="x"),
+                   sep="\n"),
+         log_pdf=paste(dLKJ_log,
+                       fMakeFunctionPaste(mainName="lkj_logpdf",
+                                          params=input$lkj_eta, 
+                                          prefixparams="x"),
+                       sep="\n"),
+         random=paste(rLKJ,
+                      fMakeFunctionPaste(mainName="lkj_rvs",
+                                         params=c(input$lkj_eta, input$lkj_dimension),
+                                         postfixparams="n"),
+                      sep="\n")
+  )
+}
+
 fPythoncode <- function(input){
   text <-
     if(input$distType=='Continuous'){
@@ -632,7 +723,8 @@ fPythoncode <- function(input){
              Multinomial=fMultinomial(input),
              Wishart=fWishart(input),
              InverseWishart=fInverseWishart(input),
-             Dirichlet=fDirichlet(input)
+             Dirichlet=fDirichlet(input),
+             LKJ=fLKJ(input)
       )
     }
   return(prismCodeBlock(text, language = "python"))
