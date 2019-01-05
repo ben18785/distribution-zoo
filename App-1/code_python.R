@@ -526,7 +526,26 @@ fWishart <- function(input){
          random=fMakeFunctionPaste(mainName="scipy.stats.wishart.rvs",
                                    params=input$wishart_df,
                                    postfixparams = c("S", "n"),
-                                   import="import scipy.stats\n# note x should be symmetric positive-definite matrix of same dimensions as S (also sym, pos-def)")
+                                   import="import scipy.stats\n# note S should be symmetric positive-definite matrix")
+  )
+}
+
+fInverseWishart <- function(input){
+  switch(input$property,
+         pdf=fMakeFunctionPaste(mainName="scipy.stats.invwishart.pdf",
+                                params=input$inversewishart_df,
+                                prefixparams="x",
+                                postfixparams = "S",
+                                import="import scipy.stats\n# note x should be symmetric positive-definite matrix of same dimensions as S (also sym, pos-def)"),
+         log_pdf=fMakeFunctionPaste(mainName="scipy.stats.invwishart.logpdf",
+                                    params=input$inversewishart_df,
+                                    prefixparams="x",
+                                    postfixparams = "S",
+                                    import="import scipy.stats\n# note x should be symmetric positive-definite matrix of same dimensions as S (also sym, pos-def)"),
+         random=fMakeFunctionPaste(mainName="scipy.stats.invwishart.rvs",
+                                   params=input$inversewishart_df,
+                                   postfixparams = c("S", "n"),
+                                   import="import scipy.stats\n# note S should be symmetric positive-definite matrix")
   )
 }
 
@@ -587,7 +606,8 @@ fPythoncode <- function(input){
              MultivariateNormal=fMultivariateNormalFull(input),
              MultivariateT=fStudenttFull(input),
              Multinomial=fMultinomial(input),
-             Wishart=fWishart(input)
+             Wishart=fWishart(input),
+             InverseWishart=fInverseWishart(input)
       )
     }
   return(prismCodeBlock(text, language = "python"))
