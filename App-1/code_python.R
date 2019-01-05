@@ -395,30 +395,16 @@ dStudentt <- paste(
   "# general Student t",
   "def studentt_pdf(x, mu, sigma, nu):",
   "    p = len(mu)",
-  "    first = scipy.special.gamma(0.5 * (nu + p)) / (scipy.special.gamma(nu / 2.0) * nu**(float(p) / 2) * numpy.pi**(float(p) / 2) * numpy.linalg.det(sigma))",
+  "    first = scipy.special.gamma(0.5 * (nu + p)) / (scipy.special.gamma(nu / 2.0) * nu**(float(p) / 2) * numpy.pi**(float(p) / 2) * numpy.sqrt(numpy.linalg.det(sigma)))",
   "    x_minus_mu = numpy.array(x) - numpy.array(mu)",
   "    sigma_inv = numpy.linalg.inv(sigma)",
   "    second = (1 + (1.0 / float(nu)) * numpy.matmul(numpy.matmul(x_minus_mu, sigma_inv), numpy.transpose(x_minus_mu)))**(-0.5 * (nu + p))",
   "    return first * second",
   "# 2d Student t",
   "def studentt2d_pdf(x, mux, muy, sigmax, sigmay, rho, nu):",
-  "    return studentt_pdf(x, [mux, muy], [[sigmax**2, sigmax * sigmay * rho], [sigmax * sigmay * rho, sigmay**2]], nu)"
-)
-
-dStudentt <- paste(
-  "import scipy.special",
-  "import numpy",
-  "# general Student t",
-  "def studentt_pdf(x, mu, sigma, nu):",
-  "    p = len(mu)",
-  "    first = scipy.special.gamma(0.5 * (nu + p)) / (scipy.special.gamma(nu / 2.0) * nu**(float(p) / 2) * numpy.pi**(float(p) / 2) * numpy.linalg.det(sigma))",
-  "    x_minus_mu = numpy.array(x) - numpy.array(mu)",
-  "    sigma_inv = numpy.linalg.inv(sigma)",
-  "    second = (1 + (1.0 / float(nu)) * numpy.matmul(numpy.matmul(x_minus_mu, sigma_inv), numpy.transpose(x_minus_mu)))**(-0.5 * (nu + p))",
-  "    return first * second",
-  "# 2d Student t",
-  "def studentt2d_pdf(x, mux, muy, sigmax, sigmay, rho, nu):",
-  "    return studentt_pdf(x, [mux, muy], [[sigmax**2, sigmax * sigmay * rho], [sigmax * sigmay * rho, sigmay**2]], nu)"
+  "    return studentt_pdf(x, [mux, muy], [[sigmax**2, sigmax * sigmay * rho], [sigmax * sigmay * rho, sigmay**2]], nu)",
+  "# calling function",
+  sep="\n"
 )
 
 dStudentt_log <- paste(
@@ -427,15 +413,71 @@ dStudentt_log <- paste(
   "# general Student t",
   "def studentt_logpdf(x, mu, sigma, nu):",
   "    p = len(mu)",
-  "    first = scipy.special.gamma(0.5 * (nu + p)) / (scipy.special.gamma(nu / 2.0) * nu**(float(p) / 2) * numpy.pi**(float(p) / 2) * numpy.linalg.det(sigma))",
+  "    first = scipy.special.gamma(0.5 * (nu + p)) / (scipy.special.gamma(nu / 2.0) * nu**(float(p) / 2) * numpy.pi**(float(p) / 2) * numpy.sqrt(numpy.linalg.det(sigma)))",
   "    x_minus_mu = numpy.array(x) - numpy.array(mu)",
   "    sigma_inv = numpy.linalg.inv(sigma)",
   "    second = (1 + (1.0 / float(nu)) * numpy.matmul(numpy.matmul(x_minus_mu, sigma_inv), numpy.transpose(x_minus_mu)))**(-0.5 * (nu + p))",
   "    return numpy.log(first) + numpy.log(second)",
   "# 2d Student t",
   "def studentt2d_logpdf(x, mux, muy, sigmax, sigmay, rho, nu):",
-  "    return studentt_logpdf(x, [mux, muy], [[sigmax**2, sigmax * sigmay * rho], [sigmax * sigmay * rho, sigmay**2]], nu)"
+  "    return studentt_logpdf(x, [mux, muy], [[sigmax**2, sigmax * sigmay * rho], [sigmax * sigmay * rho, sigmay**2]], nu)",
+  "# calling function",
+  sep="\n"
 )
+
+rStudentt <- paste(
+  "import scipy.stats",
+  "import numpy",
+  "# general Student t",
+  "def studentt_rvs(mu, sigma, nu, n=1):",
+  "    y = scipy.stats.multivariate_normal.rvs(numpy.zeros(len(mu)), sigma, n)",
+  "    u = scipy.stats.chi2.rvs(nu, size=n)",
+  "    x = numpy.zeros((n, len(mu)))",
+  "    for i in range(n):",
+  "        x[i, :] = mu + y[i, :] / numpy.sqrt(u[i] / nu)",
+  "    return x",
+  "# 2d Student t",
+  "def studentt2d_rvs(mux, muy, sigmax, sigmay, rho, nu, n=1):",
+  "    return studentt_rvs([mux, muy], [[sigmax**2, sigmax * sigmay * rho], [sigmax * sigmay * rho, sigmay**2]], nu, n)",
+  "# calling function",
+  sep="\n"
+)
+
+fStudenttFull <- function(input){
+  switch(input$property,
+         pdf=paste(dStudentt,
+                   fMakeFunctionPaste(mainName="studentt2d_pdf",
+                                      params=c(input$multivariatet_mux,
+                                               input$multivariatet_muy,
+                                               input$multivariatet_sigmax,
+                                               input$multivariatet_sigmay,
+                                               input$multivariatet_rho,
+                                               input$multivariatet_df),
+                                      prefixparams="x"),
+                   sep="\n"),
+         log_pdf=paste(dStudentt_log,
+                       fMakeFunctionPaste(mainName="studentt2d_logpdf",
+                                          params=c(input$multivariatet_mux,
+                                                   input$multivariatet_muy,
+                                                   input$multivariatet_sigmax,
+                                                   input$multivariatet_sigmay,
+                                                   input$multivariatet_rho,
+                                                   input$multivariatet_df),
+                                          prefixparams="x"),
+                       sep="\n"),
+         random=paste(rStudentt,
+                      fMakeFunctionPaste(mainName="studentt2d_rvs",
+                                         params=c(input$multivariatet_mux,
+                                                  input$multivariatet_muy,
+                                                  input$multivariatet_sigmax,
+                                                  input$multivariatet_sigmay,
+                                                  input$multivariatet_rho,
+                                                  input$multivariatet_df),
+                                         postfixparams="n"),
+                      sep="\n")
+  )
+}
+
 
 fPythoncode <- function(input){
   text <-
@@ -491,7 +533,8 @@ fPythoncode <- function(input){
       )
     } else if(input$distType=="Multivariate"){
       switch(input$dist2,
-             MultivariateNormal=fMultivariateNormalFull(input)      
+             MultivariateNormal=fMultivariateNormalFull(input),
+             MultivariateT=fStudenttFull(input)
       )
     }
   return(prismCodeBlock(text, language = "python"))
