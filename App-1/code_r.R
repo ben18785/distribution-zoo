@@ -212,24 +212,73 @@ dInverseWishartFull <- function(df, input){
                                    postfixparams = "S)"))
 }
 
-dLKJFull <- function(eta, dimensions, input){
-  switch(input$property,
-         pdf=fMakeFunctionPaste(mainName="dlkjcorr",
-                                params=eta, prefixparams="x",
-                                import=paste("library(rethinking)",
-                                             "# note x should be symmetric positive-definite matrix with unit diagonals (i.e. a correlation matrix)",
-                                             sep="\n")),
-         log_pdf=fMakeFunctionPaste(mainName="dlkjcorr",
-                                    params=eta, prefixparams="x",
-                                    import=paste("library(rethinking)",
-                                                 "# note x should be symmetric positive-definite matrix with unit diagonals (i.e. a correlation matrix)",
-                                                 sep="\n"),
-                                    postfixparams = "log=TRUE"),
-         random=paste0(fMakeFunctionPaste(mainName="lapply(seq(1, n, 1), function(i) rlkjcorr",
-                                   params=c(dimensions, eta),
-                                   prefixparams =1,
-                                   import="library(rethinking)"), ")")
-         )
+
+dLKJ_1 <- paste(
+  "dlkj <- function(x, eta, log=FALSE){",
+  "  det_a <- det(x) ^ (eta - 1)",
+  "  a_sum <- 0",
+  "  b_sum <- 1",
+  "  d <- nrow(x)",
+  "  k <- 1",
+  "  for(i in 1:(d - 1)){",
+  "    a_sum <- a_sum + (2 * eta - 2 + d - k) * (d - k)",
+  "    b_sum <- b_sum * (beta(eta + 0.5 * (d - k - 1), eta + 0.5 * (d - k - 1)) ^ (d - k))",
+  "    k <- k + 1",
+  "  }",
+  "  a_sum <- 2 ^ a_sum",
+  "  if(!log)",
+  "    return(a_sum * b_sum * det_a)",
+  "  else",
+  "    return(log(a_sum) + log(b_sum) + log(det_a))",
+  "}",
+  "# calling function",
+  sep="\n"
+)
+
+rLKJ_1 <- paste(
+  "rlkj <- function(n, eta, d){",
+  "  r_list <- vector(length = n, mode = 'list')",
+  "  for(i in 1:n){",
+  "    if(d==1)",
+  "      r = as.array(1)",
+  "    else if(d==2){",
+  "      rho <- 2 * rbeta(1, eta, eta) - 1",
+  "      r <- matrix(c(1, rho, rho, 1), ncol = 2)",
+  "    }else{",
+  "      beta <- eta + (d - 2) / 2",
+  "      u <- rbeta(1, beta, beta)",
+  "      r_12 <- 2 * u - 1",
+  "      r <- matrix(c(1, r_12, r_12, 1), ncol = 2)",
+  "      for(m in 2:(d - 1)){",
+  "        beta <- beta - 0.5",
+  "        y <- rbeta(1, m / 2, beta)",
+  "        a <- rnorm(m)",
+  "        anorm <- sqrt(sum(a^2))",
+  "        u <- a / anorm",
+  "        w <- sqrt(y) * u",
+  "        A <- chol(r)",
+  "        z <- w%*%A",
+  "        r <-cbind(r, t(z))",
+  "        r <- rbind(r, c(z, 1))",
+  "      }",
+  "    }",
+  "    r_list[[i]] <- r",
+  "  }",
+  "  return(r_list)",
+  "}",
+  "# calling function",
+  sep="\n"
+)
+
+fLKJ_1 <- function(eta, d, input){
+  if(input$property!="random")
+    paste(dLKJ_1,
+          fRHelper("lkj", eta, input),
+          sep="\n")
+  else
+    paste(rLKJ_1,
+          fRHelper("lkj", c(eta, d), input),
+          sep="\n")
 }
 
 fRcode <- function(input){
@@ -273,7 +322,7 @@ fRcode <- function(input){
              Multinomial=dMultinomialFull(input$multinomial_prob1, input$multinomial_prob2, input$multinomial_prob3, input),
              Wishart=dWishartFull(input$wishart_df, input),
              InverseWishart=dInverseWishartFull(input$inversewishart_df, input),
-             LKJ=dLKJFull(input$lkj_eta, input$lkj_dimension, input),
+             LKJ=fLKJ_1(input$lkj_eta, input$lkj_dimension, input),
              Dirichlet=if_else(input$dirichlet_dimension==2, fRHelper("dirichlet", c(input$dirichlet_alpha1, input$dirichlet_alpha2), input, vector_params = TRUE, import="library(LaplacesDemon)"),
                                if_else(input$dirichlet_dimension==3, fRHelper("dirichlet", c(input$dirichlet_alpha1, input$dirichlet_alpha2, input$dirichlet_alpha3), input, vector_params = TRUE, import="library(LaplacesDemon)"),
                                        if_else(input$dirichlet_dimension==4, fRHelper("dirichlet", c(input$dirichlet_alpha1, input$dirichlet_alpha2, input$dirichlet_alpha3, input$dirichlet_alpha4), input, vector_params = TRUE, import="library(LaplacesDemon)"), "test")))
