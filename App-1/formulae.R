@@ -361,5 +361,22 @@ fFormulae <- function(input){
                                       helpText(HTML('$$\\color{black}{\\text{where } {}_{3}F_2(a,b,x) \\text{ is the generalised hypergeometric function}}$$')))))
                                         
     )
+    }else if(input$distType=='Multivariate'){
+      switch(input$dist2,
+             MultivariateNormal=withMathJax(h2("Parameters"),
+                                            h2(withMathJax(
+                                              helpText(HTML('$$\\color{black}{\\text{mean vector: }\\mu\\in\\mathbb{R}^k}$$')))),
+                                            h2(withMathJax(
+                                              helpText(HTML('$$\\color{black}{\\text{covariance matrix (positive semidefinite): }\\Sigma\\in\\mathbb{R}^{k\\times k}}$$')))),
+                                            h2("Support"),
+                                            h2("$$x\\in\\mathbb{R}^k$$"),
+                                            h2("Moments"),
+                                            h2("$$\\mathrm{E}(X) = \\mu$$"),
+                                            h2("$$var(X) = \\Sigma$$"),
+                                            h2("Probability mass function (PMF)"),
+                                            h2("$$f(x|\\mu,\\Sigma) = \\frac{1}{(2\\pi)^{k/2}|\\Sigma|^{1/2}} \\text{exp}\\left(-\\frac{1}{2}(x-\\mu)'\\Sigma^{-1}(x-\\mu)\\right)$$"),
+                                            h2("Cumulative distribution function (CDF)"),
+                                            h2("$$\\text{No analytic expression}$$"))
+      )
   }
 }
