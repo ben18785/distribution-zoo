@@ -411,7 +411,7 @@ fFormulae <- function(input){
                                      h2("$$\\mathrm{E}(X_i) = n p_i \\text{, }\\forall i$$"),
                                      h2("$$var(X_i) = n p_i (1-p_i) \\text{, }\\forall i$$"),
                                      h2("$$cov(X_i,X_j) = -n p_i p_j \\text{, }\\forall i\\neq j$$"),
-                                     h2("Probability density function (PDF)"),
+                                     h2("Probability mass function (PMF)"),
                                      h2("$$f(x_1,x_2,...,x_d|n,p_1,p_2,...,p_d) = \\frac{n!}{x_1 ! x_2 ! ... x_d !} p_1^{x_1} p_2^{x_2}...p_d^{x_d} $$"),
                                      h2("Cumulative distribution function (CDF)"),
                                      h2("$$\\text{No analytic expression}$$")),
@@ -428,7 +428,7 @@ fFormulae <- function(input){
                                  h2("Probability density function (PDF)"),
                                  h2("$$f(X|\\nu,\\Psi) = |X|^{(\\nu-d-1)/2} \\text{exp}(-\\text{tr}(\\Psi^{-1} X)/2)\\frac{1}{2^{\\nu d/2} |\\Psi|^{d/2} \\Gamma_d(\\nu/2)}$$"),
                                  h2(withMathJax(
-                                   helpText(HTML('$$\\color{black}{\\text{where }  \\Gamma_d(\\nu/2) \\text{ is the multivariate gamma function}}$$')))),
+                                   helpText(HTML('$$\\color{black}{\\text{where }  \\Gamma_p(a)=\\pi^{p(p-1)/4}\\prod_{j=1}^{p}\\Gamma(a+(1-j)/2) \\text{ is the multivariate gamma function}}$$')))),
                                  h2("Cumulative distribution function (CDF)"),
                                  h2("$$\\text{No analytic expression}$$")),
              InverseWishart=withMathJax(h2("Parameters"),
