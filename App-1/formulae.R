@@ -468,7 +468,22 @@ fFormulae <- function(input){
                              h2(withMathJax(
                                helpText(HTML('$$\\color{black}{\\text{where }  B(u,v) \\text{ is beta function}}$$')))),
                              h2("Cumulative distribution function (CDF)"),
-                             h2("$$\\text{No analytic expression}$$"))
+                             h2("$$\\text{No analytic expression}$$")),
+             Dirichlet=withMathJax(h2("Parameters"),
+                                   h2(withMathJax(
+                                     helpText(HTML('$$\\color{black}{\\text{category concentrations: }\\alpha_1,\\alpha_2,...,\\alpha_d \\text{ where } d\\geq 2}$$')))),
+                                   h2("Support"),
+                                   h2("$$x_i\\in(0,1) \\text{, }\\forall i \\text{ such that } \\sum_{i=1}^{d}x_i=1$$"),
+                                   h2("Moments"),
+                                   h2("$$\\mathrm{E}(X_i) = \\frac{\\alpha_i}{\\sum_{k=1}^{d}\\alpha_k}$$"),
+                                   h2("$$var(X_i) = \\frac{\\alpha_i(\\alpha_0-\\alpha_i)}{\\alpha_0^2(\\alpha_0+1)}\\text{, where }\\alpha_0=\\sum_{i=1}^{d}\\alpha_i$$"),
+                                   h2("$$$$"),
+                                   h2("$$cov(X_i,X_j) = -\\frac{\\alpha_i \\alpha_j}{\\alpha_0^2(\\alpha_0+1)} \\text{, where }i\\neq j$$"),
+                                   h2("Probability density function (PDF)"),
+                                   h2("$$f(x_1,x_2,...,x_d|\\alpha_1,\\alpha_2,...,\\alpha_d) = \\frac{1}{B(\\alpha_1,\\alpha_2,...,\\alpha_d)}\\prod_{i=1}^{d}x_i^{\\alpha_i-1}$$"),
+                                   h2("$$\\text{where }B(\\alpha_1,\\alpha_2,...,\\alpha_d)=\\frac{\\prod_{i=1}^{d}\\Gamma(\\alpha_i)}{\\Gamma(\\sum_{i=1}^{d}\\alpha_i)}$$"),
+                                   h2("Cumulative distribution function (CDF)"),
+                                   h2("$$\\text{No analytic expression}$$"))
       )
   }
 }
