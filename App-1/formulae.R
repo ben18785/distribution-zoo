@@ -12,10 +12,10 @@ fFormulae <- function(input){
                               h2("Moments"),
                               h2("$$\\mathrm{E}(X) = \\mu$$"),
                               h2("$$var(X) = \\sigma^2$$"),
-                              h2("PDF"),
+                              h2("Probability density function (PDF)"),
                               h2("$$f(x|\\mu,\\sigma) = \\frac{1}{\\sqrt{2\\pi\\sigma^2}} 
                                  \\text{exp}\\left(-\\frac{(x-\\mu)^2}{2\\sigma^2}\\right)$$"),
-                              h2("CDF"),
+                              h2("Cumulative distribution function (CDF)"),
                               h2("$$F(x|\\mu,\\sigma) = \\frac{1}{2}\\left[1+\\text{erf}\\left(\\frac{x-\\mu}{\\sigma\\sqrt{2}}\\right)\\right]$$"),
                               h2(withMathJax(
                                 helpText(HTML('$$\\color{black}{\\text{where }\\text{erf}(x) = \\frac{2}{\\sqrt{\\pi}}\\int_{0}^{x} e^{-t^2}\\mathrm{d}t \\text{ is the error function}}$$'))))),
@@ -26,13 +26,13 @@ fFormulae <- function(input){
                                h2("Moments"),
                                h2("$$\\mathrm{E}(X) = \\frac{1}{2}(a + b)$$"),
                                h2("$$var(X) = \\frac{1}{12}(b - a)$$"),
-                               h2("PDF"),
+                               h2("Probability density function (PDF)"),
                                h2(withMathJax(
                                  helpText(HTML('$$\\color{black}{f(x|a,b)=\\begin{cases}
                                                0,  & \\text{if }x \\not\\in [a,b] \\\\
                                                \\frac{1}{b-a}, & \\text{if } x \\in [a,b]
                                                \\end{cases}\\!}$$')))),
-                               h2("CDF"),
+                               h2("Cumulative distribution function (CDF)"),
                                h2(withMathJax(
                                  helpText(HTML('$$\\color{black}{F(x|a,b)=\\begin{cases}
                                                0,  & \\text{if }x < a \\\\
@@ -50,9 +50,9 @@ fFormulae <- function(input){
                                  h2("Moments"),
                                  h2("$$\\mathrm{E}(X) = \\text{exp}(\\mu + \\frac{\\sigma^2}{2})$$"),
                                  h2("$$var(X) = \\left[\\text{exp}(\\sigma^2) - 1\\right] \\text{exp}(2\\mu + \\sigma^2)$$"),
-                                 h2("PDF"),
+                                 h2("Probability density function (PDF)"),
                                  h2("$$f(x|\\mu,\\sigma) = \\frac{1}{x \\sigma \\sqrt{2 \\pi}} \\text{exp}\\left(-\\frac{(\\text{log } x - \\mu)^2}{2\\sigma^2}\\right)$$"),
-                                 h2("CDF"),
+                                 h2("Cumulative distribution function (CDF)"),
                                  h2("$$F(x|\\mu,\\sigma) = \\frac{1}{2} + \\frac{1}{2} \\text{erf}\\left(\\frac{\\text{log } x - \\mu}{\\sqrt{2} \\sigma}\\right)$$")),
            Exponential=withMathJax(h2("Parameters"),
                                    h2(withMathJax(
@@ -62,9 +62,9 @@ fFormulae <- function(input){
                                    h2("Moments"),
                                    h2("$$\\mathrm{E}(X) = \\frac{1}{\\lambda}$$"),
                                    h2("$$var(X) = \\frac{1}{\\lambda^2}$$"),
-                                   h2("PDF"),
+                                   h2("Probability density function (PDF)"),
                                    h2("$$f(x|\\lambda) = \\lambda e^{-\\lambda x}$$"),
-                                   h2("CDF"),
+                                   h2("Cumulative distribution function (CDF)"),
                                    h2("$$F(x|\\lambda) = 1 - e^{-\\lambda x}$$")),
            Gamma=withMathJax(h2("Parameters"),
                              h2(withMathJax(
@@ -76,11 +76,11 @@ fFormulae <- function(input){
                              h2("Moments"),
                              h2("$$\\mathrm{E}(X) = \\frac{\\alpha}{\\beta}$$"),
                              h2("$$var(X) = \\frac{\\alpha}{\\beta^2}$$"),
-                             h2("PDF"),
+                             h2("Probability density function (PDF)"),
                              h2("$$f(x|\\alpha, \\beta) = \\frac{\\beta^\\alpha}{\\Gamma(\\alpha)} x^{\\alpha-1} e^{-\\beta x}$$"),
                              h2(withMathJax(
                                helpText(HTML('$$\\color{black}{\\text{where }\\Gamma(w) \\text{ is the gamma function}}$$')))),
-                             h2("CDF"),
+                             h2("Cumulative distribution function (CDF)"),
                              h2("$$F(x|\\alpha, \\beta) = \\frac{1}{\\Gamma(\\alpha)} \\gamma(\\alpha, \\beta x)$$"),
                              h2(withMathJax(
                                helpText(HTML('$$\\color{black}{\\text{where }\\gamma(w,v) \\text{ is the incomplete lower gamma function}}$$'))))),
@@ -96,12 +96,12 @@ fFormulae <- function(input){
                          h2("Moments"),
                          h2("$$\\mathrm{E}(X) = \\mu, \\text{ if }\\nu>1 \\text{ otherwise undefined}$$"),
                          h2("$$var(X) = \\frac{\\nu \\sigma^2}{\\nu-2}$$"),
-                         h2("PDF"),
+                         h2("Probability density function (PDF)"),
                          h2("$$f(x|\\mu, \\sigma, \\nu) = \\frac{\\left(\\frac{\\nu }{\\nu +\\frac{(x-\\mu )^2}{\\sigma ^2}}\\right)^{\\frac{\\nu
                             +1}{2}}}{\\sqrt{\\nu } \\sigma  B\\left(\\frac{\\nu }{2},\\frac{1}{2}\\right)}$$"),
                          h2(withMathJax(
                            helpText(HTML('$$\\color{black}{\\text{where } B(u,v) \\text{ is the beta function}}$$')))),
-                         h2("CDF"),
+                         h2("Cumulative distribution function (CDF)"),
                          h2(withMathJax(
                            helpText(HTML('$$\\color{black}{F(\\mu, \\sigma, \\nu) = \\begin{cases}
                                          \\frac{1}{2} I_{\\frac{\\nu  \\sigma ^2}{(x-\\mu )^2+\\nu  \\sigma \
@@ -126,11 +126,11 @@ fFormulae <- function(input){
                             h2("Moments"),
                             h2("$$\\mathrm{E}(X) = \\frac{\\alpha}{\\alpha + \\beta}$$"),
                             h2("$$var(X) = \\frac{\\alpha\\beta}{(\\alpha + \\beta)^2 (\\alpha + \\beta + 1)}$$"),
-                            h2("PDF"),
+                            h2("Probability density function (PDF)"),
                             h2("$$f(x|\\alpha, \\beta) = \\frac{x^{\\alpha-1} (1-x)^{\\beta-1}}{B(\\alpha,\\beta)}$$"),
                             h2(withMathJax(
                               helpText(HTML('$$\\color{black}{\\text{where } B(u,v) \\text{ is the beta function}}$$')))),
-                            h2("CDF"),
+                            h2("Cumulative distribution function (CDF)"),
                             h2("$$F(x|\\alpha,\\beta) = I_x(\\alpha,\\beta)$$"),
                             h2(withMathJax(
                               helpText(HTML('$$\\color{black}{\\text{where } I_w(u,v) \\text{ is the regularised beta function: }}$$')))),
@@ -149,9 +149,9 @@ fFormulae <- function(input){
                                 helpText(HTML('$$\\color{black}{\\mathrm{E}(X) = \\text{ undefined}}$$')))),
                               h2(withMathJax(
                                 helpText(HTML('$$\\color{black}{var(X) = \\text{ undefined}}$$')))),
-                              h2("PDF"),
+                              h2("Probability density function (PDF)"),
                               h2("$$f(x|\\mu, \\sigma) = \\frac{1}{\\pi\\sigma\\left[1 + \\left(\\frac{x-\\mu}{\\sigma}\\right)^2\\right]}$$"),
-                              h2("CDF"),
+                              h2("Cumulative distribution function (CDF)"),
                               h2("$$F(x|\\mu, \\sigma) = \\frac{1}{2} + \\frac{1}{\\pi}\\text{arctan}\\left(\\frac{x-\\mu}{\\sigma}\\right)$$")),
            HalfCauchy=withMathJax(h2("Parameters"),
                                   h2(withMathJax(
@@ -165,14 +165,14 @@ fFormulae <- function(input){
                                     helpText(HTML('$$\\color{black}{\\mathrm{E}(X) = \\text{ undefined}}$$')))),
                                   h2(withMathJax(
                                     helpText(HTML('$$\\color{black}{var(X) = \\text{ undefined}}$$')))),
-                                  h2("PDF"),
+                                  h2("Probability density function (PDF)"),
                                   h2("$$f(x|\\mu, \\sigma) = \\begin{cases}
                                      \\frac{1}{\\pi  \\sigma  \\left(\\frac{\\text{arctan}\\left(\\frac{\\mu \
                                      }{\\sigma }\\right)}{\\pi }+\\frac{1}{2}\\right) \
                                      \\left(\\frac{(x-\\mu )^2}{\\sigma ^2}+1\\right)}, & x>0 \\\\
                                      0, & \\text{Otherwise}
                                      \\end{cases}$$"),
-                                  h2("CDF"),
+                                  h2("Cumulative distribution function (CDF)"),
                                   h2("$$F(x|\\mu, \\sigma) = \\begin{cases}
                                      \\frac{\\frac{\\text{arctan}\\left(\\frac{\\mu }{\\sigma \
                                      }\\right)}{\\pi }+\\frac{\\text{arctan}\\left(\\frac{x-\\mu }{\\sigma \
@@ -197,7 +197,7 @@ fFormulae <- function(input){
                                        \\frac{\\beta ^2}{(\\alpha -2) (\\alpha -1)^2}, & \\alpha >2 \\\\
                                        \\text{Indeterminate}, & \\text{Otherwise}
                                        \\end{cases}$$"),
-                                    h2("PDF"),
+                                    h2("Probability density function (PDF)"),
                                     h2("$$f(x|\\alpha, \\beta) = \\begin{cases}
                                        \\frac{e^{-\\frac{\\beta }{x}} \\left(\\frac{\\beta \
                                        }{x}\\right)^{\\alpha }}{x \\Gamma (\\alpha )}, & x>0 \\\\
@@ -205,7 +205,7 @@ fFormulae <- function(input){
                                        \\end{cases}$$"),
                                     h2(withMathJax(
                                       helpText(HTML('$$\\color{black}{\\text{where }\\Gamma(w) \\text{ is the gamma function}}$$')))),
-                                    h2("CDF"),
+                                    h2("Cumulative distribution function (CDF)"),
                                     h2("$$F(x|\\alpha, \\beta) = \\begin{cases}
                                        Q\\left(\\alpha ,\\frac{\\beta }{x}\\right), & x>0 \\\\
                                        0, & \\text{Otherwise}
@@ -225,11 +225,11 @@ fFormulae <- function(input){
                                    h2("Moments"),
                                    h2("$$\\mathrm{E}(X) = \\text{ No simple analytic expression}$$"),
                                    h2("$$var(X) = \\text{ No simple analytic expression}$$"),
-                                   h2("PDF"),
+                                   h2("Probability density function (PDF)"),
                                    h2("$$f(x|\\mu,\\sigma) = \\frac{1}{\\sigma\\sqrt{2\\pi}} \\text{exp}\\left(-\\frac{(\\text{logit } x - \\mu)^2}{2\\sigma^2}\\right) \\frac{1}{x(1-x)}$$"),
                                    h2(withMathJax(
                                      helpText(HTML('$$\\color{black}{\\text{where }\\text{logit } x = \\text{log}\\left(\\frac{x}{1-x}\\right)}$$')))),
-                                   h2("CDF"),
+                                   h2("Cumulative distribution function (CDF)"),
                                    h2("$$F(x|\\mu,\\sigma) = \\frac{1}{2} + \\frac{1}{2} \\text{erf}\\left(\\frac{\\text{logit } x - \\mu}{\\sqrt{2} \\sigma}\\right)$$"),
                                    h2(withMathJax(
                                      helpText(HTML('$$\\color{black}{\\text{where }\\text{erf}(x) = \\frac{2}{\\sqrt{\\pi}}\\int_{0}^{x} e^{-t^2}\\mathrm{d}t \\text{ is the error function}}$$'))))),
@@ -247,14 +247,14 @@ fFormulae <- function(input){
                                        \\frac{2}{(\\nu - 2)^2 (\\nu - 4)}, & \\nu >4 \\\\
                                        \\text{Indeterminate}, & \\text{Otherwise}
                                        \\end{cases}$$"),
-                                    h2("PDF"),
+                                    h2("Probability density function (PDF)"),
                                     h2("$$f(x|\\nu) = \\begin{cases}
                                        \\frac{2^{-\\nu/2}}{\\Gamma(\\nu/2)} x^{-\\nu/2 - 1} e^{-1/(2x)}, & x>0 \\\\
                                        0, & \\text{Otherwise}
                                        \\end{cases}$$"),
                                     h2(withMathJax(
                                       helpText(HTML('$$\\color{black}{\\text{where }\\Gamma(w) \\text{ is the gamma function}}$$')))),
-                                    h2("CDF"),
+                                    h2("Cumulative distribution function (CDF)"),
                                     h2("$$F(x|\\nu) = \\begin{cases}
                                        \\frac{\\Gamma\\left(\\frac{\\nu}{2},\\frac{1}{2x}\\right)}{\\Gamma(\\frac{\\nu}{2})}, & x>0 \\\\
                                        0, & \\text{Otherwise}
