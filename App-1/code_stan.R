@@ -33,6 +33,34 @@ fStanHelper_discrete <- function(mainName, params, input, import=NULL,
                                         vector_params=vector_params))
 }
 
+dhalfcauchy_stan <- function(input){
+  switch(input$property,
+         pdf=paste0("exp(", 
+                   fMakeFunctionPaste_stan(mainName = "cauchy_lpdf",
+                                     params=c(input$halfcauchy_location, input$halfcauchy_scale),
+                                     prefixparams="x"),
+                   " - ",
+                   fMakeFunctionPaste_stan(mainName = "cauchy_lccdf",
+                                           params=c(input$halfcauchy_location, input$halfcauchy_scale),
+                                           prefixparams="0"),
+                   ")"),
+         log_pdf=paste(
+                       fMakeFunctionPaste_stan(mainName = "cauchy_lpdf",
+                                               params=c(input$halfcauchy_location, input$halfcauchy_scale),
+                                               prefixparams="x"),
+                       " - ",
+                       fMakeFunctionPaste_stan(mainName = "cauchy_lccdf",
+                                               params=c(input$halfcauchy_location, input$halfcauchy_scale),
+                                               prefixparams="0")),
+         random=paste(
+           paste0("real x_rng = cauchy_rng(", input$halfcauchy_location, ", ", input$halfcauchy_scale, ");"),
+           "while(x_rng < 0)",
+           paste0("  real x_rng = cauchy_rng(", input$halfcauchy_location, ", ", input$halfcauchy_scale, ");"),
+         sep = "\n")
+                   
+  )
+}
+
 
 fStanCode <- function(input){
   text <-
@@ -46,7 +74,7 @@ fStanCode <- function(input){
              t=fStanHelper("student_t", c(input$t_nu, input$t_mu,input$t_sigma), input),
              Beta=fStanHelper("beta", c(input$beta_a,input$beta_b), input),
              Cauchy=fStanHelper("cauchy", c(input$cauchy_location,input$cauchy_scale), input),
-             HalfCauchy=fStanHelper(input$halfcauchy_location, input$halfcauchy_scale, input),
+             HalfCauchy=dhalfcauchy_stan(input),
              InverseGamma=fStanHelper("inv_gamma", c(input$inversegamma_shape, 1.0 / input$inversegamma_scale), input),
              InverseChiSquared=fStanHelper("inv_chi_square", input$inversechisquared_df, input),
              LogitNormal=fStanHelper("logitnorm", c(input$logitnormal_mu, input$logitnormal_sigma), input))
