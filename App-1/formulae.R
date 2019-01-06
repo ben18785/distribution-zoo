@@ -459,20 +459,14 @@ fFormulae <- function(input){
                              h2(withMathJax(
                                helpText(HTML('$$\\color{black}{\\text{dimensions: } d}$$')))),
                              h2("Support"),
-                             h2("$$X\\in\\mathbb{R}^{k\\times k} \\text{ (also positive definite) }$$"),
+                             h2("$$X\\in\\mathbb{R}^{d\\times d} \\text{ (with unit diagonals and positive definite) }$$"),
                              h2("Moments"),
-                             h2("$$\\mathrm{E}(X) = \\begin{cases}
-                                \\frac{\\Psi}{\\nu-k-1}, & \\nu>k+1 \\\\
-                                \\text{undefined}, & \\text{otherwise}
-                                \\end{cases}$$"),
-                             h2("$$var(X_{i,j}) = \\begin{cases}
-                                \\frac{(\\nu-k+1)\\Psi_{i,j}^2 + (\\nu-k-1)\\Psi_{i,i}\\Psi_{i,j}}{(\\nu-k)(\\nu-k-1)^2(\\nu-k-3)}, & \\nu>k+3 \\\\
-                                \\text{undefined}, & \\text{otherwise}
-                                \\end{cases}$$"),
+                             h2("$$\\mathrm{E}(X) = \\text{No simple expression}$$"),
+                             h2("$$var(X_{i,j}) = \\text{No simple expression}$$"),
                              h2("Probability density function (PDF)"),
-                             h2("$$f(X|\\nu,\\Psi) = |\\Psi|^{k/2} |X|^{-(\\nu+k+1)/2} \\text{exp}(-\\text{tr}(\\Psi X^{-1})/2)\\frac{1}{2^{\\nu k/2}  \\Gamma_k(\\nu/2)}$$"),
+                             h2("$$f(X|\\nu,d) = 2^{\\sum_{k=1}^{d-1}(2\\eta-2+d-k)(d-k)}\\prod_{k=1}^{d-1}\\left[B(\\eta+0.5(d-k-1),\\eta+0.5(d-k-1))\\right]^{d-k} |X|^{\\eta-1}$$"),
                              h2(withMathJax(
-                               helpText(HTML('$$\\color{black}{\\text{where }  \\Gamma_k(\\nu/2) \\text{ is the multivariate gamma function}}$$')))),
+                               helpText(HTML('$$\\color{black}{\\text{where }  B(u,v) \\text{ is beta function}}$$')))),
                              h2("Cumulative distribution function (CDF)"),
                              h2("$$\\text{No analytic expression}$$"))
       )
