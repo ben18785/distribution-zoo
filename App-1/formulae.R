@@ -111,7 +111,7 @@ fFormulae <- function(input){
                                          \\text{Otherwise}
                                          \\end{cases}}$$')))),
                          h2(withMathJax(
-                           helpText(HTML('$$\\color{black}{\\text{where } I_w(u,v) \\text{ is the regularised beta function: }}$$')))),
+                           helpText(HTML('$$\\color{black}{\\text{where } I_w(u,v) \\text{ is the regularised incomplete beta function: }}$$')))),
                          h2('$$I_w(u,v) = \\frac{B(w; u, v)}{B(u,v)}$$'),
                          h2(withMathJax(
                            helpText(HTML('$$\\color{black}{\\text{where } B(w; u,v) \\text{ is the incomplete beta function and } B(u,v) \\text{ is the complete beta function}}$$'))))
@@ -315,7 +315,28 @@ fFormulae <- function(input){
                                h2(withMathJax(
                                  helpText(HTML('$$\\color{black}{\\text{is the upper incomplete gamma function}}$$')))),
                                h2(withMathJax(
-                                 helpText(HTML('$$\\color{black}{\\text{and } \\lfloor x \\rfloor \\text{ is the floor function (rounds down reals to nearest smaller integer)}}$$')))))
+                                 helpText(HTML('$$\\color{black}{\\text{and } \\lfloor x \\rfloor \\text{ is the floor function (rounds down reals to nearest smaller integer)}}$$'))))),
+           NegativeBinomial=withMathJax(h2("Parameters"),
+                                        h2(withMathJax(
+                                          helpText(HTML('$$\\color{black}{\\text{rate: }\\lambda\\in\\mathbb{R}^+}$$')))),
+                                        h2(withMathJax(
+                                          helpText(HTML('$$\\color{black}{\\text{inverse-dispersion: }\\kappa\\in\\mathbb{R}^+}$$')))),
+                                        h2("Support"),
+                                        h2("$$x\\in\\{0,1,2,3,...\\}$$"),
+                                        h2("Moments"),
+                                        h2("$$\\mathrm{E}(X) = \\lambda$$"),
+                                        h2("$$var(X) = \\lambda + \\frac{\\lambda^2}{\\kappa}$$"),
+                                        h2("Probability mass function (PMF)"),
+                                        h2("$$f(x|\\lambda,\\kappa) = \\frac{\\Gamma(x+\\kappa)}{x!\\Gamma(\\kappa+1)}\\left(\\frac{\\lambda}{\\lambda+\\kappa}\\right)^x \\left(\\frac{\\kappa}{\\lambda+\\kappa}\\right)^\\kappa$$"),
+                                        h2("Cumulative distribution function (CDF)"),
+                                        h2("$$F(x|\\lambda) = I_{\\frac{\\kappa}{\\kappa+\\lambda}}(\\kappa,1+\\lfloor x \\rfloor)$$"),
+                                        h2(withMathJax(
+                                          helpText(HTML('$$\\color{black}{\\text{where } I_w(u,v) \\text{ is the regularised incomplete beta function: }}$$')))),
+                                        h2('$$I_w(u,v) = \\frac{B(w; u, v)}{B(u,v)}$$'),
+                                        h2(withMathJax(
+                                          helpText(HTML('$$\\color{black}{\\text{where } B(w; u,v) \\text{ is the incomplete beta function and } B(u,v) \\text{ is the complete beta function}}$$'))))
+           )
+                                        
     )
   }
 }
