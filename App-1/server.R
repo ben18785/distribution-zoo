@@ -227,14 +227,7 @@ shinyServer(function(input, output) {
   
   output$language <- renderUI({
      selectInput("language", "Language",
-                 c("BUGS"="BUGS",
-                   "C++"="Cplusplus",
-                   "C"="C",
-                   "Fortran"="Fortran",
-                   "JAGS"="JAGS",
-                   "Julia"="Julia",
-                   "Mathematica"="Mathematica",
-                   "Matlab"="Matlab",
+                 c(
                    "Python"="Python",
                    "R"="R",
                    "Stan"="Stan"
