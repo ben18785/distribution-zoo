@@ -297,7 +297,25 @@ fFormulae <- function(input){
                                 h2(withMathJax(
                                   helpText(HTML('$$\\color{black}{\\text{where }I_{1-p}(n-x,x+1)=(n-x)\\binom{n}{x}\\int_{0}^{1-p}t^{n-x-1}(1-t)^x \\mathrm{d}t}$$')))),
                                 h2(withMathJax(
-                                  helpText(HTML('$$\\color{black}{\\text{is the regularised incomplete beta function}}$$')))))
+                                  helpText(HTML('$$\\color{black}{\\text{is the regularised incomplete beta function}}$$'))))),
+           Poisson=withMathJax(h2("Parameters"),
+                               h2(withMathJax(
+                                 helpText(HTML('$$\\color{black}{\\text{rate: }\\lambda\\in\\mathbb{R}^+}$$')))),
+                               h2("Support"),
+                               h2("$$x\\in\\{0,1,2,3,...\\}$$"),
+                               h2("Moments"),
+                               h2("$$\\mathrm{E}(X) = \\lambda$$"),
+                               h2("$$var(X) = \\lambda$$"),
+                               h2("Probability mass function (PMF)"),
+                               h2("$$f(x|\\lambda) = \\frac{\\lambda^x e^{-\\lambda}}{x!}$$"),
+                               h2("Cumulative distribution function (CDF)"),
+                               h2("$$F(x|\\lambda) = \\frac{\\Gamma(\\lfloor k+1\\rfloor,\\lambda)}{\\lfloor k \\rfloor !}$$"),
+                               h2(withMathJax(
+                                 helpText(HTML('$$\\color{black}{\\text{where }\\Gamma(u,v)=\\int_{v}^{\\infty}t^{u-1}e^{-t} \\mathrm{d}t}$$')))),
+                               h2(withMathJax(
+                                 helpText(HTML('$$\\color{black}{\\text{is the upper incomplete gamma function}}$$')))),
+                               h2(withMathJax(
+                                 helpText(HTML('$$\\color{black}{\\text{and } \\lfloor x \\rfloor \\text{ is the floor function (rounds down reals to nearest smaller integer)}}$$')))))
     )
   }
 }
