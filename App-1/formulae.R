@@ -191,11 +191,11 @@ fFormulae <- function(input){
                                     h2("Moments"),
                                     h2("$$\\mathrm{E}(X) = \\begin{cases}
                                        \\frac{\\beta }{\\alpha -1}, & \\alpha >1 \\\\
-                                       \\text{Indeterminate}, & \\text{Otherwise}
+                                       \\text{undefined}, & \\text{Otherwise}
                                        \\end{cases}$$"),
                                     h2("$$var(X) = \\begin{cases}
                                        \\frac{\\beta ^2}{(\\alpha -2) (\\alpha -1)^2}, & \\alpha >2 \\\\
-                                       \\text{Indeterminate}, & \\text{Otherwise}
+                                       \\text{undefined}, & \\text{Otherwise}
                                        \\end{cases}$$"),
                                     h2("Probability density function (PDF)"),
                                     h2("$$f(x|\\alpha, \\beta) = \\begin{cases}
@@ -240,11 +240,11 @@ fFormulae <- function(input){
                                     h2("Moments"),
                                     h2("$$\\mathrm{E}(X) = \\begin{cases}
                                        \\frac{1}{\\nu -2}, & \\nu >2 \\\\
-                                       \\text{Indeterminate}, & \\text{Otherwise}
+                                       \\text{undefined}, & \\text{Otherwise}
                                        \\end{cases}$$"),
                                     h2("$$var(X) = \\begin{cases}
                                        \\frac{2}{(\\nu - 2)^2 (\\nu - 4)}, & \\nu >4 \\\\
-                                       \\text{Indeterminate}, & \\text{Otherwise}
+                                       \\text{undefined}, & \\text{Otherwise}
                                        \\end{cases}$$"),
                                     h2("Probability density function (PDF)"),
                                     h2("$$f(x|\\nu) = \\begin{cases}
