@@ -262,5 +262,24 @@ fFormulae <- function(input){
                                     h2(withMathJax(
                                       helpText(HTML('$$\\color{black}{\\text{where }\\Gamma(w,v) \\text{ is the incomplete gamma function}}$$')))))
            )
+  }else if(input$distType=='Discrete'){
+    switch(input$dist1,
+           Bernoulli=withMathJax(h2("Parameters"),
+                                 h2(withMathJax(
+                                   helpText(HTML('$$\\color{black}{\\text{probability: }p\\in[0,1]}$$')))),
+                                 h2("Support"),
+                                 h2("$$x\\in\\{0,1\\}$$"),
+                                 h2("Moments"),
+                                 h2("$$\\mathrm{E}(X) = p$$"),
+                                 h2("$$var(X) = p(1-p)$$"),
+                                 h2("Probability mass function (PMF)"),
+                                 h2("$$f(x|p) = p^x(1-p)^{1-x}$$"),
+                                 h2("Cumulative distribution function (CDF)"),
+                                 h2("$$F(x|p) = \\begin{cases}
+                                    0, & x<0 \\\\
+                                    1 - p, & 0\\leq x \\leq 1 \\\\
+                                    1, & x>1
+                                    \\end{cases}$$"))
+    )
   }
 }
