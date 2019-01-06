@@ -373,10 +373,32 @@ fFormulae <- function(input){
                                             h2("Moments"),
                                             h2("$$\\mathrm{E}(X) = \\mu$$"),
                                             h2("$$var(X) = \\Sigma$$"),
-                                            h2("Probability mass function (PMF)"),
+                                            h2("Probability density function (PDF)"),
                                             h2("$$f(x|\\mu,\\Sigma) = \\frac{1}{(2\\pi)^{k/2}|\\Sigma|^{1/2}} \\text{exp}\\left(-\\frac{1}{2}(x-\\mu)'\\Sigma^{-1}(x-\\mu)\\right)$$"),
                                             h2("Cumulative distribution function (CDF)"),
-                                            h2("$$\\text{No analytic expression}$$"))
+                                            h2("$$\\text{No analytic expression}$$")),
+             MultivariateT=withMathJax(h2("Parameters"),
+                                       h2(withMathJax(
+                                         helpText(HTML('$$\\color{black}{\\text{mode vector: }\\mu\\in\\mathbb{R}^k}$$')))),
+                                       h2(withMathJax(
+                                         helpText(HTML('$$\\color{black}{\\text{shape matrix (positive semidefinite): }\\Sigma\\in\\mathbb{R}^{k\\times k}}$$')))),
+                                       h2(withMathJax(
+                                         helpText(HTML('$$\\color{black}{\\text{degrees of freedom: }\\nu\\in\\mathbb{R}^+}$$')))),
+                                       h2("Support"),
+                                       h2("$$x\\in\\mathbb{R}^k$$"),
+                                       h2("Moments"),
+                                       h2("$$\\mathrm{E}(X) = \\begin{cases}
+                                          \\mu, & \\nu>1 \\\\
+                                          \\text{undefined}, & \\text{otherwise}
+                                          \\end{cases}$$"),
+                                       h2("$$var(X) = \\begin{cases}
+                                          \\frac{\\nu}{\\nu-2}\\Sigma, & \\nu>2 \\\\
+                                          \\text{undefined}, & \\text{otherwise}
+                                          \\end{cases}$$"),
+                                       h2("Probability density function (PDF)"),
+                                       h2("$$f(x|\\mu,\\Sigma, \\nu) = \\frac{\\Gamma((\\nu+k)/2)}{\\Gamma(\\nu/2)\\nu^{k/2}\\pi^{k/2}|\\Sigma|^{1/2}}\\left[1+\\frac{1}{\\nu}(x-\\mu)'\\Sigma^{-1}(x-\\mu)\\right]^{-(\\nu+k)/2}$$"),
+                                       h2("Cumulative distribution function (CDF)"),
+                                       h2("$$\\text{No analytic expression}$$"))
       )
   }
 }
