@@ -279,7 +279,25 @@ fFormulae <- function(input){
                                     0, & x<0 \\\\
                                     1 - p, & 0\\leq x \\leq 1 \\\\
                                     1, & x>1
-                                    \\end{cases}$$"))
+                                    \\end{cases}$$")),
+           Binomial=withMathJax(h2("Parameters"),
+                                h2(withMathJax(
+                                  helpText(HTML('$$\\color{black}{\\text{number of trials: }p\\in\\{0,1,2,3,...\\}}$$')))),
+                                h2(withMathJax(
+                                  helpText(HTML('$$\\color{black}{\\text{probability: }p\\in[0,1]}$$')))),
+                                h2("Support"),
+                                h2("$$x\\in\\{0,1,2,3,...,n\\}$$"),
+                                h2("Moments"),
+                                h2("$$\\mathrm{E}(X) = np$$"),
+                                h2("$$var(X) = np(1-p)$$"),
+                                h2("Probability mass function (PMF)"),
+                                h2("$$f(x|n,p) = \\binom{n}{x} p^x(1-p)^{n-x}$$"),
+                                h2("Cumulative distribution function (CDF)"),
+                                h2("$$F(x|n,p) = I_{1-p}(n-x,1+x)$$"),
+                                h2(withMathJax(
+                                  helpText(HTML('$$\\color{black}{\\text{where }I_{1-p}(n-x,x+1)=(n-x)\\binom{n}{x}\\int_{0}^{1-p}t^{n-x-1}(1-t)^x \\mathrm{d}t}$$')))),
+                                h2(withMathJax(
+                                  helpText(HTML('$$\\color{black}{\\text{is the regularised incomplete beta function}}$$')))))
     )
   }
 }
