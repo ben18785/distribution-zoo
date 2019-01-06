@@ -61,6 +61,31 @@ dhalfcauchy_stan <- function(input){
   )
 }
 
+dlogitnormal_stan <- paste(
+  "functions{",
+  "  real logitnormal_lpdf(real x, real mu, real sigma){",
+  "    real temp = (logit(x) - mu)^2 / (2 * sigma^2);",
+  "    if(sigma < 0)",
+  "      return(log(0));",
+  "    return(-log(sigma) - 0.5 * log(2 * pi()) - temp - log(x) - log(1.0 - x));",
+  "  }",
+  "}",
+  "// calling function",
+  sep="\n"
+)
+
+flogitnormal_stan <- function(input){
+  switch(input$property,
+         pdf=paste(dlogitnormal_stan,
+                   fStanHelper("logitnormal", c(input$logitnormal_mu, input$logitnormal_sigma), input, end_brace = T),
+                   sep = "\n"),
+         log_pdf=paste(dlogitnormal_stan,
+                       fStanHelper("logitnormal", c(input$logitnormal_mu, input$logitnormal_sigma), input),
+                       sep = "\n"),
+         random=paste0("inv_logit(normal_rng(", input$logitnormal_mu, ", ", input$logitnormal_sigma, "))")
+  )
+}
+
 
 fStanCode <- function(input){
   text <-
@@ -77,7 +102,7 @@ fStanCode <- function(input){
              HalfCauchy=dhalfcauchy_stan(input),
              InverseGamma=fStanHelper("inv_gamma", c(input$inversegamma_shape, 1.0 / input$inversegamma_scale), input),
              InverseChiSquared=fStanHelper("inv_chi_square", input$inversechisquared_df, input),
-             LogitNormal=fStanHelper("logitnorm", c(input$logitnormal_mu, input$logitnormal_sigma), input))
+             LogitNormal=flogitnormal_stan(input))
     }else if(input$distType=='Discrete'){
       switch(input$dist1,
              Bernoulli=fStanHelper_discrete("bernoulli", input$bernoulli_prob, input),
