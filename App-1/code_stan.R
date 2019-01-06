@@ -124,7 +124,7 @@ fStanCode <- function(input){
                                     input$multivariatet_sigmay,
                                     input$multivariatet_rho, 
                                     input$multivariatet_df, input),
-             Multinomial=dMultinomialFull(input$multinomial_prob1, input$multinomial_prob2, input$multinomial_prob3, input),
+             Multinomial=fStanHelper_discrete("multinomial", c(input$multinomial_prob1, input$multinomial_prob2, input$multinomial_prob3), input, vector_params = T),
              Wishart=dWishartFull(input$wishart_df, input),
              InverseWishart=dInverseWishartFull(input$inversewishart_df, input),
              LKJ=fLKJ_1(input$lkj_eta, input$lkj_dimension, input),
