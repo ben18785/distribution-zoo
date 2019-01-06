@@ -210,7 +210,7 @@ fFormulae <- function(input){
                                        0, & \\text{Otherwise}
                                        \\end{cases}$$"),
                                     h2(withMathJax(
-                                      helpText(HTML('$$\\color{black}{\\text{where }Q(w,v) \\text{ is the regularised gamma function}}:$$')))),
+                                      helpText(HTML('$$\\color{black}{\\text{where }Q(w,v) \\text{ is the regularised gamma function:}}$$')))),
                                     h2("$$Q(w,v) = \\frac{\\Gamma(u,v)}{\\Gamma(u)}$$"),
                                     h2(withMathJax(
                                       helpText(HTML('$$\\color{black}{\\text{where }\\Gamma(w,v)=\\int_{v}^{\\infty} t^{w-1} e^{-t}\\mathrm{d}t \\text{ is the upper incomplete gamma function}}$$'))))),
@@ -259,7 +259,7 @@ fFormulae <- function(input){
                                        0, & \\text{Otherwise}
                                        \\end{cases}$$"),
                                     h2(withMathJax(
-                                      helpText(HTML('$$\\color{black}{\\text{where }\\Gamma(w,v) \\text{ is the incomplete gamma function}}$$')))))
+                                      helpText(HTML('$$\\color{black}{\\text{where }\\Gamma(w,v)=\\int_{v}^{\\infty} t^{w-1} e^{-t}\\mathrm{d}t \\text{ is the incomplete upper gamma function}}$$')))))
            )
   }else if(input$distType=='Discrete'){
     switch(input$dist1,
