@@ -398,7 +398,23 @@ fFormulae <- function(input){
                                        h2("Probability density function (PDF)"),
                                        h2("$$f(x|\\mu,\\Sigma, \\nu) = \\frac{\\Gamma((\\nu+k)/2)}{\\Gamma(\\nu/2)\\nu^{k/2}\\pi^{k/2}|\\Sigma|^{1/2}}\\left[1+\\frac{1}{\\nu}(x-\\mu)'\\Sigma^{-1}(x-\\mu)\\right]^{-(\\nu+k)/2}$$"),
                                        h2("Cumulative distribution function (CDF)"),
-                                       h2("$$\\text{No analytic expression}$$"))
+                                       h2("$$\\text{No analytic expression}$$")),
+             Multinomial=withMathJax(h2("Parameters"),
+                                     h2(withMathJax(
+                                       helpText(HTML('$$\\color{black}{\\text{number of trials: }n\\in\\{0,1,2,3,...\\}}$$')))),
+                                     h2(withMathJax(
+                                       helpText(HTML('$$\\color{black}{\\text{event probabilities: } p_1, p_2,...,p_k \\text{ such that } \\sum_{i=1}^{k}p_i=1}$$')))),
+                                     h2("Support"),
+                                     h2("$$x_i\\in\\{0,1,2,3,...,n\\} \\text{, }\\forall i$$"),
+                                     h2("$$\\text{such that } \\sum_{i=1}^{k}x_i=n$$"),
+                                     h2("Moments"),
+                                     h2("$$\\mathrm{E}(X_i) = n p_i \\text{, }\\forall i$$"),
+                                     h2("$$var(X_i) = n p_i (1-p_i) \\text{, }\\forall i$$"),
+                                     h2("$$cov(X_i,X_j) = -n p_i p_j \\text{, }\\forall i\\neq j$$"),
+                                     h2("Probability density function (PDF)"),
+                                     h2("$$f(x_1,x_2,...,x_k|n,p_1,p_2,...,p_k) = \\frac{n!}{x_1 ! x_2 ! ... x_k !} p_1^{x_1} p_2^{x_2}...p_k^{x_k} $$"),
+                                     h2("Cumulative distribution function (CDF)"),
+                                     h2("$$\\text{No analytic expression}$$"))
       )
   }
 }
