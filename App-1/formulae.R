@@ -464,9 +464,9 @@ fFormulae <- function(input){
                              h2("$$\\mathrm{E}(X) = \\text{No simple expression}$$"),
                              h2("$$var(X_{i,j}) = \\text{No simple expression}$$"),
                              h2("Probability density function (PDF)"),
-                             h2("$$f(X|\\nu,d) = 2^{\\sum_{k=1}^{d-1}(2\\eta-2+d-k)(d-k)}\\prod_{k=1}^{d-1}\\left[B(\\eta+0.5(d-k-1),\\eta+0.5(d-k-1))\\right]^{d-k} |X|^{\\eta-1}$$"),
+                             h2("$$f(X|\\nu,d) = \\left(2^{\\sum_{k=1}^{d-1}(2\\eta-2+d-k)(d-k)}\\prod_{k=1}^{d-1}\\left[B(\\eta+0.5(d-k-1),\\eta+0.5(d-k-1))\\right]^{d-k}\\right) |X|^{\\eta-1}$$"),
                              h2(withMathJax(
-                               helpText(HTML('$$\\color{black}{\\text{where }  B(u,v) \\text{ is beta function}}$$')))),
+                               helpText(HTML('$$\\color{black}{\\text{where }  B(u,v)=\\int_{0}^{1}t^{u-1}(1-t)^{v-1}\\mathrm{d}t \\text{ is beta function}}$$')))),
                              h2("Cumulative distribution function (CDF)"),
                              h2("$$\\text{No analytic expression}$$")),
              Dirichlet=withMathJax(h2("Parameters"),
