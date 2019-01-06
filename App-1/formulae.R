@@ -310,9 +310,7 @@ fFormulae <- function(input){
                                h2("Cumulative distribution function (CDF)"),
                                h2("$$F(x|\\lambda) = \\frac{\\Gamma(\\lfloor k+1\\rfloor,\\lambda)}{\\lfloor k \\rfloor !}$$"),
                                h2(withMathJax(
-                                 helpText(HTML('$$\\color{black}{\\text{where }\\Gamma(u,v)=\\int_{v}^{\\infty}t^{u-1}e^{-t} \\mathrm{d}t}$$')))),
-                               h2(withMathJax(
-                                 helpText(HTML('$$\\color{black}{\\text{is the upper incomplete gamma function}}$$')))),
+                                 helpText(HTML('$$\\color{black}{\\text{where }\\Gamma(u,v)=\\int_{v}^{\\infty}t^{u-1}e^{-t} \\mathrm{d}t \\text{ is the upper incomplete gamma function}}$$')))),
                                h2(withMathJax(
                                  helpText(HTML('$$\\color{black}{\\text{and } \\lfloor x \\rfloor \\text{ is the floor function (rounds down reals to nearest smaller integer)}}$$'))))),
            NegativeBinomial=withMathJax(h2("Parameters"),
@@ -328,12 +326,15 @@ fFormulae <- function(input){
                                         h2("Probability mass function (PMF)"),
                                         h2("$$f(x|\\lambda,\\kappa) = \\frac{\\Gamma(x+\\kappa)}{x!\\Gamma(\\kappa+1)}\\left(\\frac{\\lambda}{\\lambda+\\kappa}\\right)^x \\left(\\frac{\\kappa}{\\lambda+\\kappa}\\right)^\\kappa$$"),
                                         h2("Cumulative distribution function (CDF)"),
-                                        h2("$$F(x|\\lambda,\\kappa) = I_{\\frac{\\kappa}{\\kappa+\\lambda}}(\\kappa,1+\\lfloor x \\rfloor)$$"),
+                                        h2("$$F(x|\\lambda,\\kappa) = \\begin{cases}
+                                       I_{\\frac{\\kappa}{\\kappa+\\lambda}}(\\kappa,1+\\lfloor x \\rfloor), & x\\geq 0 \\\\
+                                           0, & \\text{Otherwise}
+                                           \\end{cases}$$"),
                                         h2(withMathJax(
                                           helpText(HTML('$$\\color{black}{\\text{where } I_w(u,v) \\text{ is the regularised incomplete beta function: }}$$')))),
                                         h2('$$I_w(u,v) = \\frac{B(w; u, v)}{B(u,v)}$$'),
                                         h2(withMathJax(
-                                          helpText(HTML('$$\\color{black}{\\text{where } B(w; u,v) \\text{ is the incomplete beta function and } B(u,v) \\text{ is the complete beta function}}$$'))))),
+                                          helpText(HTML('$$\\color{black}{\\text{where } B(w; u,v)=\\int_{0}^{w}t^{u-1}(1-t)^{v-1}\\mathrm{d}t \\text{ is the incomplete beta function and } B(u,v)=\\int_{0}^{1}t^{u-1}(1-t)^{v-1}\\mathrm{d}t \\text{ is the complete beta function}}$$'))))),
            BetaBinomial=withMathJax(h2("Parameters"),
                                     h2(withMathJax(
                                       helpText(HTML('$$\\color{black}{\\text{number of trials: }n\\in\\{0,1,2,3,...\\}}$$')))),
