@@ -125,7 +125,7 @@ fStanCode <- function(input){
                                     input$multivariatet_rho, 
                                     input$multivariatet_df, input),
              Multinomial=fStanHelper_discrete("multinomial", c(input$multinomial_prob1, input$multinomial_prob2, input$multinomial_prob3), input, vector_params = T),
-             Wishart=fStanHelper("wishart", c(input$wishart_df, input),
+             Wishart=fStanHelper("wishart", input$wishart_df, input),
              InverseWishart=dInverseWishartFull(input$inversewishart_df, input),
              LKJ=fLKJ_1(input$lkj_eta, input$lkj_dimension, input),
              Dirichlet=if_else(input$dirichlet_dimension==2, fStanHelper("dirichlet", c(input$dirichlet_alpha1, input$dirichlet_alpha2), input, vector_params = TRUE, import="library(LaplacesDemon)"),
