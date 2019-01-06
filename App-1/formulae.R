@@ -282,7 +282,7 @@ fFormulae <- function(input){
                                     \\end{cases}$$")),
            Binomial=withMathJax(h2("Parameters"),
                                 h2(withMathJax(
-                                  helpText(HTML('$$\\color{black}{\\text{number of trials: }p\\in\\{0,1,2,3,...\\}}$$')))),
+                                  helpText(HTML('$$\\color{black}{\\text{number of trials: }n\\in\\{0,1,2,3,...\\}}$$')))),
                                 h2(withMathJax(
                                   helpText(HTML('$$\\color{black}{\\text{probability: }p\\in[0,1]}$$')))),
                                 h2("Support"),
@@ -329,13 +329,36 @@ fFormulae <- function(input){
                                         h2("Probability mass function (PMF)"),
                                         h2("$$f(x|\\lambda,\\kappa) = \\frac{\\Gamma(x+\\kappa)}{x!\\Gamma(\\kappa+1)}\\left(\\frac{\\lambda}{\\lambda+\\kappa}\\right)^x \\left(\\frac{\\kappa}{\\lambda+\\kappa}\\right)^\\kappa$$"),
                                         h2("Cumulative distribution function (CDF)"),
-                                        h2("$$F(x|\\lambda) = I_{\\frac{\\kappa}{\\kappa+\\lambda}}(\\kappa,1+\\lfloor x \\rfloor)$$"),
+                                        h2("$$F(x|\\lambda,\\kappa) = I_{\\frac{\\kappa}{\\kappa+\\lambda}}(\\kappa,1+\\lfloor x \\rfloor)$$"),
                                         h2(withMathJax(
                                           helpText(HTML('$$\\color{black}{\\text{where } I_w(u,v) \\text{ is the regularised incomplete beta function: }}$$')))),
                                         h2('$$I_w(u,v) = \\frac{B(w; u, v)}{B(u,v)}$$'),
                                         h2(withMathJax(
-                                          helpText(HTML('$$\\color{black}{\\text{where } B(w; u,v) \\text{ is the incomplete beta function and } B(u,v) \\text{ is the complete beta function}}$$'))))
-           )
+                                          helpText(HTML('$$\\color{black}{\\text{where } B(w; u,v) \\text{ is the incomplete beta function and } B(u,v) \\text{ is the complete beta function}}$$'))))),
+           BetaBinomial=withMathJax(h2("Parameters"),
+                                    h2(withMathJax(
+                                      helpText(HTML('$$\\color{black}{\\text{number of trials: }n\\in\\{0,1,2,3,...\\}}$$')))),
+                                    h2(withMathJax(
+                                      helpText(HTML('$$\\color{black}{\\text{shape 1: }\\alpha\\in\\mathbb{R}^+}$$')))),
+                                    h2(withMathJax(
+                                      helpText(HTML('$$\\color{black}{\\text{shape 2: }\\beta\\in\\mathbb{R}^+}$$')))),
+                                    h2("Support"),
+                                    h2("$$x\\in\\{0,1,2,3,...,n\\}$$"),
+                                    h2("Moments"),
+                                    h2("$$\\mathrm{E}(X) = \\frac{n\\alpha}{\\alpha+\\beta}$$"),
+                                    h2("$$var(X) = \\frac{n\\alpha\\beta(\\alpha+\\beta+n)}{(\\alpha+\\beta)^2(\\alpha+\\beta+1)}$$"),
+                                    h2("Probability mass function (PMF)"),
+                                    h2("$$f(x|n,\\alpha,\\beta) = \\binom{n}{x}\\frac{B(x+\\alpha,n-x+\\beta)}{B(\\alpha,\\beta)}$$"),
+                                    h2(withMathJax(
+                                      helpText(HTML('$$\\color{black}{\\text{where } B(u,v) \\text{ is the beta function }}$$')))),
+                                    h2("Cumulative distribution function (CDF)"),
+                                    h2("$$F(x|n,\\alpha,\\beta) = \\begin{cases}
+                                    0, & x<0 \\\\
+                                       \\binom{x}{x}\\frac{B(x+\\alpha,n-x+\\beta)}{B(\\alpha,\\beta)} {}_{3}F_2(1,-x,n-x+\\beta;n-x-1,1-x-\\alpha;1), & 0\\leq x \\leq n \\\\
+                                       1, & x>n
+                                       \\end{cases}$$"),
+                                    h2(withMathJax(
+                                      helpText(HTML('$$\\color{black}{\\text{where } {}_{3}F_2(a,b,x) \\text{ is the generalised hypergeometric function}}$$')))))
                                         
     )
   }
