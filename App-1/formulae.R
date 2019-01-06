@@ -414,7 +414,23 @@ fFormulae <- function(input){
                                      h2("Probability density function (PDF)"),
                                      h2("$$f(x_1,x_2,...,x_k|n,p_1,p_2,...,p_k) = \\frac{n!}{x_1 ! x_2 ! ... x_k !} p_1^{x_1} p_2^{x_2}...p_k^{x_k} $$"),
                                      h2("Cumulative distribution function (CDF)"),
-                                     h2("$$\\text{No analytic expression}$$"))
+                                     h2("$$\\text{No analytic expression}$$")),
+             Wishart=withMathJax(h2("Parameters"),
+                                 h2(withMathJax(
+                                   helpText(HTML('$$\\color{black}{\\text{degrees of freedom: }\\nu>k-1 \\text{ where } k \\text{ is dimensions of scale matrix}}$$')))),
+                                 h2(withMathJax(
+                                   helpText(HTML('$$\\color{black}{\\text{scale matrix (positive definite): } \\Psi\\in\\mathbb{R}^{k\\times k}}$$')))),
+                                 h2("Support"),
+                                 h2("$$X\\in\\mathbb{R}^{k\\times k} \\text{ (also positive definite) }$$"),
+                                 h2("Moments"),
+                                 h2("$$\\mathrm{E}(X) = \\nu \\Psi$$"),
+                                 h2("$$var(X_{i,j}) = \\nu(\\Psi_{i,j}^2+\\Psi_{i,i}\\Psi_{j,j})$$"),
+                                 h2("Probability density function (PDF)"),
+                                 h2("$$f(X|\\nu,\\Psi) = |X|^{(\\nu-k-1)/2} \\text{exp}(-\\text{tr}(\\Psi^{-1} X)/2)\\frac{1}{2^{\\nu k/2} |\\Psi|^{k/2} \\Gamma_k(\\nu/2)}$$"),
+                                 h2(withMathJax(
+                                   helpText(HTML('$$\\color{black}{\\text{where }  \\Gamma_k(\\nu/2) \\text{ is the multivariate gamma function}}$$')))),
+                                 h2("Cumulative distribution function (CDF)"),
+                                 h2("$$\\text{No analytic expression}$$"))
       )
   }
 }
