@@ -365,27 +365,27 @@ fFormulae <- function(input){
       switch(input$dist2,
              MultivariateNormal=withMathJax(h2("Parameters"),
                                             h2(withMathJax(
-                                              helpText(HTML('$$\\color{black}{\\text{mean vector: }\\mu\\in\\mathbb{R}^k}$$')))),
+                                              helpText(HTML('$$\\color{black}{\\text{mean vector: }\\mu\\in\\mathbb{R}^d}$$')))),
                                             h2(withMathJax(
-                                              helpText(HTML('$$\\color{black}{\\text{covariance matrix (positive semidefinite): }\\Sigma\\in\\mathbb{R}^{k\\times k}}$$')))),
+                                              helpText(HTML('$$\\color{black}{\\text{covariance matrix (positive semidefinite): }\\Sigma\\in\\mathbb{R}^{d\\times d}}$$')))),
                                             h2("Support"),
-                                            h2("$$x\\in\\mathbb{R}^k$$"),
+                                            h2("$$x\\in\\mathbb{R}^d$$"),
                                             h2("Moments"),
                                             h2("$$\\mathrm{E}(X) = \\mu$$"),
                                             h2("$$var(X) = \\Sigma$$"),
                                             h2("Probability density function (PDF)"),
-                                            h2("$$f(x|\\mu,\\Sigma) = \\frac{1}{(2\\pi)^{k/2}|\\Sigma|^{1/2}} \\text{exp}\\left(-\\frac{1}{2}(x-\\mu)'\\Sigma^{-1}(x-\\mu)\\right)$$"),
+                                            h2("$$f(x|\\mu,\\Sigma) = \\frac{1}{(2\\pi)^{d/2}|\\Sigma|^{1/2}} \\text{exp}\\left(-\\frac{1}{2}(x-\\mu)'\\Sigma^{-1}(x-\\mu)\\right)$$"),
                                             h2("Cumulative distribution function (CDF)"),
                                             h2("$$\\text{No analytic expression}$$")),
              MultivariateT=withMathJax(h2("Parameters"),
                                        h2(withMathJax(
-                                         helpText(HTML('$$\\color{black}{\\text{mode vector: }\\mu\\in\\mathbb{R}^k}$$')))),
+                                         helpText(HTML('$$\\color{black}{\\text{mode vector: }\\mu\\in\\mathbb{R}^d}$$')))),
                                        h2(withMathJax(
-                                         helpText(HTML('$$\\color{black}{\\text{shape matrix (positive semidefinite): }\\Sigma\\in\\mathbb{R}^{k\\times k}}$$')))),
+                                         helpText(HTML('$$\\color{black}{\\text{shape matrix (positive semidefinite): }\\Sigma\\in\\mathbb{R}^{d\\times d}}$$')))),
                                        h2(withMathJax(
                                          helpText(HTML('$$\\color{black}{\\text{degrees of freedom: }\\nu\\in\\mathbb{R}^+}$$')))),
                                        h2("Support"),
-                                       h2("$$x\\in\\mathbb{R}^k$$"),
+                                       h2("$$x\\in\\mathbb{R}^d$$"),
                                        h2("Moments"),
                                        h2("$$\\mathrm{E}(X) = \\begin{cases}
                                           \\mu, & \\nu>1 \\\\
@@ -396,68 +396,68 @@ fFormulae <- function(input){
                                           \\text{undefined}, & \\text{otherwise}
                                           \\end{cases}$$"),
                                        h2("Probability density function (PDF)"),
-                                       h2("$$f(x|\\mu,\\Sigma, \\nu) = \\frac{\\Gamma((\\nu+k)/2)}{\\Gamma(\\nu/2)\\nu^{k/2}\\pi^{k/2}|\\Sigma|^{1/2}}\\left[1+\\frac{1}{\\nu}(x-\\mu)'\\Sigma^{-1}(x-\\mu)\\right]^{-(\\nu+k)/2}$$"),
+                                       h2("$$f(x|\\mu,\\Sigma, \\nu) = \\frac{\\Gamma((\\nu+d)/2)}{\\Gamma(\\nu/2)\\nu^{d/2}\\pi^{d/2}|\\Sigma|^{1/2}}\\left[1+\\frac{1}{\\nu}(x-\\mu)'\\Sigma^{-1}(x-\\mu)\\right]^{-(\\nu+d)/2}$$"),
                                        h2("Cumulative distribution function (CDF)"),
                                        h2("$$\\text{No analytic expression}$$")),
              Multinomial=withMathJax(h2("Parameters"),
                                      h2(withMathJax(
                                        helpText(HTML('$$\\color{black}{\\text{number of trials: }n\\in\\{0,1,2,3,...\\}}$$')))),
                                      h2(withMathJax(
-                                       helpText(HTML('$$\\color{black}{\\text{event probabilities: } p_1, p_2,...,p_k \\text{ such that } \\sum_{i=1}^{k}p_i=1}$$')))),
+                                       helpText(HTML('$$\\color{black}{\\text{event probabilities: } p_1, p_2,...,p_d \\text{ such that } \\sum_{i=1}^{d}p_i=1}$$')))),
                                      h2("Support"),
                                      h2("$$x_i\\in\\{0,1,2,3,...,n\\} \\text{, }\\forall i$$"),
-                                     h2("$$\\text{such that } \\sum_{i=1}^{k}x_i=n$$"),
+                                     h2("$$\\text{such that } \\sum_{i=1}^{d}x_i=n$$"),
                                      h2("Moments"),
                                      h2("$$\\mathrm{E}(X_i) = n p_i \\text{, }\\forall i$$"),
                                      h2("$$var(X_i) = n p_i (1-p_i) \\text{, }\\forall i$$"),
                                      h2("$$cov(X_i,X_j) = -n p_i p_j \\text{, }\\forall i\\neq j$$"),
                                      h2("Probability density function (PDF)"),
-                                     h2("$$f(x_1,x_2,...,x_k|n,p_1,p_2,...,p_k) = \\frac{n!}{x_1 ! x_2 ! ... x_k !} p_1^{x_1} p_2^{x_2}...p_k^{x_k} $$"),
+                                     h2("$$f(x_1,x_2,...,x_d|n,p_1,p_2,...,p_d) = \\frac{n!}{x_1 ! x_2 ! ... x_d !} p_1^{x_1} p_2^{x_2}...p_d^{x_d} $$"),
                                      h2("Cumulative distribution function (CDF)"),
                                      h2("$$\\text{No analytic expression}$$")),
              Wishart=withMathJax(h2("Parameters"),
                                  h2(withMathJax(
-                                   helpText(HTML('$$\\color{black}{\\text{degrees of freedom: }\\nu>k-1 \\text{ where } k \\text{ is dimensions of scale matrix}}$$')))),
+                                   helpText(HTML('$$\\color{black}{\\text{degrees of freedom: }\\nu>d-1 \\text{ where } d \\text{ is dimensions of scale matrix}}$$')))),
                                  h2(withMathJax(
-                                   helpText(HTML('$$\\color{black}{\\text{scale matrix (positive definite): } \\Psi\\in\\mathbb{R}^{k\\times k}}$$')))),
+                                   helpText(HTML('$$\\color{black}{\\text{scale matrix (positive definite): } \\Psi\\in\\mathbb{R}^{d\\times d}}$$')))),
                                  h2("Support"),
-                                 h2("$$X\\in\\mathbb{R}^{k\\times k} \\text{ (also positive definite) }$$"),
+                                 h2("$$X\\in\\mathbb{R}^{d\\times d} \\text{ (also positive definite) }$$"),
                                  h2("Moments"),
                                  h2("$$\\mathrm{E}(X) = \\nu \\Psi$$"),
                                  h2("$$var(X_{i,j}) = \\nu(\\Psi_{i,j}^2+\\Psi_{i,i}\\Psi_{j,j})$$"),
                                  h2("Probability density function (PDF)"),
-                                 h2("$$f(X|\\nu,\\Psi) = |X|^{(\\nu-k-1)/2} \\text{exp}(-\\text{tr}(\\Psi^{-1} X)/2)\\frac{1}{2^{\\nu k/2} |\\Psi|^{k/2} \\Gamma_k(\\nu/2)}$$"),
+                                 h2("$$f(X|\\nu,\\Psi) = |X|^{(\\nu-d-1)/2} \\text{exp}(-\\text{tr}(\\Psi^{-1} X)/2)\\frac{1}{2^{\\nu d/2} |\\Psi|^{d/2} \\Gamma_d(\\nu/2)}$$"),
                                  h2(withMathJax(
-                                   helpText(HTML('$$\\color{black}{\\text{where }  \\Gamma_k(\\nu/2) \\text{ is the multivariate gamma function}}$$')))),
+                                   helpText(HTML('$$\\color{black}{\\text{where }  \\Gamma_d(\\nu/2) \\text{ is the multivariate gamma function}}$$')))),
                                  h2("Cumulative distribution function (CDF)"),
                                  h2("$$\\text{No analytic expression}$$")),
              InverseWishart=withMathJax(h2("Parameters"),
                                  h2(withMathJax(
-                                   helpText(HTML('$$\\color{black}{\\text{degrees of freedom: }\\nu>k-1 \\text{ where } k \\text{ is dimensions of scale matrix}}$$')))),
+                                   helpText(HTML('$$\\color{black}{\\text{degrees of freedom: }\\nu>d-1 \\text{ where } d \\text{ is dimensions of scale matrix}}$$')))),
                                  h2(withMathJax(
-                                   helpText(HTML('$$\\color{black}{\\text{scale matrix (positive definite): } \\Psi\\in\\mathbb{R}^{k\\times k}}$$')))),
+                                   helpText(HTML('$$\\color{black}{\\text{scale matrix (positive definite): } \\Psi\\in\\mathbb{R}^{d\\times d}}$$')))),
                                  h2("Support"),
-                                 h2("$$X\\in\\mathbb{R}^{k\\times k} \\text{ (also positive definite) }$$"),
+                                 h2("$$X\\in\\mathbb{R}^{d\\times d} \\text{ (also positive definite) }$$"),
                                  h2("Moments"),
                                  h2("$$\\mathrm{E}(X) = \\begin{cases}
-                                          \\frac{\\Psi}{\\nu-k-1}, & \\nu>k+1 \\\\
+                                          \\frac{\\Psi}{\\nu-d-1}, & \\nu>d+1 \\\\
                                     \\text{undefined}, & \\text{otherwise}
                                     \\end{cases}$$"),
                                  h2("$$var(X_{i,j}) = \\begin{cases}
-                                          \\frac{(\\nu-k+1)\\Psi_{i,j}^2 + (\\nu-k-1)\\Psi_{i,i}\\Psi_{i,j}}{(\\nu-k)(\\nu-k-1)^2(\\nu-k-3)}, & \\nu>k+1 \\\\
+                                          \\frac{(\\nu-d+1)\\Psi_{i,j}^2 + (\\nu-d-1)\\Psi_{i,i}\\Psi_{i,j}}{(\\nu-d)(\\nu-d-1)^2(\\nu-d-3)}, & \\nu>d+1 \\\\
                                     \\text{undefined}, & \\text{otherwise}
                                     \\end{cases}$$"),
                                  h2("Probability density function (PDF)"),
-                                 h2("$$f(X|\\nu,\\Psi) = |\\Psi|^{k/2} |X|^{-(\\nu+k+1)/2} \\text{exp}(-\\text{tr}(\\Psi X^{-1})/2)\\frac{1}{2^{\\nu k/2}  \\Gamma_k(\\nu/2)}$$"),
+                                 h2("$$f(X|\\nu,\\Psi) = |\\Psi|^{d/2} |X|^{-(\\nu+d+1)/2} \\text{exp}(-\\text{tr}(\\Psi X^{-1})/2)\\frac{1}{2^{\\nu d/2}  \\Gamma_d(\\nu/2)}$$"),
                                  h2(withMathJax(
-                                   helpText(HTML('$$\\color{black}{\\text{where }  \\Gamma_k(\\nu/2) \\text{ is the multivariate gamma function}}$$')))),
+                                   helpText(HTML('$$\\color{black}{\\text{where }  \\Gamma_d(\\nu/2) \\text{ is the multivariate gamma function}}$$')))),
                                  h2("Cumulative distribution function (CDF)"),
                                  h2("$$\\text{No analytic expression}$$")),
              LKJ=withMathJax(h2("Parameters"),
                              h2(withMathJax(
-                               helpText(HTML('$$\\color{black}{\\text{degrees of freedom: }\\nu \\in \\mathbb{R}^k}$$')))),
+                               helpText(HTML('$$\\color{black}{\\text{degrees of freedom: }\\nu \\in \\mathbb{R}^+}$$')))),
                              h2(withMathJax(
-                               helpText(HTML('$$\\color{black}{\\text{scale matrix (positive definite): } \\Psi\\in\\mathbb{R}^{k\\times k}}$$')))),
+                               helpText(HTML('$$\\color{black}{\\text{dimensions: } d}$$')))),
                              h2("Support"),
                              h2("$$X\\in\\mathbb{R}^{k\\times k} \\text{ (also positive definite) }$$"),
                              h2("Moments"),
