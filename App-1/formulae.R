@@ -430,7 +430,51 @@ fFormulae <- function(input){
                                  h2(withMathJax(
                                    helpText(HTML('$$\\color{black}{\\text{where }  \\Gamma_k(\\nu/2) \\text{ is the multivariate gamma function}}$$')))),
                                  h2("Cumulative distribution function (CDF)"),
-                                 h2("$$\\text{No analytic expression}$$"))
+                                 h2("$$\\text{No analytic expression}$$")),
+             InverseWishart=withMathJax(h2("Parameters"),
+                                 h2(withMathJax(
+                                   helpText(HTML('$$\\color{black}{\\text{degrees of freedom: }\\nu>k-1 \\text{ where } k \\text{ is dimensions of scale matrix}}$$')))),
+                                 h2(withMathJax(
+                                   helpText(HTML('$$\\color{black}{\\text{scale matrix (positive definite): } \\Psi\\in\\mathbb{R}^{k\\times k}}$$')))),
+                                 h2("Support"),
+                                 h2("$$X\\in\\mathbb{R}^{k\\times k} \\text{ (also positive definite) }$$"),
+                                 h2("Moments"),
+                                 h2("$$\\mathrm{E}(X) = \\begin{cases}
+                                          \\frac{\\Psi}{\\nu-k-1}, & \\nu>k+1 \\\\
+                                    \\text{undefined}, & \\text{otherwise}
+                                    \\end{cases}$$"),
+                                 h2("$$var(X_{i,j}) = \\begin{cases}
+                                          \\frac{(\\nu-k+1)\\Psi_{i,j}^2 + (\\nu-k-1)\\Psi_{i,i}\\Psi_{i,j}}{(\\nu-k)(\\nu-k-1)^2(\\nu-k-3)}, & \\nu>k+1 \\\\
+                                    \\text{undefined}, & \\text{otherwise}
+                                    \\end{cases}$$"),
+                                 h2("Probability density function (PDF)"),
+                                 h2("$$f(X|\\nu,\\Psi) = |\\Psi|^{k/2} |X|^{-(\\nu+k+1)/2} \\text{exp}(-\\text{tr}(\\Psi X^{-1})/2)\\frac{1}{2^{\\nu k/2}  \\Gamma_k(\\nu/2)}$$"),
+                                 h2(withMathJax(
+                                   helpText(HTML('$$\\color{black}{\\text{where }  \\Gamma_k(\\nu/2) \\text{ is the multivariate gamma function}}$$')))),
+                                 h2("Cumulative distribution function (CDF)"),
+                                 h2("$$\\text{No analytic expression}$$")),
+             LKJ=withMathJax(h2("Parameters"),
+                             h2(withMathJax(
+                               helpText(HTML('$$\\color{black}{\\text{degrees of freedom: }\\nu \\in \\mathbb{R}^k}$$')))),
+                             h2(withMathJax(
+                               helpText(HTML('$$\\color{black}{\\text{scale matrix (positive definite): } \\Psi\\in\\mathbb{R}^{k\\times k}}$$')))),
+                             h2("Support"),
+                             h2("$$X\\in\\mathbb{R}^{k\\times k} \\text{ (also positive definite) }$$"),
+                             h2("Moments"),
+                             h2("$$\\mathrm{E}(X) = \\begin{cases}
+                                \\frac{\\Psi}{\\nu-k-1}, & \\nu>k+1 \\\\
+                                \\text{undefined}, & \\text{otherwise}
+                                \\end{cases}$$"),
+                             h2("$$var(X_{i,j}) = \\begin{cases}
+                                \\frac{(\\nu-k+1)\\Psi_{i,j}^2 + (\\nu-k-1)\\Psi_{i,i}\\Psi_{i,j}}{(\\nu-k)(\\nu-k-1)^2(\\nu-k-3)}, & \\nu>k+3 \\\\
+                                \\text{undefined}, & \\text{otherwise}
+                                \\end{cases}$$"),
+                             h2("Probability density function (PDF)"),
+                             h2("$$f(X|\\nu,\\Psi) = |\\Psi|^{k/2} |X|^{-(\\nu+k+1)/2} \\text{exp}(-\\text{tr}(\\Psi X^{-1})/2)\\frac{1}{2^{\\nu k/2}  \\Gamma_k(\\nu/2)}$$"),
+                             h2(withMathJax(
+                               helpText(HTML('$$\\color{black}{\\text{where }  \\Gamma_k(\\nu/2) \\text{ is the multivariate gamma function}}$$')))),
+                             h2("Cumulative distribution function (CDF)"),
+                             h2("$$\\text{No analytic expression}$$"))
       )
   }
 }
