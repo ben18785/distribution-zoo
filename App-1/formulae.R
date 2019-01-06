@@ -79,7 +79,7 @@ fFormulae <- function(input){
                              h2("Probability density function (PDF)"),
                              h2("$$f(x|\\alpha, \\beta) = \\frac{\\beta^\\alpha}{\\Gamma(\\alpha)} x^{\\alpha-1} e^{-\\beta x}$$"),
                              h2(withMathJax(
-                               helpText(HTML('$$\\color{black}{\\text{where }\\Gamma(w)=\\int_{0}^{\\infty}x^{w-1}e^{-x}\\mathrm{d}x \\text{ is the gamma function}}$$')))),
+                               helpText(HTML('$$\\color{black}{\\text{where }\\Gamma(w)=\\int_{0}^{\\infty}t^{w-1}e^{-t}\\mathrm{d}t \\text{ is the gamma function}}$$')))),
                              h2("Cumulative distribution function (CDF)"),
                              h2("$$F(x|\\alpha, \\beta) = \\frac{1}{\\Gamma(\\alpha)} \\gamma(\\alpha, \\beta x)$$"),
                              h2(withMathJax(
@@ -199,12 +199,11 @@ fFormulae <- function(input){
                                        \\end{cases}$$"),
                                     h2("Probability density function (PDF)"),
                                     h2("$$f(x|\\alpha, \\beta) = \\begin{cases}
-                                       \\frac{e^{-\\frac{\\beta }{x}} \\left(\\frac{\\beta \
-                                       }{x}\\right)^{\\alpha }}{x \\Gamma (\\alpha )}, & x>0 \\\\
+                                       \\frac{\\beta^\\alpha}{\\Gamma(\\alpha)}x^{-\\alpha-1}\\text{exp}\\left(-\\frac{\\beta}{x}\\right), & x>0 \\\\
                                        0, & \\text{Otherwise}
                                        \\end{cases}$$"),
                                     h2(withMathJax(
-                                      helpText(HTML('$$\\color{black}{\\text{where }\\Gamma(w) \\text{ is the gamma function}}$$')))),
+                                      helpText(HTML('$$\\color{black}{\\text{where }\\Gamma(w)=\\int_{0}^{\\infty}t^{w-1}e^{-t}\\mathrm{d}t \\text{ is the gamma function}}$$')))),
                                     h2("Cumulative distribution function (CDF)"),
                                     h2("$$F(x|\\alpha, \\beta) = \\begin{cases}
                                        Q\\left(\\alpha ,\\frac{\\beta }{x}\\right), & x>0 \\\\
@@ -214,7 +213,7 @@ fFormulae <- function(input){
                                       helpText(HTML('$$\\color{black}{\\text{where }Q(w,v) \\text{ is the regularised gamma function}}:$$')))),
                                     h2("$$Q(w,v) = \\frac{\\Gamma(u,v)}{\\Gamma(u)}$$"),
                                     h2(withMathJax(
-                                      helpText(HTML('$$\\color{black}{\\text{where }\\Gamma(w,v) \\text{ is the incomplete gamma function}}$$'))))),
+                                      helpText(HTML('$$\\color{black}{\\text{where }\\Gamma(w,v)=\\int_{v}^{\\infty} t^{w-1} e^{-t}\\mathrm{d}t \\text{ is the upper incomplete gamma function}}$$'))))),
            LogitNormal=withMathJax(h2("Parameters"),
                                    h2(withMathJax(
                                      helpText(HTML('$$\\color{black}{\\text{logit mean: }\\mu\\in\\mathbb{R}}$$')))),
@@ -253,7 +252,7 @@ fFormulae <- function(input){
                                        0, & \\text{Otherwise}
                                        \\end{cases}$$"),
                                     h2(withMathJax(
-                                      helpText(HTML('$$\\color{black}{\\text{where }\\Gamma(w) \\text{ is the gamma function}}$$')))),
+                                      helpText(HTML('$$\\color{black}{\\text{where }\\Gamma(w)=\\int_{0}^{\\infty}t^{w-1}e^{-t}\\mathrm{d}t \\text{ is the gamma function}}$$')))),
                                     h2("Cumulative distribution function (CDF)"),
                                     h2("$$F(x|\\nu) = \\begin{cases}
                                        \\frac{\\Gamma\\left(\\frac{\\nu}{2},\\frac{1}{2x}\\right)}{\\Gamma(\\frac{\\nu}{2})}, & x>0 \\\\
