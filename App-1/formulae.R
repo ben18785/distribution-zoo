@@ -350,11 +350,11 @@ fFormulae <- function(input){
                                     h2("Probability mass function (PMF)"),
                                     h2("$$f(x|n,\\alpha,\\beta) = \\binom{n}{x}\\frac{B(x+\\alpha,n-x+\\beta)}{B(\\alpha,\\beta)}$$"),
                                     h2(withMathJax(
-                                      helpText(HTML('$$\\color{black}{\\text{where } B(u,v) \\text{ is the beta function }}$$')))),
+                                      helpText(HTML('$$\\color{black}{\\text{where } B(u,v)=\\int_{0}^{1}t^{u-1}(1-t)^{v-1}\\mathrm{d}t \\text{ is the (complete) beta function }}$$')))),
                                     h2("Cumulative distribution function (CDF)"),
                                     h2("$$F(x|n,\\alpha,\\beta) = \\begin{cases}
                                     0, & x<0 \\\\
-                                       \\binom{x}{x}\\frac{B(x+\\alpha,n-x+\\beta)}{B(\\alpha,\\beta)} {}_{3}F_2(1,-x,n-x+\\beta;n-x-1,1-x-\\alpha;1), & 0\\leq x \\leq n \\\\
+                                       \\binom{n}{x}\\frac{B(x+\\alpha,n-x+\\beta)}{B(\\alpha,\\beta)} {}_{3}F_2(1,-x,n-x+\\beta;n-x-1,1-x-\\alpha;1), & 0\\leq x \\leq n \\\\
                                        1, & x>n
                                        \\end{cases}$$"),
                                     h2(withMathJax(
