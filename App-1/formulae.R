@@ -167,17 +167,17 @@ fFormulae <- function(input){
                                     helpText(HTML('$$\\color{black}{var(X) = \\text{ undefined}}$$')))),
                                   h2("Probability density function (PDF)"),
                                   h2("$$f(x|\\mu, \\sigma) = \\begin{cases}
-                                     \\frac{1}{\\pi  \\sigma  \\left(\\frac{\\text{arctan}\\left(\\frac{\\mu \
-                                     }{\\sigma }\\right)}{\\pi }+\\frac{1}{2}\\right) \
+                                     \\frac{1}{\\pi  \\sigma  \\left(\\frac{1}{\\pi}\\text{arctan}\\left(\\frac{\\mu \
+                                     }{\\sigma }\\right)+\\frac{1}{2}\\right) \
                                      \\left(\\frac{(x-\\mu )^2}{\\sigma ^2}+1\\right)}, & x>0 \\\\
                                      0, & \\text{Otherwise}
                                      \\end{cases}$$"),
                                   h2("Cumulative distribution function (CDF)"),
                                   h2("$$F(x|\\mu, \\sigma) = \\begin{cases}
-                                     \\frac{\\frac{\\text{arctan}\\left(\\frac{\\mu }{\\sigma \
-                                     }\\right)}{\\pi }+\\frac{\\text{arctan}\\left(\\frac{x-\\mu }{\\sigma \
-                                     }\\right)}{\\pi }}{\\frac{\\text{arctan}\\left(\\frac{\\mu }{\\sigma \
-                                     }\\right)}{\\pi }+\\frac{1}{2}}, & x>0 \\\\
+                                     \\frac{1}{\\pi}\\frac{\\text{arctan}\\left(\\frac{\\mu }{\\sigma \
+                                     }\\right)+\\text{arctan}\\left(\\frac{x-\\mu }{\\sigma \
+                                     }\\right)}{\\frac{1}{\\pi}\\text{arctan}\\left(\\frac{\\mu }{\\sigma \
+                                     }\\right)+\\frac{1}{2}}, & x>0 \\\\
                                      0, & \\text{Otherwise}
                                      \\end{cases}$$")
                                   ),
