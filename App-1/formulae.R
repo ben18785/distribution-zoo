@@ -25,7 +25,7 @@ fFormulae <- function(input){
                                h2("$$x\\in[a,b]$$"),
                                h2("Moments"),
                                h2("$$\\mathrm{E}(X) = \\frac{1}{2}(a + b)$$"),
-                               h2("$$var(X) = \\frac{1}{12}(b - a)$$"),
+                               h2("$$var(X) = \\frac{1}{12}(b - a)^2$$"),
                                h2("Probability density function (PDF)"),
                                h2(withMathJax(
                                  helpText(HTML('$$\\color{black}{f(x|a,b)=\\begin{cases}
@@ -58,7 +58,7 @@ fFormulae <- function(input){
                                    h2(withMathJax(
                                      helpText(HTML('$$\\color{black}{\\text{rate: }\\lambda\\in\\mathbb{R}^+}$$')))),
                                    h2("Support"),
-                                   h2("$$x\\in\\mathbb{R}^+$$"),
+                                   h2("$$x\\in[0,\\mathbb{R}^+]$$"),
                                    h2("Moments"),
                                    h2("$$\\mathrm{E}(X) = \\frac{1}{\\lambda}$$"),
                                    h2("$$var(X) = \\frac{1}{\\lambda^2}$$"),
@@ -79,11 +79,11 @@ fFormulae <- function(input){
                              h2("Probability density function (PDF)"),
                              h2("$$f(x|\\alpha, \\beta) = \\frac{\\beta^\\alpha}{\\Gamma(\\alpha)} x^{\\alpha-1} e^{-\\beta x}$$"),
                              h2(withMathJax(
-                               helpText(HTML('$$\\color{black}{\\text{where }\\Gamma(w) \\text{ is the gamma function}}$$')))),
+                               helpText(HTML('$$\\color{black}{\\text{where }\\Gamma(w)=\\int_{0}^{\\infty}x^{w-1}e^{-x}\\mathrm{d}x \\text{ is the gamma function}}$$')))),
                              h2("Cumulative distribution function (CDF)"),
                              h2("$$F(x|\\alpha, \\beta) = \\frac{1}{\\Gamma(\\alpha)} \\gamma(\\alpha, \\beta x)$$"),
                              h2(withMathJax(
-                               helpText(HTML('$$\\color{black}{\\text{where }\\gamma(w,v) \\text{ is the incomplete lower gamma function}}$$'))))),
+                               helpText(HTML('$$\\color{black}{\\text{where }\\gamma(w,v)=\\int_{0}^{v}t^{w-1}e^{-t}\\mathrm{d}t \\text{ is the incomplete lower gamma function}}$$'))))),
            t=withMathJax(h2("Parameters"),
                          h2(withMathJax(
                            helpText(HTML('$$\\color{black}{\\text{location or median or mode: }\\mu\\in\\mathbb{R}}$$')))),
@@ -100,7 +100,7 @@ fFormulae <- function(input){
                          h2("$$f(x|\\mu, \\sigma, \\nu) = \\frac{\\left(\\frac{\\nu }{\\nu +\\frac{(x-\\mu )^2}{\\sigma ^2}}\\right)^{\\frac{\\nu
                             +1}{2}}}{\\sqrt{\\nu } \\sigma  B\\left(\\frac{\\nu }{2},\\frac{1}{2}\\right)}$$"),
                          h2(withMathJax(
-                           helpText(HTML('$$\\color{black}{\\text{where } B(u,v) \\text{ is the beta function}}$$')))),
+                           helpText(HTML('$$\\color{black}{\\text{where } B(u,v)=\\int_{0}^{1}t^{u-1}(1-t)^{v-1}\\mathrm{d}t \\text{ is the beta function}}$$')))),
                          h2("Cumulative distribution function (CDF)"),
                          h2(withMathJax(
                            helpText(HTML('$$\\color{black}{F(\\mu, \\sigma, \\nu) = \\begin{cases}
@@ -114,7 +114,7 @@ fFormulae <- function(input){
                            helpText(HTML('$$\\color{black}{\\text{where } I_w(u,v) \\text{ is the regularised incomplete beta function: }}$$')))),
                          h2('$$I_w(u,v) = \\frac{B(w; u, v)}{B(u,v)}$$'),
                          h2(withMathJax(
-                           helpText(HTML('$$\\color{black}{\\text{where } B(w; u,v) \\text{ is the incomplete beta function and } B(u,v) \\text{ is the complete beta function}}$$'))))
+                           helpText(HTML('$$\\color{black}{\\text{where } B(w; u,v)=\\int_{0}^{w}t^{u-1}(1-t)^{v-1}\\mathrm{d}t \\text{ is the incomplete beta function and } B(u,v) \\text{ is the (complete) beta function}}$$'))))
                            ),
            Beta=withMathJax(h2("Parameters"),
                             h2(withMathJax(
@@ -129,14 +129,14 @@ fFormulae <- function(input){
                             h2("Probability density function (PDF)"),
                             h2("$$f(x|\\alpha, \\beta) = \\frac{x^{\\alpha-1} (1-x)^{\\beta-1}}{B(\\alpha,\\beta)}$$"),
                             h2(withMathJax(
-                              helpText(HTML('$$\\color{black}{\\text{where } B(u,v) \\text{ is the beta function}}$$')))),
+                              helpText(HTML('$$\\color{black}{\\text{where } B(u,v)=\\int_{0}^{1}t^{u-1}(1-t)^{v-1}\\mathrm{d}t \\text{ is the beta function}}$$')))),
                             h2("Cumulative distribution function (CDF)"),
                             h2("$$F(x|\\alpha,\\beta) = I_x(\\alpha,\\beta)$$"),
                             h2(withMathJax(
                               helpText(HTML('$$\\color{black}{\\text{where } I_w(u,v) \\text{ is the regularised beta function: }}$$')))),
                             h2('$$I_w(u,v) = \\frac{B(w; u, v)}{B(u,v)}$$'),
                             h2(withMathJax(
-                              helpText(HTML('$$\\color{black}{\\text{where } B(w; u,v) \\text{ is the incomplete beta function and } B(u,v) \\text{ is the complete beta function}}$$'))))),
+                              helpText(HTML('$$\\color{black}{\\text{where } B(w; u,v)=\\int_{0}^{w}t^{u-1}(1-t)^{v-1}\\mathrm{d}t \\text{ is the incomplete beta function and } B(u,v) \\text{ is the (complete) beta function}}$$'))))),
            Cauchy=withMathJax(h2("Parameters"),
                               h2(withMathJax(
                                 helpText(HTML('$$\\color{black}{\\text{location or median or mode: }\\mu\\in\\mathbb{R}}$$')))),
