@@ -76,7 +76,20 @@ fLatex <- function(input){
            Cauchy=fLatexHelper(c("\\mathrm{E}(X) = \\text{ undefined}",
                                  "var(X) = \\text{ undefined}"),
                                c("f(x|\\mu, \\sigma) = \\frac{1}{\\pi\\sigma\\left[1 + \\left(\\frac{x-\\mu}{\\sigma}\\right)^2\\right]}"),
-                               c("F(x|\\mu, \\sigma) = \\frac{1}{2} + \\frac{1}{\\pi}\\text{arctan}\\left(\\frac{x-\\mu}{\\sigma}\\right)"))
+                               c("F(x|\\mu, \\sigma) = \\frac{1}{2} + \\frac{1}{\\pi}\\text{arctan}\\left(\\frac{x-\\mu}{\\sigma}\\right)")),
+           HalfCauchy=fLatexHelper(c("\\mathrm{E}(X) = \\text{ undefined}",
+                                     "var(X) = \\text{ undefined}"),
+                                   c("f(x|\\mu, \\sigma) = \\begin{cases}
+\\frac{1}{\\pi  \\sigma  \\left(\\frac{1}{\\pi}\\text{arctan}\\left(\\frac{\\mu}{\\sigma }\\right)+\\frac{1}{2}\\right)
+                                     \\left(\\frac{(x-\\mu )^2}{\\sigma ^2}+1\\right)}, & x>0 \\\\
+                                     0, & \\text{Otherwise}
+                                     \\end{cases}"),
+                                   c("F(x|\\mu, \\sigma) = \\begin{cases}
+\\frac{1}{\\pi}\\frac{\\text{arctan}\\left(\\frac{\\mu}{\\sigma}\\right)+
+\\text{arctan}\\left(\\frac{x-\\mu }{\\sigma}\\right)}{\\frac{1}{\\pi}\\text{arctan}\\left(\\frac{\\mu }{\\sigma}\\right)
++\\frac{1}{2}}, & x>0 \\\\
+                                     0, & \\text{Otherwise}
+                                     \\end{cases}"))
     )
   }
 }
