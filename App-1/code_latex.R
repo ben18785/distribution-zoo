@@ -236,7 +236,12 @@ I_{\\frac{\\kappa}{\\kappa+\\lambda}}(\\kappa,1+\\lfloor x \\rfloor), & x\\geq 0
            LKJ=fLatexHelper(c("\\mathrm{E}(X) = \\text{No simple expression}",
                               "var(X_{i,j}) = \\text{No simple expression}"),
                             c("f(X|\\nu,d) = \\left(2^{\\sum_{k=1}^{d-1}(2\\eta-2+d-k)(d-k)}\\prod_{k=1}^{d-1}\\left[B(\\eta+0.5(d-k-1),\\eta+0.5(d-k-1))\\right]^{d-k}\\right) |X|^{\\eta-1}",
-                              "\\text{where }  B(u,v)=\\int_{0}^{1}t^{u-1}(1-t)^{v-1}\\mathrm{d}t \\text{ is beta function}"))
+                              "\\text{where }  B(u,v)=\\int_{0}^{1}t^{u-1}(1-t)^{v-1}\\mathrm{d}t \\text{ is beta function}")),
+           Dirichlet=fLatexHelper(c("\\mathrm{E}(X_i) = \\frac{\\alpha_i}{\\sum_{k=1}^{d}\\alpha_k}",
+                                    "var(X_i) = \\frac{\\alpha_i(\\alpha_0-\\alpha_i)}{\\alpha_0^2(\\alpha_0+1)}\\text{, where }\\alpha_0=\\sum_{i=1}^{d}\\alpha_i",
+                                    "cov(X_i,X_j) = -\\frac{\\alpha_i \\alpha_j}{\\alpha_0^2(\\alpha_0+1)} \\text{, where }i\\neq j"),
+                                  c("f(x_1,x_2,...,x_d|\\alpha_1,\\alpha_2,...,\\alpha_d) = \\frac{1}{B(\\alpha_1,\\alpha_2,...,\\alpha_d)}\\prod_{i=1}^{d}x_i^{\\alpha_i-1}",
+                                    "\\text{where }B(\\alpha_1,\\alpha_2,...,\\alpha_d)=\\frac{\\prod_{i=1}^{d}\\Gamma(\\alpha_i)}{\\Gamma(\\sum_{i=1}^{d}\\alpha_i)}"))
     )
     }
 }
