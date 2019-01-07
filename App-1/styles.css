@@ -9,6 +9,12 @@ h1 {
 }
 
 body {
+  font-family: 'Verdana';
   background-color: #fff;
+  font-size: 2rem;
+}
+
+actionButton{
+  font-family: 'Verdana';
   font-size: 2rem;
 }
