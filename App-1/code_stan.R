@@ -86,6 +86,42 @@ flogitnormal_stan <- function(input){
   )
 }
 
+dCalculateChol <- function(sigmax, sigmay, rho){
+  L <- t(chol(matrix(c(sigmax^2, sigmax*sigmay*rho, sigmax*sigmay*rho, sigmay^2), ncol = 2)))
+  return(c(L[1, 1], L[2, 1], L[2, 2]))
+}
+
+
+fMultivariateNormal_stan <- function(input){
+  comps <- dCalculateChol(input$multivariatenormal_sigmax,
+                          input$multivariatenormal_sigmay,
+                          input$multivariatenormal_rho)
+  switch(input$property,
+         pdf=paste("// non-Cholesky",
+           paste0("exp(multi_normal_lpdf(x| [", input$multivariatenormal_mux, ", ", input$multivariatenormal_muy, "], ", "[[", input$multivariatenormal_sigmax^2, ", ", input$multivariatenormal_sigmax * input$multivariatenormal_sigmay * input$multivariatenormal_rho, "], [", 
+                    input$multivariatenormal_sigmax * input$multivariatenormal_sigmay * input$multivariatenormal_rho, ", ", input$multivariatenormal_sigmay^2, "]]))"),
+           "// Cholesky",
+           paste0("exp(multi_normal_cholesky_lpdf(x| [", input$multivariatenormal_mux, ", ", input$multivariatenormal_muy, "], ", "[[", comps[1], ", ", 0, "], [", 
+                  comps[2], ", ", comps[3], "]]))"),
+           sep = "\n"),
+         log_pdf=paste("// non-Cholesky",
+                       paste0("multi_normal_lpdf(x| [", input$multivariatenormal_mux, ", ", input$multivariatenormal_muy, "], ", "[[", input$multivariatenormal_sigmax^2, ", ", input$multivariatenormal_sigmax * input$multivariatenormal_sigmay * input$multivariatenormal_rho, "], [", 
+                              input$multivariatenormal_sigmax * input$multivariatenormal_sigmay * input$multivariatenormal_rho, ", ", input$multivariatenormal_sigmay^2, "]])"),
+                       "// Cholesky",
+                       paste0("multi_normal_cholesky_lpdf(x| [", input$multivariatenormal_mux, ", ", input$multivariatenormal_muy, "], ", "[[", comps[1], ", ", 0, "], [", 
+                              comps[2], ", ", comps[3], "]])"),
+                       sep = "\n"),
+         random=paste("// non-Cholesky",
+                      paste0("multi_normal_rng(to_vector([", input$multivariatenormal_mux, ", ", input$multivariatenormal_muy, "]), ","[[", input$multivariatenormal_sigmax^2, ", ", input$multivariatenormal_sigmax * input$multivariatenormal_sigmay * input$multivariatenormal_rho, "], [", 
+                       input$multivariatenormal_sigmax * input$multivariatenormal_sigmay * input$multivariatenormal_rho, ", ", input$multivariatenormal_sigmay^2, "]])"),
+                      "// Cholesky",
+                      paste0("multi_normal_cholesky_rng(to_vector([", input$multivariatenormal_mux, ", ", input$multivariatenormal_muy, "]), ", "[[", comps[1], ", ", 0, "], [", 
+                             comps[2], ", ", comps[3], "]])"),
+                      sep = "\n")
+  )
+  
+}
+
 
 fStanCode <- function(input){
   text <-
@@ -113,11 +149,7 @@ fStanCode <- function(input){
              )
     }else if(input$distType=='Multivariate'){
       switch(input$dist2,
-             MultivariateNormal=dMVNormalFull(input$multivariatenormal_mux,
-                                              input$multivariatenormal_muy,
-                                              input$multivariatenormal_sigmax,
-                                              input$multivariatenormal_sigmay,
-                                              input$multivariatenormal_rho, input),
+             MultivariateNormal=fMultivariateNormal_stan(input),
              MultivariateT=dMVTFull(input$multivariatet_mux,
                                     input$multivariatet_muy,
                                     input$multivariatet_sigmax,

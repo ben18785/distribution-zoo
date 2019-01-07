@@ -2,8 +2,14 @@ library(rstan)
 
 stan_model <- stan_model('stan_test.stan')
 
-x <- 5
-fit <- sampling(stan_model, data=list(x=x, mu=0, sigma=1.5), algorithm="Fixed_param")
+x <- c(1,1)
+mux <- 2.6
+muy <- -2.4
+sigmax <- 2
+sigmay <- 1.6
+rho <- -0.4
+fit <- sampling(stan_model, data=list(x=x, mux=mux, muy=muy, sigmax=sigmax, sigmay=sigmay, rho=rho), algorithm="Fixed_param")
 print(fit)
 params <- extract(fit)
 exp(params$log_prob[1])
+exp(params$log_prob1[1])
