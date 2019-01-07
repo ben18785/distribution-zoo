@@ -20,6 +20,34 @@ fMathematicaHelper <- function(mainName, params, input, import=NULL, named_argum
                                    mathematica = T,
                                    mathematica_vector=mathematica_vector))
 }
+
+dHalfCauchy_mathematica <- function(cauchy_location, cauchy_scale){
+  top <- paste0("aDist = TruncatedDistribution[{0, \\[Infinity]}, CauchyDistribution[", cauchy_location, ", ", cauchy_scale, "]]")
+  bottom <- "PDF[aDist, x]"
+  return(paste(top, bottom, sep = "\n"))
+}
+
+dHalfCauchy_log_mathematica <- function(cauchy_location, cauchy_scale){
+  top <- paste0("aDist = TruncatedDistribution[{0, \\[Infinity]}, CauchyDistribution[", cauchy_location, ", ", cauchy_scale, "]]")
+  bottom <- "Log@PDF[aDist, x]"
+  return(paste(top, bottom, sep = "\n"))
+}
+
+rHalfCauchy_mathematica <- function(cauchy_location, cauchy_scale){
+  top <- paste0("aDist = TruncatedDistribution[{0, \\[Infinity]}, CauchyDistribution[", cauchy_location, ", ", cauchy_scale, "]]")
+  bottom <- "RandomVariate[aDist, n]"
+  return(paste(top, bottom, sep = "\n"))
+}
+
+fHalfCauchy_mathematica <- function(input){
+  switch(input$property,
+         pdf=dHalfCauchy_mathematica(input$halfcauchy_location,input$halfcauchy_scale),
+         log_pdf=dHalfCauchy_log_mathematica(input$halfcauchy_location,input$halfcauchy_scale),
+         random=rHalfCauchy_mathematica(input$halfcauchy_location,input$halfcauchy_scale)
+  )
+}
+
+
 fMathematicacode <- function(input){
   text <- 
     if(input$distType=='Continuous'){
@@ -50,9 +78,7 @@ fMathematicacode <- function(input){
              Cauchy=fMathematicaHelper("Cauchy",
                                        params = c(input$cauchy_location,input$cauchy_scale), 
                                        input),
-             HalfCauchy=fMathematicaHelper("TruncatedDistribution[{0,\\[infty]}, Cauchy",
-                                           params = c(input$cauchy_location,input$cauchy_scale), 
-                                           input),
+             HalfCauchy=fHalfCauchy_mathematica(input),
              InverseGamma=fMathematicaHelper("InverseGamma",
                                              params = c(input$inversegamma_shape,input$inversegamma_scale), 
                                              input),
