@@ -160,7 +160,13 @@ Q\\left(\\alpha ,\\frac{\\beta }{x}\\right), & x>0 \\\\
                                             "var(X) = np(1-p)"),
                                           c("f(x|n,p) = \\binom{n}{x} p^x(1-p)^{n-x}"),
                                           c("F(x|n,p) = I_{1-p}(n-x,1+x)",
-                                            "\\text{where }I_{1-p}(n-x,x+1)=(n-x)\\binom{n}{x}\\int_{0}^{1-p}t^{n-x-1}(1-t)^x \\mathrm{d}t \\text{ is the regularised incomplete beta function}"))
+                                            "\\text{where }I_{1-p}(n-x,x+1)=(n-x)\\binom{n}{x}\\int_{0}^{1-p}t^{n-x-1}(1-t)^x \\mathrm{d}t \\text{ is the regularised incomplete beta function}")),
+           Poisson=fLatexHelper_discrete(c("\\mathrm{E}(X) = \\lambda",
+                                           "var(X) = \\lambda"),
+                                         c("f(x|\\lambda) = \\frac{\\lambda^x e^{-\\lambda}}{x!}"),
+                                         c("F(x|\\lambda) = \\frac{\\Gamma(\\lfloor k+1\\rfloor,\\lambda)}{\\lfloor k \\rfloor !}",
+                                           "\\text{where }\\Gamma(u,v)=\\int_{v}^{\\infty}t^{u-1}e^{-t} \\mathrm{d}t \\text{ is the upper incomplete gamma function}",
+                                           "\\text{and } \\lfloor x \\rfloor \\text{ is the floor function (rounds down reals to nearest smaller integer)}"))
     )
     }
 }
