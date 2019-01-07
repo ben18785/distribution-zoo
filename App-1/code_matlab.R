@@ -28,9 +28,39 @@ fMatlabcode <- function(input){
                                    input),
              LogNormal=fMatlabHelper("logn",
                                      params = c(input$lognormal_mu, input$lognormal_sigma),
-                                     input)
+                                     input),
+             Exponential=fMatlabHelper("exp",
+                                       params = input$exponential_rate, 
+                                       input),
+             Gamma=fMatlabHelper("gam",
+                                  params = c(input$gamma_shape, 1 / input$gamma_rate),
+                                  input),
+             t="test",
+             Beta=fMatlabHelper("beta",
+                                params = c(input$beta_a, input$beta_b),
+                                input)
       )
-            
+    }else if(input$distType=='Discrete'){
+      switch(input$dist1,
+             Bernoulli=fMatlabHelper("bino",
+                                     params = c(1, input$bernoulli_prob),
+                                     input),
+             Binomial=fMatlabHelper("bino",
+                                    params = c(input$binomial_size, input$binomial_prob),
+                                    input),
+             Poisson=fMatlabHelper("poiss",
+                                   params = input$poisson_lambda,
+                                   input),
+             NegativeBinomial=fMatlabHelper("nbin",
+                                            params = c(input$negativebinomial_dispersion,
+                                                       input$negativebinomial_dispersion / (input$negativebinomial_dispersion + input$negativebinomial_mean)),
+                                            input),
+        
+      )
+    }else if(input$distType=='Multivariate'){
+      switch(input$dist2,
+             MultivariateNormal=
+      )
     }
   return(prismCodeBlock(text, language = "matlab"))
 }
