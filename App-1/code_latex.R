@@ -49,7 +49,22 @@ fLatex <- function(input){
                               c("f(x|\\alpha, \\beta) = \\frac{\\beta^\\alpha}{\\Gamma(\\alpha)} x^{\\alpha-1} e^{-\\beta x}",
                                 "\\text{where }\\Gamma(w)=\\int_{0}^{\\infty}t^{w-1}e^{-t}\\mathrm{d}t \\text{ is the gamma function}}"),
                               c("F(x|\\alpha, \\beta) = \\frac{1}{\\Gamma(\\alpha)} \\gamma(\\alpha, \\beta x)",
-                                "\\text{where }\\gamma(w,v)=\\int_{0}^{v}t^{w-1}e^{-t}\\mathrm{d}t \\text{ is the incomplete lower gamma function}}"))
+                                "\\text{where }\\gamma(w,v)=\\int_{0}^{v}t^{w-1}e^{-t}\\mathrm{d}t \\text{ is the incomplete lower gamma function}}")),
+           t=fLatexHelper(c("\\mathrm{E}(X) = \\mu, \\text{ if }\\nu>1 \\text{ otherwise undefined}",
+                            "var(X) = \\frac{\\nu \\sigma^2}{\\nu-2}"),
+                          c("f(x|\\mu, \\sigma, \\nu) = \\frac{\\left(\\frac{\\nu }{\\nu +\\frac{(x-\\mu )^2}{\\sigma ^2}}\\right)^{\\frac{\\nu
+                            +1}{2}}}{\\sqrt{\\nu } \\sigma  B\\left(\\frac{\\nu }{2},\\frac{1}{2}\\right)}",
+                            "\\text{where } B(u,v)=\\int_{0}^{1}t^{u-1}(1-t)^{v-1}\\mathrm{d}t \\text{ is the beta function}}"),
+                          c("F(\\mu, \\sigma, \\nu) = \\begin{cases}
+                                         \\frac{1}{2} I_{\\frac{\\nu  \\sigma ^2}{(x-\\mu )^2+\\nu  \\sigma \
+                            ^2}}\\left(\\frac{\\nu }{2},\\frac{1}{2}\\right), & x\\leq \\mu  \\\\
+                            \\frac{1}{2} \\left(I_{\\frac{(x-\\mu )^2}{(x-\\mu )^2+\\nu  \\sigma \
+                            ^2}}\\left(\\frac{1}{2},\\frac{\\nu }{2}\\right)+1\\right), & \
+                            \\text{Otherwise}
+                            \\end{cases}}",
+                            "\\text{where } I_w(u,v) \\text{ is the regularised incomplete beta function: }}",
+                            "I_w(u,v) = \\frac{B(w; u, v)}{B(u,v)}",
+                            "\\text{where } B(w; u,v)=\\int_{0}^{w}t^{u-1}(1-t)^{v-1}\\mathrm{d}t \\text{ is the incomplete beta function and } B(u,v) \\text{ is the (complete) beta function}}"))
     )
   }
 }
