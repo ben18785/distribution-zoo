@@ -80,6 +80,10 @@ fMathematicacode <- function(input){
                                              input)
              
       )
+    }else if(input$distType=='Multivariate'){
+      switch(input$dist2,
+             MultivariateNormal=
+      )
     }
   return(prismCodeBlock(text))
 }
