@@ -198,6 +198,22 @@ fLKJ_mathematica <- function(input){
   )
 }
 
+fDirichlet_mathematica <- function(input){
+  if(input$dirichlet_dimension==2){
+    alpha <- c(input$dirichlet_alpha1, input$dirichlet_alpha2)
+  }else if(input$dirichlet_dimension==3){
+    alpha <- c(input$dirichlet_alpha1, input$dirichlet_alpha2, input$dirichlet_alpha3)
+  }else if(input$dirichlet_dimension==4){
+    alpha <- c(input$dirichlet_alpha1, input$dirichlet_alpha2, input$dirichlet_alpha3, input$dirichlet_alpha4)
+  }
+  top <- paste0("DirichletDistribution[{", paste(alpha, collapse = ", "), "}]")
+  switch(input$property,
+         pdf=paste("(* Note that x is without last (redundant) dimension *)", paste0("PDF[", top, ", x]"), sep="\n"),
+         log_pdf=paste("(* Note that x is without last (redundant) dimension *)", paste0("Log@PDF[", top, ", x]"), sep="\n"),
+         random=paste("(* Note that random variates are without last (redundant) dimension *)", paste0("RandomVariate[", top, ", n]"), sep="\n")
+         )
+}
+
 fMathematicacode <- function(input){
   text <- 
     if(input$distType=='Continuous'){
@@ -263,7 +279,8 @@ fMathematicacode <- function(input){
              Multinomial=fMultinomial_mathematica(input),
              Wishart=fWishart_mathematica(input),
              InverseWishart=fInverseWishart_mathematica(input),
-             LKJ=fLKJ_mathematica(input)
+             LKJ=fLKJ_mathematica(input),
+             Dirichlet=fDirichlet_mathematica(input)
       )
     }
   return(prismCodeBlock(text))
