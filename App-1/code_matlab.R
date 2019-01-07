@@ -152,6 +152,47 @@ fHalfCauchy_matlab <- function(input){
   )
 }
 
+dInverseGamma_matlab <- paste(
+  "function f = inversegammapdf(x, alpha, beta)",
+  "    if x < 0",
+  "        f = 0;",
+  "    else",
+  "        f = (beta^alpha) / gamma(alpha) * x^(-alpha-1) * exp(-beta / x);",
+  "    end",
+  "end",
+  "% calling function",
+  sep = "\n"
+)
+
+rInverseGamma_matlab <- paste(
+  "function x = inversegammarnd(alpha, beta, M)",
+  "    y = gamrnd(alpha, 1 / beta, M);",
+  "    x = 1 ./ y;",
+  "end",
+  "% calling function",
+  sep = "\n"
+)
+
+fInverseGamma_matlab <- function(input){
+  lparams <- c(input$inversegamma_shape, input$inversegamma_scale)
+  switch(input$property,
+         pdf=paste(dInverseGamma_matlab,
+                   fMatlabHelper("inversegamma",
+                                 params = lparams,
+                                 input),
+                   sep = "\n"),
+         log_pdf=paste(dInverseGamma_matlab,
+                       fMatlabHelper("inversegamma",
+                                     params = lparams,
+                                     input),
+                       sep = "\n"),
+         random=paste(rInverseGamma_matlab,
+                      fMatlabHelper("inversegamma",
+                                    params = lparams,
+                                    input),
+                      sep = "\n")
+  )
+}
 
 fMatlabcode <- function(input){
   text <- 
@@ -177,7 +218,8 @@ fMatlabcode <- function(input){
              HalfCauchy=fHalfCauchy_matlab(input),
              Beta=fMatlabHelper("beta",
                                 params = c(input$beta_a, input$beta_b),
-                                input)
+                                input),
+             InverseGamma=fInverseGamma_matlab(input)
       )
     }else if(input$distType=='Discrete'){
       switch(input$dist1,

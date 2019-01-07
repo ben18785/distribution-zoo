@@ -11,7 +11,11 @@ x = cauchyrnd(100, 1, [10000,1]);
 
 f = halfcauchypdf(3, 10, 1);
 
-x = halfcauchyrnd(0, 1, [100000,1]);
+% x = halfcauchyrnd(0, 1, [100000,1]);
+
+f = inversegammapdf(5, 3, 2);
+x = inversegammarnd(3, 2, [10000, 1]);
+mean(x)
 
 function f = studenttpdf(x, mu, sigma, nu)
     numer = (nu / (nu + ((x - mu) / sigma)^2))^((nu + 1) / 2);
@@ -64,4 +68,17 @@ function x = halfcauchyrnd(a, b, M)
         y(i) = halfcauchysinglernd(a, b);
     end
     x = reshape(y, M);
+end
+
+function f = inversegammapdf(x, alpha, beta)
+    if x < 0
+        f = 0;
+    else
+        f = (beta^alpha) / gamma(alpha) * x^(-alpha-1) * exp(- beta / x);
+    end
+end
+
+function x = inversegammarnd(alpha, beta, M)
+    y = gamrnd(alpha, 1 / beta, M);
+    x = 1 ./ y;
 end
