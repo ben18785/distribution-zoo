@@ -53,6 +53,44 @@ fStudentt_matlab <- function(input){
   )
 }
 
+dCauchy_matlab <- paste(
+  "function f = cauchypdf(x, a, b)",
+  "    f = b ./ (pi * (b.^2 + (x - a).^2));",
+  "end",
+  "% calling function",
+  sep = "\n"
+)
+
+rCauchy_matlab <- paste(
+  "function x = cauchyrnd(a, b, M)",
+  "    y = trnd(1, M);",
+  "    x = b * y + a;",
+  "end",
+  "% calling function",
+  sep = "\n"
+)
+
+fCauchy_matlab <- function(input){
+  lparams <- c(input$cauchy_location, input$cauchy_scale)
+  switch(input$property,
+         pdf=paste(dCauchy_matlab,
+                   fMatlabHelper("cauchy",
+                                 params = lparams,
+                                 input),
+                   sep = "\n"),
+         log_pdf=paste(dCauchy_matlab,
+                       fMatlabHelper("cauchy",
+                                     params = lparams,
+                                     input),
+                       sep = "\n"),
+         random=paste(rCauchy_matlab,
+                      fMatlabHelper("cauchy",
+                                    params = lparams,
+                                    input),
+                      sep = "\n")
+  )
+}
+
 fMatlabcode <- function(input){
   text <- 
     if(input$distType=='Continuous'){
@@ -73,6 +111,7 @@ fMatlabcode <- function(input){
                                   params = c(input$gamma_shape, 1 / input$gamma_rate),
                                   input),
              t=fStudentt_matlab(input),
+             Cauchy=fCauchy_matlab(input),
              Beta=fMatlabHelper("beta",
                                 params = c(input$beta_a, input$beta_b),
                                 input)
