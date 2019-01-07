@@ -15,10 +15,13 @@ f = halfcauchypdf(3, 10, 1);
 
 f = inversegammapdf(5, 3, 2);
 x = inversegammarnd(3, 2, [10000, 1]);
-mean(x)
+
 
 f = inversechisquaredpdf(3, 5);
 x = inversechisquaredrnd(5, [10000, 1]);
+
+f = logitnormalpdf(0.5, -1, 2);
+x = logitnormalrnd(2, 2.1, [100000, 1]);
 mean(x)
 
 function f = studenttpdf(x, mu, sigma, nu)
@@ -95,3 +98,17 @@ function x = inversechisquaredrnd(nu, M)
     y = chi2rnd(nu, M);
     x = 1 ./ y;
 end
+
+function f = logitnormalpdf(x, mu, sigma)
+    if x > 1 || x < 0
+        f = 0;
+    else
+        f = 1 / (sigma * sqrt(2 * pi)) * exp(-(log(x / (1 - x)) - mu)^2 / (2 * sigma^2));
+    end
+end
+
+function x = logitnormalrnd(mu, sigma, M)
+    y = normrnd(mu, sigma, M);
+    x = 1 ./ (1 + exp(-y)); 
+end
+

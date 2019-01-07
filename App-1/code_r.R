@@ -281,6 +281,16 @@ fLKJ_1 <- function(eta, d, input){
           sep="\n")
 }
 
+fLogitNormal_R <- function(input){
+  switch(input$property,
+         pdf=fRHelper("logitnorm", c(input$logitnormal_mu, input$logitnormal_sigma), input, import="library(logitnorm)"),
+         log_pdf=fRHelper("logitnorm", c(input$logitnormal_mu, input$logitnormal_sigma), input, import="library(logitnorm)"),
+         random=fMakeFunctionPaste(mainName=paste0("r", "logitnorm"),
+                                   params=c(input$logitnormal_mu, input$logitnormal_sigma), postfixparams="n",
+                                   import="library(logitnorm)")
+           )
+}
+
 fRcode <- function(input){
   text <-
     if(input$distType=='Continuous'){
@@ -296,7 +306,7 @@ fRcode <- function(input){
              HalfCauchy=dHalfCauchyFull(input$halfcauchy_location, input$halfcauchy_scale, input),
              InverseGamma=fRHelper("invgamma", c(input$inversegamma_shape, 1.0 / input$inversegamma_scale), input, import="library(actuar)"),
              InverseChiSquared=fRHelper("invchisq", input$inversechisquared_df, input, import="library(LaplacesDemon)"),
-             LogitNormal=fRHelper("logitnorm", c(input$logitnormal_mu, input$logitnormal_sigma), input, import="library(logitnorm)"))
+             LogitNormal=fLogitNormal_R(input))
     }else if(input$distType=='Discrete'){
       switch(input$dist1,
              Bernoulli=fRHelper("binom", c(1, input$bernoulli_prob), input),
