@@ -89,7 +89,27 @@ fLatex <- function(input){
 \\text{arctan}\\left(\\frac{x-\\mu }{\\sigma}\\right)}{\\frac{1}{\\pi}\\text{arctan}\\left(\\frac{\\mu }{\\sigma}\\right)
 +\\frac{1}{2}}, & x>0 \\\\
                                      0, & \\text{Otherwise}
-                                     \\end{cases}"))
+                                     \\end{cases}")),
+           InverseGamma=fLatexHelper(c("\\mathrm{E}(X) = \\begin{cases}
+\\frac{\\beta }{\\alpha -1}, & \\alpha >1 \\\\
+\\text{undefined}, & \\text{Otherwise}
+\\end{cases}",
+"var(X) = \\begin{cases}
+\\frac{\\beta ^2}{(\\alpha -2) (\\alpha -1)^2}, & \\alpha >2 \\\\
+\\text{undefined}, & \\text{Otherwise}
+\\end{cases}"),
+                                     c("f(x|\\alpha, \\beta) = \\begin{cases}
+\\frac{\\beta^\\alpha}{\\Gamma(\\alpha)}x^{-\\alpha-1}\\text{exp}\\left(-\\frac{\\beta}{x}\\right), & x>0 \\\\
+0, & \\text{Otherwise}
+\\end{cases}",
+                                       "\\text{where }\\Gamma(w)=\\int_{0}^{\\infty}t^{w-1}e^{-t}\\mathrm{d}t \\text{ is the gamma function}"),
+                                     c("F(x|\\alpha, \\beta) = \\begin{cases}
+Q\\left(\\alpha ,\\frac{\\beta }{x}\\right), & x>0 \\\\
+0, & \\text{Otherwise}
+\\end{cases}",
+                                       "\\text{where }Q(w,v) \\text{ is the regularised gamma function:}",
+                                       "Q(w,v) = \\frac{\\Gamma(u,v)}{\\Gamma(u)}",
+                                       "\\text{where }\\Gamma(w,v)=\\int_{v}^{\\infty} t^{w-1} e^{-t}\\mathrm{d}t \\text{ is the upper incomplete gamma function}"))
     )
   }
 }
