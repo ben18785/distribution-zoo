@@ -31,7 +31,10 @@ fMathematicacode <- function(input){
                                         params = c(input$uniform_a, input$uniform_b),
                                         input,
                                         vector_params = T,
-                                        mathematica_vector = T)
+                                        mathematica_vector = T),
+             LogNormal=fMathematicaHelper("LogNormal",
+                                          params = c(input$lognormal_mu, input$lognormal_sigma),
+                                          input)
       )
     }
   return(prismCodeBlock(text))
