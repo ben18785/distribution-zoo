@@ -232,7 +232,11 @@ I_{\\frac{\\kappa}{\\kappa+\\lambda}}(\\kappa,1+\\lfloor x \\rfloor), & x\\geq 0
 \\text{undefined}, & \\text{otherwise}
 \\end{cases}"),
                                        c("f(X|\\nu,\\Psi) = |\\Psi|^{d/2} |X|^{-(\\nu+d+1)/2} \\text{exp}(-\\text{tr}(\\Psi X^{-1})/2)\\frac{1}{2^{\\nu d/2}  \\Gamma_d(\\nu/2)}",
-                                         "\\text{where }  \\Gamma_p(a)=\\pi^{p(p-1)/4}\\prod_{j=1}^{p}\\Gamma(a+(1-j)/2) \\text{ is the multivariate gamma function}"))
+                                         "\\text{where }  \\Gamma_p(a)=\\pi^{p(p-1)/4}\\prod_{j=1}^{p}\\Gamma(a+(1-j)/2) \\text{ is the multivariate gamma function}")),
+           LKJ=fLatexHelper(c("\\mathrm{E}(X) = \\text{No simple expression}",
+                              "var(X_{i,j}) = \\text{No simple expression}"),
+                            c("f(X|\\nu,d) = \\left(2^{\\sum_{k=1}^{d-1}(2\\eta-2+d-k)(d-k)}\\prod_{k=1}^{d-1}\\left[B(\\eta+0.5(d-k-1),\\eta+0.5(d-k-1))\\right]^{d-k}\\right) |X|^{\\eta-1}",
+                              "\\text{where }  B(u,v)=\\int_{0}^{1}t^{u-1}(1-t)^{v-1}\\mathrm{d}t \\text{ is beta function}"))
     )
     }
 }
