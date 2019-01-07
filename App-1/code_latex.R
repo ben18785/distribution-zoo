@@ -14,6 +14,17 @@ fLatexHelper <- function(lMoments, lPDF, lCDF){
                  cdf_latex))
 }
 
+fLatexHelper_discrete <- function(lMoments, lPDF, lCDF){
+  moments_latex <- lapply(lMoments, fPrismLatex)
+  pdf_latex <- lapply(lPDF, fPrismLatex)
+  cdf_latex <- lapply(lCDF, fPrismLatex)
+  return(tagList(h2("Moments"),
+                 moments_latex,
+                 h2("Probability mass function (PMF)"),
+                 pdf_latex,
+                 h2("Cumulative distribution function (CDF)"),
+                 cdf_latex))
+}
 
 fLatex <- function(input){
   if (input$distType=='Continuous'){
@@ -135,5 +146,16 @@ Q\\left(\\alpha ,\\frac{\\beta }{x}\\right), & x>0 \\\\
                                    c("F(x|\\mu,\\sigma) = \\frac{1}{2} + \\frac{1}{2} \\text{erf}\\left(\\frac{\\text{logit } x - \\mu}{\\sqrt{2} \\sigma}\\right)",
                                      "\\text{where }\\text{erf}(x) = \\frac{2}{\\sqrt{\\pi}}\\int_{0}^{x} e^{-t^2}\\mathrm{d}t \\text{ is the error function}"))
     )
-  }
+  }else if(input$distType=='Discrete'){
+    switch(input$dist1,
+           Bernoulli=fLatexHelper_discrete(c("\\mathrm{E}(X) = p",
+                                             "var(X) = p(1-p)"),
+                                           c("f(x|p) = p^x(1-p)^{1-x}"),
+                                           c("F(x|p) = \\begin{cases}
+0, & x<0 \\\\
+1 - p, & 0\\leq x \\leq 1 \\\\
+1, & x>1
+\\end{cases}"))
+    )
+    }
 }
