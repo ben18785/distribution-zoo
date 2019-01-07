@@ -34,7 +34,32 @@ fMathematicacode <- function(input){
                                         mathematica_vector = T),
              LogNormal=fMathematicaHelper("LogNormal",
                                           params = c(input$lognormal_mu, input$lognormal_sigma),
-                                          input)
+                                          input),
+             Exponential=fMathematicaHelper("Exponential",
+                                            params = input$exponential_rate, 
+                                            input),
+             Gamma=fMathematicaHelper("Gamma",
+                                      params = c(input$gamma_shape, 1 / input$gamma_rate), 
+                                      input),
+             t=fMathematicaHelper("StudentT",
+                                  params = c(input$t_mu,input$t_sigma, input$t_nu), 
+                                  input),
+             Beta=fMathematicaHelper("Beta",
+                                     params = c(input$beta_a,input$beta_b), 
+                                     input),
+             Cauchy=fMathematicaHelper("Cauchy",
+                                       params = c(input$cauchy_location,input$cauchy_scale), 
+                                       input),
+             HalfCauchy=fMathematicaHelper("TruncatedDistribution[{0,\\[infty]}, Cauchy",
+                                           params = c(input$cauchy_location,input$cauchy_scale), 
+                                           input),
+             InverseGamma=fMathematicaHelper("InverseGamma",
+                                             params = c(input$inversegamma_shape,input$inversegamma_scale), 
+                                             input),
+             InverseChiSquared=fMathematicaHelper("InverseChiSquare",
+                                                  params = input$inversechisquared_df, 
+                                                  input),
+             LogitNormal="test"
       )
     }
   return(prismCodeBlock(text))
