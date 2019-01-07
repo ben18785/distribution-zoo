@@ -109,7 +109,25 @@ Q\\left(\\alpha ,\\frac{\\beta }{x}\\right), & x>0 \\\\
 \\end{cases}",
                                        "\\text{where }Q(w,v) \\text{ is the regularised gamma function:}",
                                        "Q(w,v) = \\frac{\\Gamma(u,v)}{\\Gamma(u)}",
-                                       "\\text{where }\\Gamma(w,v)=\\int_{v}^{\\infty} t^{w-1} e^{-t}\\mathrm{d}t \\text{ is the upper incomplete gamma function}"))
+                                       "\\text{where }\\Gamma(w,v)=\\int_{v}^{\\infty} t^{w-1} e^{-t}\\mathrm{d}t \\text{ is the upper incomplete gamma function}")),
+          InverseChiSquared=fLatexHelper(c("\\mathrm{E}(X) = \\begin{cases}
+\\frac{1}{\\nu -2}, & \\nu >2 \\\\
+\\text{undefined}, & \\text{Otherwise}
+\\end{cases}",
+                                           "var(X) = \\begin{cases}
+\\frac{2}{(\\nu - 2)^2 (\\nu - 4)}, & \\nu >4 \\\\
+\\text{undefined}, & \\text{Otherwise}
+\\end{cases}"),
+                                         c("f(x|\\nu) = \\begin{cases}
+\\frac{2^{-\\nu/2}}{\\Gamma(\\nu/2)} x^{-\\nu/2 - 1} e^{-1/(2x)}, & x>0 \\\\
+0, & \\text{Otherwise}
+\\end{cases}",
+                                           "\\text{where }\\Gamma(w)=\\int_{0}^{\\infty}t^{w-1}e^{-t}\\mathrm{d}t \\text{ is the gamma function}"),
+                                         c("F(x|\\nu) = \\begin{cases}
+\\frac{\\Gamma\\left(\\frac{\\nu}{2},\\frac{1}{2x}\\right)}{\\Gamma(\\frac{\\nu}{2})}, & x>0 \\\\
+0, & \\text{Otherwise}
+\\end{cases}",
+                                           "\\text{where }\\Gamma(w,v)=\\int_{v}^{\\infty} t^{w-1} e^{-t}\\mathrm{d}t \\text{ is the incomplete upper gamma function}")) 
     )
   }
 }
