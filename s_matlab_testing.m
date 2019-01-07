@@ -25,6 +25,9 @@ x = logitnormalrnd(2, 2.1, [100000, 1]);
 
 f = betabinomialpdf(15, 20, 15, 1);
 x = betabinomialrnd(100, 10, 10, [10000, 2]);
+
+f = multivariatetpdf([1, 2], [1, -3], [[2, 0.5]; [0.5, 0.9]], 1);
+x = multivariatetrnd([1, -3], [[2, 0.5]; [0.5, 0.9]], 1, 100);
 mean(x)
 
 function f = studenttpdf(x, mu, sigma, nu)
@@ -132,4 +135,20 @@ end
 
 function f = mvn2dpdf(x, mux, muy, sigmax, sigmay, rho)
     f = mvnpdf(x, [mux, muy], [[sigmax^2, sigmax * sigmay * rho]; [sigmax * sigmay * rho, sigmay^2]]);
+end
+
+function f = multivariatetpdf(x, mu, Sigma, nu)
+    d = length(mu);
+    x_minus_mu = reshape(x - mu, d, 1);
+    f = gamma((nu + d) / 2) / (gamma(nu / 2) * nu^(d / 2) * pi^(d / 2) * det(Sigma)^0.5) * (1 + (1 / nu) * x_minus_mu' * inv(Sigma) * x_minus_mu)^(-(nu + d) / 2);
+end
+
+function x = multivariatetrnd(mu, Sigma, nu, n)
+    d = length(mu);
+    y = mvnrnd(zeros([d, 1]), Sigma, n);
+    u = chi2rnd(nu, n);
+    x = zeros([n, d]);
+    for i = 1:n
+        x(i, :) = mu + y(i, :) / sqrt(u(i) / nu);
+    end
 end

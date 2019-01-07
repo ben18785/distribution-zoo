@@ -255,19 +255,6 @@ rBetaBinomial_matlab <- paste(
   sep = "\n"
 )
 
-fMultivariatenormal_matlab <- function(input){
-  mux <- input$multivariatenormal_mux
-  muy <- input$multivariatenormal_muy
-  sigmax <- input$multivariatenormal_sigmax
-  sigmay <- input$multivariatenormal_sigmay
-  rho <- input$multivariatenormal_rho
-  
-  switch(input$property,
-         pdf=paste0("mvnpdf(x, [", mux, ", ", muy, "], [[", sigmax^2, ", ", sigmax * sigmay * rho, "]; [", sigmax * sigmay * rho, ", ", sigmay^2, "]])"),
-         log_pdf=paste0("log(mvnpdf(x, [", mux, ", ", muy, "], [[", sigmax^2, ", ", sigmax * sigmay * rho, "]; [", sigmax * sigmay * rho, ", ", sigmay^2, "]]))"),
-         random=paste0("mvnrnd([", mux, ", ", muy, "], [[", sigmax^2, ", ", sigmax * sigmay * rho, "]; [", sigmax * sigmay * rho, ", ", sigmay^2, "]], n)")
-  )
-}
 
 fBetaBinomial_matlab <- function(input){
   lparams <- c(input$betabinomial_size, input$betabinomial_shape1, input$betabinomial_shape2)
@@ -288,6 +275,68 @@ fBetaBinomial_matlab <- function(input){
                                     input),
                       sep = "\n")
   )
+}
+
+fMultivariatenormal_matlab <- function(input){
+  mux <- input$multivariatenormal_mux
+  muy <- input$multivariatenormal_muy
+  sigmax <- input$multivariatenormal_sigmax
+  sigmay <- input$multivariatenormal_sigmay
+  rho <- input$multivariatenormal_rho
+  
+  switch(input$property,
+         pdf=paste0("mvnpdf(x, [", mux, ", ", muy, "], [[", sigmax^2, ", ", sigmax * sigmay * rho, "]; [", sigmax * sigmay * rho, ", ", sigmay^2, "]])"),
+         log_pdf=paste0("log(mvnpdf(x, [", mux, ", ", muy, "], [[", sigmax^2, ", ", sigmax * sigmay * rho, "]; [", sigmax * sigmay * rho, ", ", sigmay^2, "]]))"),
+         random=paste0("mvnrnd([", mux, ", ", muy, "], [[", sigmax^2, ", ", sigmax * sigmay * rho, "]; [", sigmax * sigmay * rho, ", ", sigmay^2, "]], n)")
+  )
+}
+
+
+
+dMultivariatet_matlab <- paste(
+  "function f = multivariatetpdf(x, mu, Sigma, nu)",
+  "    d = length(mu);",
+  "    x_minus_mu = reshape(x - mu, d, 1);",
+  "    f = gamma((nu + d) / 2) / (gamma(nu / 2) * nu^(d / 2) * pi^(d / 2) * det(Sigma)^0.5) * (1 + (1 / nu) * x_minus_mu' * inv(Sigma) * x_minus_mu)^(-(nu + d) / 2);",
+  "end",
+  "% calling function",
+  sep = "\n"
+)
+
+rMultivariatet_matlab <- paste(
+  "function x = multivariatetrnd(mu, Sigma, nu, n)",
+  "    d = length(mu);",
+  "    y = mvnrnd(zeros([d, 1]), Sigma, n);",
+  "    u = chi2rnd(nu, n);",
+  "    x = zeros([n, d]);",
+  "    for i = 1:n",
+  "        x(i, :) = mu + y(i, :) / sqrt(u(i) / nu);",
+  "    end",
+  "end",
+  "% calling function",
+  sep = "\n"
+)
+
+fMultivariatet_matlab <- function(input){
+  
+  mux <- input$multivariatet_mux
+  muy <- input$multivariatet_muy
+  sigmax <- input$multivariatet_sigmax
+  sigmay <- input$multivariatet_sigmay
+  rho <- input$multivariatet_rho
+  df <- input$multivariatet_df
+  
+  switch(input$property,
+         pdf=paste(dMultivariatet_matlab,
+                   paste0("multivariatetpdf(x, [", mux, ", ", muy, "], [[", sigmax^2, ", ", sigmax * sigmay * rho, "]; [", sigmax * sigmay * rho, ", ", sigmay^2, "]], ", df, ")"),
+                   sep = "\n"),
+         log_pdf=paste(dMultivariatet_matlab,
+                       paste0("log(multivariatetpdf(x, [", mux, ", ", muy, "], [[", sigmax^2, ", ", sigmax * sigmay * rho, "]; [", sigmax * sigmay * rho, ", ", sigmay^2, "]], ", df, "))"),
+                       sep = "\n"),
+         random=paste(rMultivariatet_matlab,
+           paste0("multivariatetrnd([", mux, ", ", muy, "], [[", sigmax^2, ", ", sigmax * sigmay * rho, "]; [", sigmax * sigmay * rho, ", ", sigmay^2, "]], ", df, ", n)"),
+           sep = "\n")
+         )
 }
 
 fMatlabcode <- function(input){
@@ -337,7 +386,8 @@ fMatlabcode <- function(input){
       )
     }else if(input$distType=='Multivariate'){
       switch(input$dist2,
-             MultivariateNormal=fMultivariatenormal_matlab(input)
+             MultivariateNormal=fMultivariatenormal_matlab(input),
+             MultivariateT=fMultivariatet_matlab(input)
       )
     }
   return(prismCodeBlock(text, language = "matlab"))
