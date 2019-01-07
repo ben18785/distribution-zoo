@@ -24,7 +24,8 @@ f = logitnormalpdf(0.5, -1, 2);
 x = logitnormalrnd(2, 2.1, [100000, 1]);
 
 f = betabinomialpdf(15, 20, 15, 1);
-x = betabinomialrnd(alpha, 
+x = betabinomialrnd(100, 10, 10, [10000, 2]);
+mean(x)
 
 function f = studenttpdf(x, mu, sigma, nu)
     numer = (nu / (nu + ((x - mu) / sigma)^2))^((nu + 1) / 2);
@@ -128,3 +129,5 @@ function x = betabinomialrnd(n, alpha, beta1, M)
     theta = betarnd(alpha, beta1, M);
     x = binornd(n, theta);
 end
+
+function f = mvn2dpdf(

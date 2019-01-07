@@ -129,3 +129,7 @@ function x = betabinomialrnd(n, alpha, beta1, M)
     theta = betarnd(alpha, beta1, M);
     x = binornd(n, theta);
 end
+
+function f = mvn2dpdf(x, mux, muy, sigmax, sigmay, rho)
+    f = mvnpdf(x, [mux, muy], [[sigmax^2, sigmax * sigmay * rho]; [sigmax * sigmay * rho, sigmay^2]]);
+end

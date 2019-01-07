@@ -255,6 +255,20 @@ rBetaBinomial_matlab <- paste(
   sep = "\n"
 )
 
+fMultivariatenormal_matlab <- function(input){
+  mux <- input$multivariatenormal_mux
+  muy <- input$multivariatenormal_muy
+  sigmax <- input$multivariatenormal_sigmax
+  sigmay <- input$multivariatenormal_sigmay
+  rho <- input$multivariatenormal_rho
+  
+  switch(input$property,
+         pdf=paste0("mvnpdf(x, [", mux, ", ", muy, "], [[", sigmax^2, ", ", sigmax * sigmay * rho, "]; [", sigmax * sigmay * rho, ", ", sigmay^2, "]])"),
+         log_pdf=paste0("log(mvnpdf(x, [", mux, ", ", muy, "], [[", sigmax^2, ", ", sigmax * sigmay * rho, "]; [", sigmax * sigmay * rho, ", ", sigmay^2, "]]))"),
+         random=paste0("mvnrnd([", mux, ", ", muy, "], [[", sigmax^2, ", ", sigmax * sigmay * rho, "]; [", sigmax * sigmay * rho, ", ", sigmay^2, "]], n)")
+  )
+}
+
 fBetaBinomial_matlab <- function(input){
   lparams <- c(input$betabinomial_size, input$betabinomial_shape1, input$betabinomial_shape2)
   switch(input$property,
@@ -323,7 +337,7 @@ fMatlabcode <- function(input){
       )
     }else if(input$distType=='Multivariate'){
       switch(input$dist2,
-             MultivariateNormal=
+             MultivariateNormal=fMultivariatenormal_matlab(input)
       )
     }
   return(prismCodeBlock(text, language = "matlab"))
