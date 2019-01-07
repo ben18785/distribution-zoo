@@ -142,6 +142,62 @@ fInverseWishart_mathematica <- function(input){
   )
 }
 
+dLKJ_mathematica <- paste(
+  "LKJPDF[X_, \\[Eta]_] := Module[{d = Dimensions[X][[1]], aSum, bProd},",
+  "  aSum = 2^Sum[(2 \\[Eta] - 2 + d - k) (d - k), {k, 1, d - 1}];",
+  "  bProd = Product[Beta[\\[Eta] + 0.5 (d - k - 1), \\[Eta] + 0.5 (d - k - 1)], {k, 1, d - 1}];",
+  "  aSum bProd Det[X]^(\\[Eta] - 1)]",
+  "(*Calling function*)",
+  sep="\n"
+)
+
+dLKJ_log_mathematica <- paste(
+  "LKJLogPDF[X_, \\[Eta]_] := Module[{d = Dimensions[X][[1]], aSum, bProd},",
+  "  aSum = 2^Sum[(2 \\[Eta] - 2 + d - k) (d - k), {k, 1, d - 1}];",
+  "  bProd = Product[Beta[\\[Eta] + 0.5 (d - k - 1), \\[Eta] + 0.5 (d - k - 1)], {k, 1, d - 1}];",
+  "  Log[aSum] + Log[bProd] + (\\[Eta] - 1) Log[Det[X]]]",
+  "(*Calling function*)",
+  sep="\n"
+)
+
+rLKJ_mathematica <- paste(
+  "LKJRandomOne[\\[Eta]_ /; \\[Eta] > 0, d_ /; And[d > 0, IntegerQ[d]]] :=",
+  "  Module[{r, rho, beta, u, r12, y, a, anorm, w, A, z},",
+  "    If[d == 1, r = {1}, If[d == 2, rho = 2 RandomVariate[BetaDistribution[\\[Eta], \\[Eta]], 1][[1]];",
+  "      r = {{1, rho}, {rho, 1}}, beta = \\[Eta] + (d - 2)/2; ",
+  "      u = RandomVariate[BetaDistribution[beta, beta], 1][[1]];",
+  "      r12 = 2 u - 1;",
+  "      r = {{1, r12}, {r12, 1}};",
+  "      Table[beta = beta - 0.5; y = RandomVariate[BetaDistribution[m/2, beta], 1][[1]];",
+  "        a = RandomVariate[NormalDistribution[], m];",
+  "        anorm = Sqrt[Total[Flatten[a]^2]];",
+  "        u = a / anorm;",
+  "        w = Sqrt[y] u;",
+  "        A = CholeskyDecomposition[r];",
+  "        z = w.A;",
+  "        r = ArrayFlatten[{{r, Transpose[{z}]}, {{z}, 1}}];, {m, 2, d - 1, 1}]]]; r]",
+  "  ",
+  "LKJRandom[n_Integer, \\[Eta]_ /; \\[Eta] > 0, d_ /; And[d > 0, IntegerQ[d]]] :=",
+  "  Table[LKJRandomOne[\\[Eta], d], {n}]",
+  "(*Calling function*)",
+  sep="\n"
+)
+
+
+fLKJ_mathematica <- function(input){
+  switch(input$property,
+         pdf=paste(dLKJ_mathematica,
+                   paste0("LKJPDF[x, ", input$lkj_eta, "]"),
+                   sep = "\n"),
+         log_pdf=paste(dLKJ_log_mathematica,
+                       paste0("LKJLogPDF[x, ", input$lkj_eta, "]"),
+                       sep = "\n"),
+         random=paste(rLKJ_mathematica,
+                      paste0("LKJRandom[n, ", input$lkj_eta, ", ", input$lkj_dimension, "]"),
+                      sep = "\n")
+  )
+}
+
 fMathematicacode <- function(input){
   text <- 
     if(input$distType=='Continuous'){
@@ -206,7 +262,8 @@ fMathematicacode <- function(input){
              MultivariateT=fMultivariatet_mathematica(input),
              Multinomial=fMultinomial_mathematica(input),
              Wishart=fWishart_mathematica(input),
-             InverseWishart=fInverseWishart_mathematica(input)
+             InverseWishart=fInverseWishart_mathematica(input),
+             LKJ=fLKJ_mathematica(input)
       )
     }
   return(prismCodeBlock(text))
