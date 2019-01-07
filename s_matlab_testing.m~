@@ -11,8 +11,6 @@ x = cauchyrnd(100, 1, [10000,1]);
 
 f = halfcauchypdf(3, 10, 1);
 
-x = halfcauchyrnd(0, 1, [100000,1]);
-
 function f = studenttpdf(x, mu, sigma, nu)
     numer = (nu / (nu + ((x - mu) / sigma)^2))^((nu + 1) / 2);
     f = numer / (sqrt(nu) * sigma * beta(nu / 2, 1 / 2));
@@ -57,11 +55,5 @@ function x = halfcauchysinglernd(a, b)
 end
 
 function x = halfcauchyrnd(a, b, M)
-    x = zeros(M);
-    n = numel(x);
-    y = zeros([n, 1]);
-    for i = 1:n
-        y(i) = halfcauchysinglernd(a, b);
-    end
-    x = reshape(y, M);
+    
 end

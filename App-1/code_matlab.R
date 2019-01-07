@@ -91,6 +91,68 @@ fCauchy_matlab <- function(input){
   )
 }
 
+dHalfCauchy_matlab <- paste(
+  "function f = halfcauchypdf(x, a, b)",
+  "    if x < 0",
+  "        f = 0",
+  "    else",
+  "        fun = @(y) b ./ (pi * (b.^2 + (y - a).^2));",
+  "        c = integral(fun, 0, Inf)",
+  "        f = (1 / c) * b ./ (pi * (b.^2 + (x - a).^2));",
+  "    end",
+  "end",
+  "% calling function",
+  sep = "\n"
+)
+
+rHalfCauchy_matlab <- paste(
+  "function x = cauchyrnd(a, b, M)",
+  "    y = trnd(1, M);",
+  "    x = b * y + a;",
+  "end",
+  " ",
+  "function x = halfcauchysinglernd(a, b)",
+  "    x = cauchyrnd(a, b, 1);",
+  "    while x < 0",
+  "        x = cauchyrnd(a, b, 1);",
+  "    end",
+  "end",
+  " ",
+  "function x = halfcauchyrnd(a, b, M)",
+  "    x = zeros(M);",
+  "    n = numel(x);",
+  "    y = zeros([n, 1]);",
+  "    for i = 1:n",
+  "        y(i) = halfcauchysinglernd(a, b);",
+  "    end",
+  "    x = reshape(y, M);",
+  "end",
+  "% calling function",
+  sep = "\n"
+)
+
+fHalfCauchy_matlab <- function(input){
+  lparams <- c(input$halfcauchy_location, input$halfcauchy_scale)
+  switch(input$property,
+         pdf=paste(dHalfCauchy_matlab,
+                   fMatlabHelper("halfcauchy",
+                                 params = lparams,
+                                 input),
+                   sep = "\n"),
+         log_pdf=paste(dHalfCauchy_matlab,
+                       fMatlabHelper("halfcauchy",
+                                     params = lparams,
+                                     input),
+                       sep = "\n"),
+         random=paste(rHalfCauchy_matlab,
+                      fMatlabHelper("halfcauchy",
+                                    params = lparams,
+                                    input),
+                      sep = "\n")
+  )
+}
+
+
 fMatlabcode <- function(input){
   text <- 
     if(input$distType=='Continuous'){
@@ -112,6 +174,7 @@ fMatlabcode <- function(input){
                                   input),
              t=fStudentt_matlab(input),
              Cauchy=fCauchy_matlab(input),
+             HalfCauchy=fHalfCauchy_matlab(input),
              Beta=fMatlabHelper("beta",
                                 params = c(input$beta_a, input$beta_b),
                                 input)
