@@ -166,7 +166,17 @@ Q\\left(\\alpha ,\\frac{\\beta }{x}\\right), & x>0 \\\\
                                          c("f(x|\\lambda) = \\frac{\\lambda^x e^{-\\lambda}}{x!}"),
                                          c("F(x|\\lambda) = \\frac{\\Gamma(\\lfloor k+1\\rfloor,\\lambda)}{\\lfloor k \\rfloor !}",
                                            "\\text{where }\\Gamma(u,v)=\\int_{v}^{\\infty}t^{u-1}e^{-t} \\mathrm{d}t \\text{ is the upper incomplete gamma function}",
-                                           "\\text{and } \\lfloor x \\rfloor \\text{ is the floor function (rounds down reals to nearest smaller integer)}"))
+                                           "\\text{and } \\lfloor x \\rfloor \\text{ is the floor function (rounds down reals to nearest smaller integer)}")),
+           NegativeBinomial=fLatexHelper_discrete(c("\\mathrm{E}(X) = \\lambda",
+                                                    "var(X) = \\lambda + \\frac{\\lambda^2}{\\kappa}"),
+                                                  c("f(x|\\lambda,\\kappa) = \\frac{\\Gamma(x+\\kappa)}{x!\\Gamma(\\kappa+1)}\\left(\\frac{\\lambda}{\\lambda+\\kappa}\\right)^x \\left(\\frac{\\kappa}{\\lambda+\\kappa}\\right)^\\kappa"),
+                                                  c("F(x|\\lambda,\\kappa) = \\begin{cases}
+I_{\\frac{\\kappa}{\\kappa+\\lambda}}(\\kappa,1+\\lfloor x \\rfloor), & x\\geq 0 \\\\
+0, & \\text{Otherwise}
+\\end{cases}",
+                                                    "\\text{where } I_w(u,v) \\text{ is the regularised incomplete beta function: }",
+                                                    "I_w(u,v) = \\frac{B(w; u, v)}{B(u,v)}",
+                                                    "\\text{where } B(w; u,v)=\\int_{0}^{w}t^{u-1}(1-t)^{v-1}\\mathrm{d}t \\text{ is the incomplete beta function and } B(u,v)=\\int_{0}^{1}t^{u-1}(1-t)^{v-1}\\mathrm{d}t \\text{ is the complete beta function}"))
     )
     }
 }
