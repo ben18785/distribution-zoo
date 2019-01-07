@@ -123,8 +123,10 @@ fMultinomial_mathematica <- function(input){
 }
 
 fWishart_mathematica <- function(input){
-  topper <- paste0("(* S must be symmetric and positive definite *)")
-  top <- paste0("aDist=WishartMatrixDistribution[", input$wishart_df, ", S]")
+  topper <- paste("(* S must be symmetric and positive definite *)",
+                  "Needs[ \"MultivariateStatistics`\"];",
+                  sep = "\n")
+  top <- paste0("aDist=WishartDistribution[S, ", input$wishart_df, "]")
   switch(input$property,
          pdf=paste(topper, top, "PDF[aDist, x]", sep = "\n"),
          log_pdf=paste(topper, top, "Log@PDF[aDist, x]", sep = "\n"),

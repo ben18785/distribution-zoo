@@ -20,7 +20,6 @@ dStudentt_matlab <- paste(
   "    numer = (nu / (nu + ((x - mu) / sigma)^2))^((nu + 1) / 2);",
   "    f = numer / (sqrt(nu) * sigma * beta(nu / 2, 1 / 2));",
   "end",
-  "% calling function",
   sep = "\n"
 )
 
@@ -29,26 +28,31 @@ rStudentt_matlab <- paste(
   "    y = trnd(nu, M);",
   "    x = sigma * y + mu;",
   "end",
-  "% calling function",
   sep = "\n"
 )
 
 fStudentt_matlab <- function(input){
   switch(input$property,
-         pdf=paste(dStudentt_matlab,
+         pdf=paste("% calling function",
                    fMatlabHelper("studentt",
                            params = c(input$t_mu,input$t_sigma, input$t_nu),
                            input),
+                   " ",
+                   dStudentt_matlab,
            sep = "\n"),
-         log_pdf=paste(dStudentt_matlab,
+         log_pdf=paste("% calling function",
                        fMatlabHelper("studentt",
                                params = c(input$t_mu,input$t_sigma, input$t_nu),
                                input),
+                       " ",
+                       dStudentt_matlab,
                        sep = "\n"),
-         random=paste(rStudentt_matlab,
+         random=paste("% calling function",
                       fMatlabHelper("studentt",
                               params = c(input$t_mu,input$t_sigma, input$t_nu),
                               input),
+                      " ",
+                      rStudentt_matlab,
                       sep = "\n")
   )
 }
@@ -57,7 +61,6 @@ dCauchy_matlab <- paste(
   "function f = cauchypdf(x, a, b)",
   "    f = b ./ (pi * (b.^2 + (x - a).^2));",
   "end",
-  "% calling function",
   sep = "\n"
 )
 
@@ -66,27 +69,32 @@ rCauchy_matlab <- paste(
   "    y = trnd(1, M);",
   "    x = b * y + a;",
   "end",
-  "% calling function",
   sep = "\n"
 )
 
 fCauchy_matlab <- function(input){
   lparams <- c(input$cauchy_location, input$cauchy_scale)
   switch(input$property,
-         pdf=paste(dCauchy_matlab,
+         pdf=paste("% calling function",
                    fMatlabHelper("cauchy",
                                  params = lparams,
                                  input),
+                   " ",
+                   dCauchy_matlab,
                    sep = "\n"),
-         log_pdf=paste(dCauchy_matlab,
+         log_pdf=paste("% calling function",
                        fMatlabHelper("cauchy",
                                      params = lparams,
                                      input),
+                       " ",
+                       dCauchy_matlab,
                        sep = "\n"),
-         random=paste(rCauchy_matlab,
+         random=paste("% calling function",
                       fMatlabHelper("cauchy",
                                     params = lparams,
                                     input),
+                      " ",
+                      rCauchy_matlab,
                       sep = "\n")
   )
 }
@@ -101,7 +109,6 @@ dHalfCauchy_matlab <- paste(
   "        f = (1 / c) * b ./ (pi * (b.^2 + (x - a).^2));",
   "    end",
   "end",
-  "% calling function",
   sep = "\n"
 )
 
@@ -127,27 +134,32 @@ rHalfCauchy_matlab <- paste(
   "    end",
   "    x = reshape(y, M);",
   "end",
-  "% calling function",
   sep = "\n"
 )
 
 fHalfCauchy_matlab <- function(input){
   lparams <- c(input$halfcauchy_location, input$halfcauchy_scale)
   switch(input$property,
-         pdf=paste(dHalfCauchy_matlab,
+         pdf=paste("% calling function",
                    fMatlabHelper("halfcauchy",
                                  params = lparams,
                                  input),
+                   dHalfCauchy_matlab,
+                   " ",
                    sep = "\n"),
-         log_pdf=paste(dHalfCauchy_matlab,
+         log_pdf=paste("% calling function",
                        fMatlabHelper("halfcauchy",
                                      params = lparams,
                                      input),
+                       " ",
+                       dHalfCauchy_matlab,
                        sep = "\n"),
-         random=paste(rHalfCauchy_matlab,
+         random=paste("% calling function",
                       fMatlabHelper("halfcauchy",
                                     params = lparams,
                                     input),
+                      " ",
+                      rHalfCauchy_matlab,
                       sep = "\n")
   )
 }
@@ -160,7 +172,6 @@ dInverseGamma_matlab <- paste(
   "        f = (beta^alpha) / gamma(alpha) * x^(-alpha-1) * exp(-beta / x);",
   "    end",
   "end",
-  "% calling function",
   sep = "\n"
 )
 
@@ -169,27 +180,32 @@ rInverseGamma_matlab <- paste(
   "    y = gamrnd(alpha, 1 / beta, M);",
   "    x = 1 ./ y;",
   "end",
-  "% calling function",
   sep = "\n"
 )
 
 fInverseGamma_matlab <- function(input){
   lparams <- c(input$inversegamma_shape, input$inversegamma_scale)
   switch(input$property,
-         pdf=paste(dInverseGamma_matlab,
+         pdf=paste("% calling function",
                    fMatlabHelper("inversegamma",
                                  params = lparams,
                                  input),
+                   " ",
+                   dInverseGamma_matlab,
                    sep = "\n"),
-         log_pdf=paste(dInverseGamma_matlab,
+         log_pdf=paste("% calling function",
                        fMatlabHelper("inversegamma",
                                      params = lparams,
                                      input),
+                       " ",
+                       dInverseGamma_matlab,
                        sep = "\n"),
-         random=paste(rInverseGamma_matlab,
+         random=paste("% calling function",
                       fMatlabHelper("inversegamma",
                                     params = lparams,
                                     input),
+                      " ",
+                      rInverseGamma_matlab,
                       sep = "\n")
   )
 }
@@ -198,7 +214,6 @@ dInverseChiSquared_matlab <- paste(
   "function f = inversechisquaredpdf(x, nu)",
   "    f = 2^(-nu/2) / gamma(nu / 2) * x^(-nu / 2 - 1) * exp(-1 / (2 * x));",
   "end",
-  "% calling function",
   sep = "\n"
 )
 
@@ -207,27 +222,78 @@ rInverseChiSquared_matlab <- paste(
   "    y = chi2rnd(nu, M);",
   "    x = 1 ./ y;",
   "end",
-  "% calling function",
   sep = "\n"
 )
 
 fInverseChiSquared_matlab <- function(input){
   lparams <- input$inversechisquared_df
   switch(input$property,
-         pdf=paste(dInverseChiSquared_matlab,
+         pdf=paste("% calling function",
                    fMatlabHelper("inversechisquared",
                                  params = lparams,
                                  input),
+                   " ",
+                   dInverseChiSquared_matlab,
                    sep = "\n"),
-         log_pdf=paste(dInverseChiSquared_matlab,
+         log_pdf=paste("% calling function",
                        fMatlabHelper("inversechisquared",
                                      params = lparams,
                                      input),
+                       " ",
+                       dInverseChiSquared_matlab,
                        sep = "\n"),
-         random=paste(rInverseChiSquared_matlab,
+         random=paste("% calling function",
                       fMatlabHelper("inversechisquared",
                                     params = lparams,
                                     input),
+                      " ",
+                      rInverseChiSquared_matlab,
+                      sep = "\n")
+  )
+}
+
+dLogitNormal_matlab <- paste(
+  "function f = logitnormalpdf(x, mu, sigma)",
+  "    if x > 1 || x < 0",
+  "        f = 0;",
+  "    else",
+  "        f = 1 / (sigma * sqrt(2 * pi)) * exp(-(log(x / (1 - x)) - mu)^2 / (2 * sigma^2));",
+  "    end",
+  "end",
+  sep = "\n"
+)
+
+rLogitNormal_matlab <- paste(
+  "function x = logitnormalrnd(mu, sigma, M)",
+  "    y = normrnd(mu, sigma, M);",
+  "    x = 1 ./ (1 + exp(-y));",
+  "end",
+  sep = "\n"
+)
+
+fLogitNormal_matlab <- function(input){
+  lparams <- c(input$logitnormal_mu, input$logitnormal_sigma)
+  switch(input$property,
+         pdf=paste("% calling function",
+                   fMatlabHelper("logitnormal",
+                                 params = lparams,
+                                 input),
+                   " ",
+                   dLogitNormal_matlab,
+                   sep = "\n"),
+         log_pdf=paste("% calling function",
+                       fMatlabHelper("logitnormal",
+                                     params = lparams,
+                                     input),
+                       " ",
+                       dLogitNormal_matlab,
+                       sep = "\n"),
+         random=paste("% calling function",
+                      fMatlabHelper("logitnormal",
+                                    params = lparams,
+                                    input),
+                      " ",
+                      rLogitNormal_matlab,
                       sep = "\n")
   )
 }
@@ -242,7 +308,6 @@ dBetaBinomial_matlab <- paste(
   "        f = nchoosek(n, x) * beta(x + alpha, n - x + beta1) / beta(alpha, beta1);",
   "    end",
   "end",
-  "% calling function",
   sep = "\n"
 )
 
@@ -251,7 +316,6 @@ rBetaBinomial_matlab <- paste(
   "    theta = betarnd(alpha, beta1, M);",
   "    x = binornd(n, theta);",
   "end",
-  "% calling function",
   sep = "\n"
 )
 
@@ -259,20 +323,26 @@ rBetaBinomial_matlab <- paste(
 fBetaBinomial_matlab <- function(input){
   lparams <- c(input$betabinomial_size, input$betabinomial_shape1, input$betabinomial_shape2)
   switch(input$property,
-         pdf=paste(dBetaBinomial_matlab,
+         pdf=paste("% calling function",
                    fMatlabHelper("betabinomial",
                                  params = lparams,
                                  input),
+                   " ",
+                   dBetaBinomial_matlab,
                    sep = "\n"),
-         log_pdf=paste(dBetaBinomial_matlab,
+         log_pdf=paste("% calling function",
                        fMatlabHelper("betabinomial",
                                      params = lparams,
                                      input),
+                       " ",
+                       dBetaBinomial_matlab,
                        sep = "\n"),
-         random=paste(rBetaBinomial_matlab,
+         random=paste("% calling function",
                       fMatlabHelper("betabinomial",
                                     params = lparams,
                                     input),
+                      " ",
+                      rBetaBinomial_matlab,
                       sep = "\n")
   )
 }
@@ -291,15 +361,12 @@ fMultivariatenormal_matlab <- function(input){
   )
 }
 
-
-
 dMultivariatet_matlab <- paste(
   "function f = multivariatetpdf(x, mu, Sigma, nu)",
   "    d = length(mu);",
   "    x_minus_mu = reshape(x - mu, d, 1);",
   "    f = gamma((nu + d) / 2) / (gamma(nu / 2) * nu^(d / 2) * pi^(d / 2) * det(Sigma)^0.5) * (1 + (1 / nu) * x_minus_mu' * inv(Sigma) * x_minus_mu)^(-(nu + d) / 2);",
   "end",
-  "% calling function",
   sep = "\n"
 )
 
@@ -313,7 +380,6 @@ rMultivariatet_matlab <- paste(
   "        x(i, :) = mu + y(i, :) / sqrt(u(i) / nu);",
   "    end",
   "end",
-  "% calling function",
   sep = "\n"
 )
 
@@ -327,14 +393,22 @@ fMultivariatet_matlab <- function(input){
   df <- input$multivariatet_df
   
   switch(input$property,
-         pdf=paste(dMultivariatet_matlab,
+         pdf=paste(
+                   "% calling function",
                    paste0("multivariatetpdf(x, [", mux, ", ", muy, "], [[", sigmax^2, ", ", sigmax * sigmay * rho, "]; [", sigmax * sigmay * rho, ", ", sigmay^2, "]], ", df, ")"),
+                   " ",
+                   dMultivariatet_matlab,
                    sep = "\n"),
-         log_pdf=paste(dMultivariatet_matlab,
+         log_pdf=paste(
+                       "% calling function",
                        paste0("log(multivariatetpdf(x, [", mux, ", ", muy, "], [[", sigmax^2, ", ", sigmax * sigmay * rho, "]; [", sigmax * sigmay * rho, ", ", sigmay^2, "]], ", df, "))"),
+                       " ",
+                       dMultivariatet_matlab,
                        sep = "\n"),
-         random=paste(rMultivariatet_matlab,
+         random=paste("% calling function",
            paste0("multivariatetrnd([", mux, ", ", muy, "], [[", sigmax^2, ", ", sigmax * sigmay * rho, "]; [", sigmax * sigmay * rho, ", ", sigmay^2, "]], ", df, ", n)"),
+           " ",
+           rMultivariatet_matlab,
            sep = "\n")
          )
 }
@@ -342,10 +416,47 @@ fMultivariatet_matlab <- function(input){
 fMultinomial_matlab <- function(input){
   comps <- c(input$multinomial_prob1, input$multinomial_prob2, input$multinomial_prob3)
   switch(input$property,
-         pdf=paste0("mnpdf(x, [", comps[1], ", ", comps[2], ", ", comps[3], "]", "/ sum([", comps[1], ", ", comps[2], ", ", comps[3], "]))"),
-         log_pdf=paste0("log(mnpdf(x, [", comps[1], ", ", comps[2], ", ", comps[3], "]", "/ sum([", comps[1], ", ", comps[2], ", ", comps[3], "])))"),
-         random=paste0("mnrnd(",input$multinomial_size, ", [", comps[1], ", ", comps[2], ", ", comps[3], "]", "/ sum([", comps[1], ", ", comps[2], ", ", comps[3], "]), n)")
+         pdf=paste0("mnpdf(x, [", comps[1], ", ", comps[2], ", ", comps[3], "]", " / sum([", comps[1], ", ", comps[2], ", ", comps[3], "]))"),
+         log_pdf=paste0("log(mnpdf(x, [", comps[1], ", ", comps[2], ", ", comps[3], "]", " / sum([", comps[1], ", ", comps[2], ", ", comps[3], "])))"),
+         random=paste0("mnrnd(",input$multinomial_size, ", [", comps[1], ", ", comps[2], ", ", comps[3], "]", " / sum([", comps[1], ", ", comps[2], ", ", comps[3], "]), n)")
          )
+}
+
+dWishart_matlab <- paste(
+  "function g = multivariate_gamma(p, a)",
+  "    j = 1:p;",
+  "    g = gamma(a + (1 - j) / 2);",
+  "    g = pi^(p * (p - 1) / 4) * prod(g);",
+  "end",
+  " ",
+  "function f = wishartpdf(x, nu, S)",
+  "    m = size(x);",
+  "    d = m(1);",
+  "    if nu < d - 1",
+  "        f = 0;",
+  "    else",
+  "        f = det(x)^((nu - d - 1) / 2) * exp(-trace(inv(S) * x) / 2) * 1 / (2^(nu * d / 2) * det(S)^(nu / 2) * multivariate_gamma(d, nu / 2));",
+  "    end",
+  "end",
+  sep = "\n")
+
+fWishart_matlab <- function(input){
+  lparams <- wishart_df
+  switch(input$property,
+         pdf=paste("% calling function (S must be symmetric and positive definite)",
+           paste0("wishartpdf(x, ", ", ", lparams, ", S)"),
+           " ",
+           dWishart_matlab,
+           sep = "\n"),
+         log_pdf=paste("% calling function (S must be symmetric and positive definite)",
+                       paste0("log(wishartpdf(x, ", ", ", lparams, ", S))"),
+                       " ",
+                       dWishart_matlab,
+                       sep = "\n"),
+         random=paste0(paste("for i = 1:n",
+                             "    wishrnd(S, ", lparams, ")",
+                             sep = "\n"))
+           )
 }
 
 fMatlabcode <- function(input){
@@ -374,7 +485,8 @@ fMatlabcode <- function(input){
                                 params = c(input$beta_a, input$beta_b),
                                 input),
              InverseGamma=fInverseGamma_matlab(input),
-             InverseChiSquared=fInverseChiSquared_matlab(input)
+             InverseChiSquared=fInverseChiSquared_matlab(input),
+             LogitNormal=fLogitNormal_matlab(input)
       )
     }else if(input$distType=='Discrete'){
       switch(input$dist1,

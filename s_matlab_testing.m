@@ -28,7 +28,9 @@ x = betabinomialrnd(100, 10, 10, [10000, 2]);
 
 f = multivariatetpdf([1, 2], [1, -3], [[2, 0.5]; [0.5, 0.9]], 1);
 x = multivariatetrnd([1, -3], [[2, 0.5]; [0.5, 0.9]], 1, 100);
-mean(x)
+
+f = wishartpdf([[2, 0.5]; [0.5, 1]], 10, [[3, 0]; [0, 2]]);
+multivariate_gamma(3, 4)
 
 function f = studenttpdf(x, mu, sigma, nu)
     numer = (nu / (nu + ((x - mu) / sigma)^2))^((nu + 1) / 2);
@@ -150,5 +152,21 @@ function x = multivariatetrnd(mu, Sigma, nu, n)
     x = zeros([n, d]);
     for i = 1:n
         x(i, :) = mu + y(i, :) / sqrt(u(i) / nu);
+    end
+end
+
+function g = multivariate_gamma(p, a)
+    j = 1:p;
+    g = gamma(a + (1 - j) / 2);
+    g = pi^(p * (p - 1) / 4) * prod(g);
+end
+
+function f = wishartpdf(x, nu, S)
+    m = size(x);
+    d = m(1);
+    if nu < d - 1
+        f = 0;
+    else
+        f = det(x)^((nu - d - 1) / 2) * exp(-trace(inv(S) * x) / 2) * 1 / (2^(nu * d / 2) * det(S)^(nu / 2) * multivariate_gamma(d, nu / 2));
     end
 end

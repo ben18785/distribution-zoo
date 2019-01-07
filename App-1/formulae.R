@@ -430,7 +430,7 @@ fFormulae <- function(input){
                                  h2("$$\\mathrm{E}(X) = \\nu \\Psi$$"),
                                  h2("$$var(X_{i,j}) = \\nu(\\Psi_{i,j}^2+\\Psi_{i,i}\\Psi_{j,j})$$"),
                                  h2("Probability density function (PDF)"),
-                                 h2("$$f(X|\\nu,\\Psi) = |X|^{(\\nu-d-1)/2} \\text{exp}(-\\text{tr}(\\Psi^{-1} X)/2)\\frac{1}{2^{\\nu d/2} |\\Psi|^{d/2} \\Gamma_d(\\nu/2)}$$"),
+                                 h2("$$f(X|\\nu,\\Psi) = |X|^{(\\nu-d-1)/2} \\text{exp}(-\\text{tr}(\\Psi^{-1} X)/2)\\frac{1}{2^{\\nu d/2} |\\Psi|^{\\nu/2} \\Gamma_d(\\nu/2)}$$"),
                                  h2(withMathJax(
                                    helpText(HTML('$$\\color{black}{\\text{where }  \\Gamma_p(a)=\\pi^{p(p-1)/4}\\prod_{j=1}^{p}\\Gamma(a+(1-j)/2) \\text{ is the multivariate gamma function}}$$')))),
                                  h2("Cumulative distribution function (CDF)"),
