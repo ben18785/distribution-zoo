@@ -47,6 +47,31 @@ fHalfCauchy_mathematica <- function(input){
   )
 }
 
+dLogitNormal_mathematica <- function(logit_mu, logit_sigma){
+  top <- paste0("aDist=TransformedDistribution[LogisticSigmoid[x], x \\[Distributed] NormalDistribution[", logit_mu, ", ",  logit_sigma, "]]")
+  bottom <- "PDF[aDist, x]"
+  return(paste(top, bottom, sep = "\n"))
+}
+
+dLogitNormal_log_mathematica <- function(logit_mu, logit_sigma){
+  top <- paste0("aDist=TransformedDistribution[LogisticSigmoid[x], x \\[Distributed] NormalDistribution[", logit_mu, ", ",  logit_sigma, "]]")
+  bottom <- "Log@PDF[aDist, x]"
+  return(paste(top, bottom, sep = "\n"))
+}
+
+rLogitNormal_mathematica <- function(logit_mu, logit_sigma){
+  top <- paste0("aDist=TransformedDistribution[LogisticSigmoid[x], x \\[Distributed] NormalDistribution[", logit_mu, ", ",  logit_sigma, "]]")
+  bottom <- "RandomVariate[aDist, n]"
+  return(paste(top, bottom, sep = "\n"))
+}
+
+fLogitNormal_mathematica <- function(input){
+  switch(input$property,
+         pdf=dLogitNormal_mathematica(input$logitnormal_mu,input$logitnormal_sigma),
+         log_pdf=dLogitNormal_log_mathematica(input$logitnormal_mu,input$logitnormal_sigma),
+         random=rLogitNormal_mathematica(input$logitnormal_mu,input$logitnormal_sigma)
+  )
+}
 
 fMathematicacode <- function(input){
   text <- 
@@ -85,7 +110,7 @@ fMathematicacode <- function(input){
              InverseChiSquared=fMathematicaHelper("InverseChiSquare",
                                                   params = input$inversechisquared_df, 
                                                   input),
-             LogitNormal="test"
+             LogitNormal=fLogitNormal_mathematica(input)
       )
     }else if(input$distType=='Discrete'){
       switch(input$dist1,
