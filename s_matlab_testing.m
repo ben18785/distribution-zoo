@@ -179,3 +179,12 @@ function f = inversewishartpdf(x, nu, S)
         f = det(S)^(nu / 2) * det(x)^(-(nu + d + 1) / 2) * exp(-trace(S * inv(x)) / 2) * 1 / (2^(nu * d / 2) * multivariate_gamma(d, nu /2));
     end
 end
+
+
+function f = lkjpdf(x, nu)
+    m = size(x);
+    d = m(1);
+    a_sum = 0;
+    a_prod = 1;
+    for i = 1:(d-1)
+        a_sum = a_sum + (2 * eta(

@@ -158,6 +158,7 @@ dLKJ_mathematica <- paste(
   "  aSum = 2^Sum[(2 \\[Eta] - 2 + d - k) (d - k), {k, 1, d - 1}];",
   "  bProd = Product[Beta[\\[Eta] + 0.5 (d - k - 1), \\[Eta] + 0.5 (d - k - 1)], {k, 1, d - 1}];",
   "  aSum bProd Det[X]^(\\[Eta] - 1)]",
+  " ",
   "(*Calling function*)",
   sep="\n"
 )
@@ -167,6 +168,7 @@ dLKJ_log_mathematica <- paste(
   "  aSum = 2^Sum[(2 \\[Eta] - 2 + d - k) (d - k), {k, 1, d - 1}];",
   "  bProd = Product[Beta[\\[Eta] + 0.5 (d - k - 1), \\[Eta] + 0.5 (d - k - 1)], {k, 1, d - 1}];",
   "  Log[aSum] + Log[bProd] + (\\[Eta] - 1) Log[Det[X]]]",
+  " ",
   "(*Calling function*)",
   sep="\n"
 )
