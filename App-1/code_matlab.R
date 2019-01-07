@@ -232,6 +232,50 @@ fInverseChiSquared_matlab <- function(input){
   )
 }
 
+dBetaBinomial_matlab <- paste(
+  "function f = betabinomialpdf(x, n, alpha, beta1)",
+  "    if abs(x - round(x)) > 0",
+  "        f = 0;",
+  "    elseif x < 0 || x > n",
+  "        f = 0;",
+  "    else",
+  "        f = nchoosek(n, x) * beta(x + alpha, n - x + beta1) / beta(alpha, beta1);",
+  "    end",
+  "end",
+  "% calling function",
+  sep = "\n"
+)
+
+rBetaBinomial_matlab <- paste(
+  "function x = betabinomialrnd(n, alpha, beta1, M)",
+  "    theta = betarnd(alpha, beta1, M);",
+  "    x = binornd(n, theta);",
+  "end",
+  "% calling function",
+  sep = "\n"
+)
+
+fBetaBinomial_matlab <- function(input){
+  lparams <- c(input$betabinomial_size, input$betabinomial_shape1, input$betabinomial_shape2)
+  switch(input$property,
+         pdf=paste(dBetaBinomial_matlab,
+                   fMatlabHelper("betabinomial",
+                                 params = lparams,
+                                 input),
+                   sep = "\n"),
+         log_pdf=paste(dBetaBinomial_matlab,
+                       fMatlabHelper("betabinomial",
+                                     params = lparams,
+                                     input),
+                       sep = "\n"),
+         random=paste(rBetaBinomial_matlab,
+                      fMatlabHelper("betabinomial",
+                                    params = lparams,
+                                    input),
+                      sep = "\n")
+  )
+}
+
 fMatlabcode <- function(input){
   text <- 
     if(input$distType=='Continuous'){
@@ -275,7 +319,7 @@ fMatlabcode <- function(input){
                                             params = c(input$negativebinomial_dispersion,
                                                        input$negativebinomial_dispersion / (input$negativebinomial_dispersion + input$negativebinomial_mean)),
                                             input),
-        
+             BetaBinomial=fBetaBinomial_matlab(input)
       )
     }else if(input$distType=='Multivariate'){
       switch(input$dist2,

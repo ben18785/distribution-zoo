@@ -22,6 +22,9 @@ x = inversechisquaredrnd(5, [10000, 1]);
 
 f = logitnormalpdf(0.5, -1, 2);
 x = logitnormalrnd(2, 2.1, [100000, 1]);
+
+f = betabinomialpdf(15, 20, 15, 1);
+x = betabinomialrnd(100, 10, 10, [10000, 2]);
 mean(x)
 
 function f = studenttpdf(x, mu, sigma, nu)
@@ -112,3 +115,17 @@ function x = logitnormalrnd(mu, sigma, M)
     x = 1 ./ (1 + exp(-y)); 
 end
 
+function f = betabinomialpdf(x, n, alpha, beta1)
+    if abs(x - round(x)) > 0
+        f = 0;
+    elseif x < 0 || x > n
+        f = 0;
+    else
+        f = nchoosek(n, x) * beta(x + alpha, n - x + beta1) / beta(alpha, beta1);
+    end
+end
+
+function x = betabinomialrnd(n, alpha, beta1, M)
+    theta = betarnd(alpha, beta1, M);
+    x = binornd(n, theta);
+end
