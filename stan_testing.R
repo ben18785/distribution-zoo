@@ -2,7 +2,7 @@ library(rstan)
 
 stan_model <- stan_model('stan_test.stan')
 
-x <- c(1,1)
+x <- c(1,2,3)
 mux <- 2.6
 muy <- -2.4
 sigmax <- 2

@@ -134,6 +134,19 @@ fMultivariateT_stan <- function(input){
   
 }
 
+fMultinomial_stan <- function(input){
+  theta <- c(input$multinomial_prob1,
+             input$multinomial_prob2,
+             input$multinomial_prob3)
+  theta <- theta / sum(theta)
+  switch(input$property,
+         pdf=paste0("exp(multinomial_lpmf(x| to_vector([", theta[1], ", ", theta[2], ", ", theta[3], "])))"),
+         log_pdf=paste0("multinomial_lpmf(x| to_vector([", theta[1], ", ", theta[2], ", ", theta[3], "]))"),
+         random=paste0("multinomial_rng(to_vector([", theta[1], ", ", theta[2], ", ", theta[3], "]), ", input$multinomial_size, ")")
+  )
+  
+}
+
 
 fStanCode <- function(input){
   text <-
@@ -163,7 +176,7 @@ fStanCode <- function(input){
       switch(input$dist2,
              MultivariateNormal=fMultivariateNormal_stan(input),
              MultivariateT=fMultivariateT_stan(input),
-             Multinomial=fStanHelper_discrete("multinomial", c(input$multinomial_prob1, input$multinomial_prob2, input$multinomial_prob3), input, vector_params = T),
+             Multinomial=fMultinomial_stan(input),
              Wishart=fStanHelper("wishart", input$wishart_df, input),
              InverseWishart=dInverseWishartFull(input$inversewishart_df, input),
              LKJ=fLKJ_1(input$lkj_eta, input$lkj_dimension, input),
