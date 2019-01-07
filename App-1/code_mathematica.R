@@ -61,6 +61,25 @@ fMathematicacode <- function(input){
                                                   input),
              LogitNormal="test"
       )
+    }else if(input$distType=='Discrete'){
+      switch(input$dist1,
+             Bernoulli=fMathematicaHelper("Bernoulli",
+                                          params = input$bernoulli_prob, 
+                                          input),
+             Binomial=fMathematicaHelper("Binomial",
+                                         params = c(input$binomial_size, input$binomial_prob), 
+                                         input),
+             Poisson=fMathematicaHelper("Poisson",
+                                        params = input$poisson_lambda, 
+                                        input),
+             NegativeBinomial=fMathematicaHelper("NegativeBinomial",
+                                                 params = c(input$negativebinomial_dispersion, input$negativebinomial_dispersion / (input$negativebinomial_dispersion + input$negativebinomial_mean)), 
+                                                 input),
+             BetaBinomial=fMathematicaHelper("BetaBinomial",
+                                             params = c(input$betabinomial_shape1, input$betabinomial_shape2, input$betabinomial_size), 
+                                             input)
+             
+      )
     }
   return(prismCodeBlock(text))
 }
