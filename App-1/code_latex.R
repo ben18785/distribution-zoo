@@ -127,7 +127,13 @@ Q\\left(\\alpha ,\\frac{\\beta }{x}\\right), & x>0 \\\\
 \\frac{\\Gamma\\left(\\frac{\\nu}{2},\\frac{1}{2x}\\right)}{\\Gamma(\\frac{\\nu}{2})}, & x>0 \\\\
 0, & \\text{Otherwise}
 \\end{cases}",
-                                           "\\text{where }\\Gamma(w,v)=\\int_{v}^{\\infty} t^{w-1} e^{-t}\\mathrm{d}t \\text{ is the incomplete upper gamma function}")) 
+                                           "\\text{where }\\Gamma(w,v)=\\int_{v}^{\\infty} t^{w-1} e^{-t}\\mathrm{d}t \\text{ is the incomplete upper gamma function}")),
+          LogitNormal=fLatexHelper(c("\\mathrm{E}(X) = \\text{ No simple analytic expression}",
+                                     "var(X) = \\text{ No simple analytic expression}"),
+                                   c("f(x|\\mu,\\sigma) = \\frac{1}{\\sigma\\sqrt{2\\pi}} \\text{exp}\\left(-\\frac{(\\text{logit } x - \\mu)^2}{2\\sigma^2}\\right) \\frac{1}{x(1-x)}",
+                                     "\\text{where }\\text{logit } x = \\text{log}\\left(\\frac{x}{1-x}\\right)"),
+                                   c("F(x|\\mu,\\sigma) = \\frac{1}{2} + \\frac{1}{2} \\text{erf}\\left(\\frac{\\text{logit } x - \\mu}{\\sqrt{2} \\sigma}\\right)",
+                                     "\\text{where }\\text{erf}(x) = \\frac{2}{\\sqrt{\\pi}}\\int_{0}^{x} e^{-t^2}\\mathrm{d}t \\text{ is the error function}"))
     )
   }
 }
