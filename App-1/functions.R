@@ -88,7 +88,7 @@ fMakeFunctionPaste <- function(mainName, params, prefixparams=NULL,
                                postfixparams=NULL, import=NULL, freeform=NULL,
                                mathematica=FALSE, julia=FALSE, named_arguments=NULL,
                                vector_params=FALSE, python_vector=FALSE, other_params=FALSE,
-                               end_brace=FALSE){
+                               end_brace=FALSE, mathematica_vector=FALSE){
   if(mathematica){
     a_forward_brace <- "["
     a_backward_brace <- "]"
@@ -100,8 +100,10 @@ fMakeFunctionPaste <- function(mainName, params, prefixparams=NULL,
     if(is.null(named_arguments)){
       common_prose <- paste(sapply(params, function(x) eval(parse(text=x))), collapse=", ")
       if(vector_params){
-        if(!python_vector)
+        if(!python_vector&!mathematica_vector)
           common_prose <- paste0("c(", common_prose, ")")
+        else if(mathematica_vector)
+          common_prose <- paste0("{", common_prose, "}")
         else{
           common_prose <- paste0("[", common_prose, "]")
           if(other_params)
