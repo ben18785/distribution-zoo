@@ -91,6 +91,25 @@ fMultivariatenormal_mathematica <- function(input){
   )
 }
 
+dMultivariatet_mathematica <- function(mux, muy, sigmax, sigmay, rho, df){
+  top <- paste0("aDist=MultivariateTDistribution[{", mux, ", ", muy, "}, {{", sigmax^2, ", ", sigmax * sigmay * rho, "}, {", sigmax * sigmay * rho, ", ",  
+                sigmay^2, "}}", ", ", df, "]")
+}
+
+fMultivariatet_mathematica <- function(input){
+  top <- dMultivariatet_mathematica(input$multivariatet_mux,
+                                    input$multivariatet_muy,
+                                    input$multivariatet_sigmax,
+                                    input$multivariatet_sigmay,
+                                    input$multivariatet_rho,
+                                    input$multivariatet_df)
+  switch(input$property,
+         pdf=paste(top, "PDF[aDist, x]", sep = "\n"),
+         log_pdf=paste(top, "Log@PDF[aDist, x]", sep = "\n"),
+         random=paste(top, "RandomVariate[aDist, n]", sep = "\n")
+  )
+}
+
 fMathematicacode <- function(input){
   text <- 
     if(input$distType=='Continuous'){
@@ -151,7 +170,8 @@ fMathematicacode <- function(input){
       )
     }else if(input$distType=='Multivariate'){
       switch(input$dist2,
-             MultivariateNormal=fMultivariatenormal_mathematica(input)
+             MultivariateNormal=fMultivariatenormal_mathematica(input),
+             MultivariateT=fMultivariatet_mathematica(input),
       )
     }
   return(prismCodeBlock(text))
