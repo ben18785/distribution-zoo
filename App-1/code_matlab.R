@@ -441,10 +441,10 @@ dWishart_matlab <- paste(
   sep = "\n")
 
 fWishart_matlab <- function(input){
-  lparams <- wishart_df
+  lparams <- input$wishart_df
   switch(input$property,
          pdf=paste("% calling function (S must be symmetric and positive definite)",
-           paste0("wishartpdf(x, ", ", ", lparams, ", S)"),
+           paste0("wishartpdf(x, ", lparams, ", S)"),
            " ",
            dWishart_matlab,
            sep = "\n"),
@@ -454,7 +454,8 @@ fWishart_matlab <- function(input){
                        dWishart_matlab,
                        sep = "\n"),
          random=paste0(paste("for i = 1:n",
-                             "    wishrnd(S, ", lparams, ")",
+                             paste0("    wishrnd(S, ", lparams, ")"),
+                             "end",
                              sep = "\n"))
            )
 }
@@ -509,7 +510,8 @@ fMatlabcode <- function(input){
       switch(input$dist2,
              MultivariateNormal=fMultivariatenormal_matlab(input),
              MultivariateT=fMultivariatet_matlab(input),
-             Multinomial=fMultinomial_matlab(input)
+             Multinomial=fMultinomial_matlab(input),
+             Wishart=fWishart_matlab(input)
       )
     }
   return(prismCodeBlock(text, language = "matlab"))
