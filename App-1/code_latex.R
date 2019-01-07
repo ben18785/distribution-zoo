@@ -72,7 +72,11 @@ fLatex <- function(input){
                              c("F(x|\\alpha,\\beta) = I_x(\\alpha,\\beta)",
                                "\\text{where } I_w(u,v) \\text{ is the regularised beta function: }}",
                                "I_w(u,v) = \\frac{B(w; u, v)}{B(u,v)}",
-                               "\\text{where } B(w; u,v)=\\int_{0}^{w}t^{u-1}(1-t)^{v-1}\\mathrm{d}t \\text{ is the incomplete beta function and } B(u,v) \\text{ is the (complete) beta function}}"))
+                               "\\text{where } B(w; u,v)=\\int_{0}^{w}t^{u-1}(1-t)^{v-1}\\mathrm{d}t \\text{ is the incomplete beta function and } B(u,v) \\text{ is the (complete) beta function}}")),
+           Cauchy=fLatexHelper(c("\\mathrm{E}(X) = \\text{ undefined}",
+                                 "var(X) = \\text{ undefined}"),
+                               c("f(x|\\mu, \\sigma) = \\frac{1}{\\pi\\sigma\\left[1 + \\left(\\frac{x-\\mu}{\\sigma}\\right)^2\\right]}"),
+                               c("F(x|\\mu, \\sigma) = \\frac{1}{2} + \\frac{1}{\\pi}\\text{arctan}\\left(\\frac{x-\\mu}{\\sigma}\\right)"))
     )
   }
 }
