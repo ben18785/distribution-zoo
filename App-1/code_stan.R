@@ -175,6 +175,13 @@ fInverseWishart_stan <- function(input){
   )
 }
 
+fLKJ_stan <- function(input){
+  switch(input$property,
+         pdf=fStanHelper("lkj_corr", input$lkj_eta, input),
+         log_pdf=fStanHelper("lkj_corr", input$lkj_eta, input),
+         random=fStanHelper("lkj_corr", c(input$lkj_dimension, input$lkj_eta), input)
+  )
+}
 
 fStanCode <- function(input){
   text <-
@@ -207,7 +214,7 @@ fStanCode <- function(input){
              Multinomial=fMultinomial_stan(input),
              Wishart=fWishart_stan(input),
              InverseWishart=fInverseWishart_stan(input),
-             LKJ=fLKJ_1(input$lkj_eta, input$lkj_dimension, input),
+             LKJ=fLKJ_stan(input),
              Dirichlet=if_else(input$dirichlet_dimension==2, fStanHelper("dirichlet", c(input$dirichlet_alpha1, input$dirichlet_alpha2), input, vector_params = TRUE, import="library(LaplacesDemon)"),
                                if_else(input$dirichlet_dimension==3, fStanHelper("dirichlet", c(input$dirichlet_alpha1, input$dirichlet_alpha2, input$dirichlet_alpha3), input, vector_params = TRUE, import="library(LaplacesDemon)"),
                                        if_else(input$dirichlet_dimension==4, fStanHelper("dirichlet", c(input$dirichlet_alpha1, input$dirichlet_alpha2, input$dirichlet_alpha3, input$dirichlet_alpha4), input, vector_params = TRUE, import="library(LaplacesDemon)"), "test")))
