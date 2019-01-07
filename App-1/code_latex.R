@@ -176,7 +176,17 @@ I_{\\frac{\\kappa}{\\kappa+\\lambda}}(\\kappa,1+\\lfloor x \\rfloor), & x\\geq 0
 \\end{cases}",
                                                     "\\text{where } I_w(u,v) \\text{ is the regularised incomplete beta function: }",
                                                     "I_w(u,v) = \\frac{B(w; u, v)}{B(u,v)}",
-                                                    "\\text{where } B(w; u,v)=\\int_{0}^{w}t^{u-1}(1-t)^{v-1}\\mathrm{d}t \\text{ is the incomplete beta function and } B(u,v)=\\int_{0}^{1}t^{u-1}(1-t)^{v-1}\\mathrm{d}t \\text{ is the complete beta function}"))
+                                                    "\\text{where } B(w; u,v)=\\int_{0}^{w}t^{u-1}(1-t)^{v-1}\\mathrm{d}t \\text{ is the incomplete beta function and } B(u,v)=\\int_{0}^{1}t^{u-1}(1-t)^{v-1}\\mathrm{d}t \\text{ is the complete beta function}")),
+           BetaBinomial=fLatexHelper_discrete(c("\\mathrm{E}(X) = \\frac{n\\alpha}{\\alpha+\\beta}",
+                                                "var(X) = \\frac{n\\alpha\\beta(\\alpha+\\beta+n)}{(\\alpha+\\beta)^2(\\alpha+\\beta+1)}"),
+                                              c("f(x|n,\\alpha,\\beta) = \\binom{n}{x}\\frac{B(x+\\alpha,n-x+\\beta)}{B(\\alpha,\\beta)}",
+                                                "\\text{where } B(u,v)=\\int_{0}^{1}t^{u-1}(1-t)^{v-1}\\mathrm{d}t \\text{ is the (complete) beta function }"),
+                                              c("F(x|n,\\alpha,\\beta) = \\begin{cases}
+0, & x<0 \\\\
+\\binom{n}{x}\\frac{B(x+\\alpha,n-x+\\beta)}{B(\\alpha,\\beta)} {}_{3}F_2(1,-x,n-x+\\beta;n-x-1,1-x-\\alpha;1), & 0\\leq x \\leq n \\\\
+1, & x>n
+\\end{cases}",
+                                                "\\text{where } {}_{3}F_2(a,b,x) \\text{ is the generalised hypergeometric function}"))
     )
     }
 }
