@@ -399,6 +399,8 @@ fFormulae <- function(input){
                                           \\end{cases}$$"),
                                        h2("Probability density function (PDF)"),
                                        h2("$$f(x|\\mu,\\Sigma, \\nu) = \\frac{\\Gamma((\\nu+d)/2)}{\\Gamma(\\nu/2)\\nu^{d/2}\\pi^{d/2}|\\Sigma|^{1/2}}\\left[1+\\frac{1}{\\nu}(x-\\mu)'\\Sigma^{-1}(x-\\mu)\\right]^{-(\\nu+d)/2}$$"),
+                                       h2(withMathJax(
+                                         helpText(HTML('$$\\color{black}{\\text{where }\\Gamma(w)=\\int_{0}^{\\infty}t^{w-1}e^{-t}\\mathrm{d}t \\text{ is the gamma function}}$$')))),
                                        h2("Cumulative distribution function (CDF)"),
                                        h2("$$\\text{No analytic expression}$$")),
              Multinomial=withMathJax(h2("Parameters"),

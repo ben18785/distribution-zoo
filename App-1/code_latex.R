@@ -204,7 +204,17 @@ I_{\\frac{\\kappa}{\\kappa+\\lambda}}(\\kappa,1+\\lfloor x \\rfloor), & x\\geq 0
     switch(input$dist2,
            MultivariateNormal=fLatexHelper(c("\\mathrm{E}(X) = \\mu",
                                              "var(X) = \\Sigma"),
-                                           c("f(x|\\mu,\\Sigma) = \\frac{1}{(2\\pi)^{d/2}|\\Sigma|^{1/2}} \\text{exp}\\left(-\\frac{1}{2}(x-\\mu)'\\Sigma^{-1}(x-\\mu)\\right)"))
+                                           c("f(x|\\mu,\\Sigma) = \\frac{1}{(2\\pi)^{d/2}|\\Sigma|^{1/2}} \\text{exp}\\left(-\\frac{1}{2}(x-\\mu)'\\Sigma^{-1}(x-\\mu)\\right)")),
+           MultivariateT=fLatexHelper(c("\\mathrm{E}(X) = \\begin{cases}
+\\mu, & \\nu>1 \\\\
+\\text{undefined}, & \\text{otherwise}
+\\end{cases}",
+                                        "var(X) = \\begin{cases}
+\\frac{\\nu}{\\nu-2}\\Sigma, & \\nu>2 \\\\
+\\text{undefined}, & \\text{otherwise}
+\\end{cases}"),
+                                      c("f(x|\\mu,\\Sigma, \\nu) = \\frac{\\Gamma((\\nu+d)/2)}{\\Gamma(\\nu/2)\\nu^{d/2}\\pi^{d/2}|\\Sigma|^{1/2}}\\left[1+\\frac{1}{\\nu}(x-\\mu)'\\Sigma^{-1}(x-\\mu)\\right]^{-(\\nu+d)/2}",
+                                        "\\text{where }\\Gamma(w)=\\int_{0}^{\\infty}t^{w-1}e^{-t}\\mathrm{d}t \\text{ is the gamma function}"))
     )
     }
 }
