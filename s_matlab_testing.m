@@ -17,6 +17,10 @@ f = inversegammapdf(5, 3, 2);
 x = inversegammarnd(3, 2, [10000, 1]);
 mean(x)
 
+f = inversechisquaredpdf(3, 5);
+x = inversechisquaredrnd(5, [10000, 1]);
+mean(x)
+
 function f = studenttpdf(x, mu, sigma, nu)
     numer = (nu / (nu + ((x - mu) / sigma)^2))^((nu + 1) / 2);
     f = numer / (sqrt(nu) * sigma * beta(nu / 2, 1 / 2));
@@ -80,5 +84,14 @@ end
 
 function x = inversegammarnd(alpha, beta, M)
     y = gamrnd(alpha, 1 / beta, M);
+    x = 1 ./ y;
+end
+
+function f = inversechisquaredpdf(x, nu)
+    f = 2^(-nu/2) / gamma(nu / 2) * x^(-nu / 2 - 1) * exp(-1 / (2 * x));
+end
+
+function x = inversechisquaredrnd(nu, M)
+    y = chi2rnd(nu, M);
     x = 1 ./ y;
 end

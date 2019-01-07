@@ -194,6 +194,44 @@ fInverseGamma_matlab <- function(input){
   )
 }
 
+dInverseChiSquared_matlab <- paste(
+  "function f = inversechisquaredpdf(x, nu)",
+  "    f = 2^(-nu/2) / gamma(nu / 2) * x^(-nu / 2 - 1) * exp(-1 / (2 * x));",
+  "end",
+  "% calling function",
+  sep = "\n"
+)
+
+rInverseChiSquared_matlab <- paste(
+  "function x = inversechisquaredrnd(nu, M)",
+  "    y = chi2rnd(nu, M);",
+  "    x = 1 ./ y;",
+  "end",
+  "% calling function",
+  sep = "\n"
+)
+
+fInverseChiSquared_matlab <- function(input){
+  lparams <- input$inversechisquared_df
+  switch(input$property,
+         pdf=paste(dInverseChiSquared_matlab,
+                   fMatlabHelper("inversechisquared",
+                                 params = lparams,
+                                 input),
+                   sep = "\n"),
+         log_pdf=paste(dInverseChiSquared_matlab,
+                       fMatlabHelper("inversechisquared",
+                                     params = lparams,
+                                     input),
+                       sep = "\n"),
+         random=paste(rInverseChiSquared_matlab,
+                      fMatlabHelper("inversechisquared",
+                                    params = lparams,
+                                    input),
+                      sep = "\n")
+  )
+}
+
 fMatlabcode <- function(input){
   text <- 
     if(input$distType=='Continuous'){
@@ -219,7 +257,8 @@ fMatlabcode <- function(input){
              Beta=fMatlabHelper("beta",
                                 params = c(input$beta_a, input$beta_b),
                                 input),
-             InverseGamma=fInverseGamma_matlab(input)
+             InverseGamma=fInverseGamma_matlab(input),
+             InverseChiSquared=fInverseChiSquared_matlab(input)
       )
     }else if(input$distType=='Discrete'){
       switch(input$dist1,
