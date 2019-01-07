@@ -205,19 +205,25 @@ fDirichlet_stan <- function(input){
     switch(input$property,
            pdf=paste0("exp(dirichlet_lpdf(x| to_vector([", input$dirichlet_alpha1, ", ", input$dirichlet_alpha2, "])))"),
            log_pdf=paste0("dirichlet_lpdf(x| to_vector([", input$dirichlet_alpha1, ", ", input$dirichlet_alpha2, "]))"),
-           random=paste0("dirichlet_rng(to_vector([", input$dirichlet_alpha1, ", ", input$dirichlet_alpha2, "]))")
+           random=paste("// repeat following n times (for example, in for loop)",
+                        paste0("dirichlet_rng(to_vector([", input$dirichlet_alpha1, ", ", input$dirichlet_alpha2, "]))"),
+                        sep = "\n")
     )
   }else if(input$dirichlet_dimension==3){
     switch(input$property,
            pdf=paste0("exp(dirichlet_lpdf(x| to_vector([", input$dirichlet_alpha1, ", ", input$dirichlet_alpha2, ", ", input$dirichlet_alpha3, "])))"),
            log_pdf=paste0("dirichlet_lpdf(x| to_vector([", input$dirichlet_alpha1, ", ", input$dirichlet_alpha2, ", ", input$dirichlet_alpha3, "]))"),
-           random=paste0("dirichlet_rng(to_vector([", input$dirichlet_alpha1, ", ", input$dirichlet_alpha2, ", ", input$dirichlet_alpha3, "]))")
+           random=paste("// repeat following n times (for example, in for loop)",
+                        paste0("dirichlet_rng(to_vector([", input$dirichlet_alpha1, ", ", input$dirichlet_alpha2, ", ", input$dirichlet_alpha3, "]))"),
+                        sep = "\n")
     )
   }else if(input$dirichlet_dimension==4){
     switch(input$property,
            pdf=paste0("exp(dirichlet_lpdf(x| to_vector([", input$dirichlet_alpha1, ", ", input$dirichlet_alpha2, ", ", input$dirichlet_alpha3, ", ", input$dirichlet_alpha4, "])))"),
            log_pdf=paste0("dirichlet_lpdf(x| to_vector([", input$dirichlet_alpha1, ", ", input$dirichlet_alpha2, ", ", input$dirichlet_alpha3, ", ", input$dirichlet_alpha4, "]))"),
-           random=paste0("dirichlet_rng(to_vector([", input$dirichlet_alpha1, ", ", input$dirichlet_alpha2, ", ", input$dirichlet_alpha3, ", ", input$dirichlet_alpha4, "]))")
+           random=paste("// repeat following n times (for example, in for loop)",
+                        paste0("dirichlet_rng(to_vector([", input$dirichlet_alpha1, ", ", input$dirichlet_alpha2, ", ", input$dirichlet_alpha3, ", ", input$dirichlet_alpha4, "]))"),
+                        sep = "\n")
     )
   }
 }
