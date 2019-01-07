@@ -100,24 +100,36 @@ fMultivariateNormal_stan <- function(input){
          pdf=paste("// non-Cholesky",
            paste0("exp(multi_normal_lpdf(x| [", input$multivariatenormal_mux, ", ", input$multivariatenormal_muy, "], ", "[[", input$multivariatenormal_sigmax^2, ", ", input$multivariatenormal_sigmax * input$multivariatenormal_sigmay * input$multivariatenormal_rho, "], [", 
                     input$multivariatenormal_sigmax * input$multivariatenormal_sigmay * input$multivariatenormal_rho, ", ", input$multivariatenormal_sigmay^2, "]]))"),
-           "// Cholesky",
+           "// Cholesky (faster)",
            paste0("exp(multi_normal_cholesky_lpdf(x| [", input$multivariatenormal_mux, ", ", input$multivariatenormal_muy, "], ", "[[", comps[1], ", ", 0, "], [", 
                   comps[2], ", ", comps[3], "]]))"),
            sep = "\n"),
          log_pdf=paste("// non-Cholesky",
                        paste0("multi_normal_lpdf(x| [", input$multivariatenormal_mux, ", ", input$multivariatenormal_muy, "], ", "[[", input$multivariatenormal_sigmax^2, ", ", input$multivariatenormal_sigmax * input$multivariatenormal_sigmay * input$multivariatenormal_rho, "], [", 
                               input$multivariatenormal_sigmax * input$multivariatenormal_sigmay * input$multivariatenormal_rho, ", ", input$multivariatenormal_sigmay^2, "]])"),
-                       "// Cholesky",
+                       "// Cholesky (faster)",
                        paste0("multi_normal_cholesky_lpdf(x| [", input$multivariatenormal_mux, ", ", input$multivariatenormal_muy, "], ", "[[", comps[1], ", ", 0, "], [", 
                               comps[2], ", ", comps[3], "]])"),
                        sep = "\n"),
          random=paste("// non-Cholesky",
                       paste0("multi_normal_rng(to_vector([", input$multivariatenormal_mux, ", ", input$multivariatenormal_muy, "]), ","[[", input$multivariatenormal_sigmax^2, ", ", input$multivariatenormal_sigmax * input$multivariatenormal_sigmay * input$multivariatenormal_rho, "], [", 
                        input$multivariatenormal_sigmax * input$multivariatenormal_sigmay * input$multivariatenormal_rho, ", ", input$multivariatenormal_sigmay^2, "]])"),
-                      "// Cholesky",
+                      "// Cholesky (faster)",
                       paste0("multi_normal_cholesky_rng(to_vector([", input$multivariatenormal_mux, ", ", input$multivariatenormal_muy, "]), ", "[[", comps[1], ", ", 0, "], [", 
                              comps[2], ", ", comps[3], "]])"),
                       sep = "\n")
+  )
+  
+}
+
+fMultivariateT_stan <- function(input){
+  switch(input$property,
+         pdf=paste0("exp(multi_student_t_lpdf(x| ", input$multivariatet_df, ", [", input$multivariatet_mux, ", ", input$multivariatet_muy, "], ", "[[", input$multivariatet_sigmax^2, ", ", input$multivariatet_sigmax * input$multivariatet_sigmay * input$multivariatet_rho, "], [", 
+                          input$multivariatet_sigmax * input$multivariatet_sigmay * input$multivariatet_rho, ", ", input$multivariatet_sigmay^2, "]]))"),
+         log_pdf=paste0("multi_student_t_lpdf(x| ", input$multivariatet_df, ", [", input$multivariatet_mux, ", ", input$multivariatet_muy, "], ", "[[", input$multivariatet_sigmax^2, ", ", input$multivariatet_sigmax * input$multivariatet_sigmay * input$multivariatet_rho, "], [", 
+                        input$multivariatet_sigmax * input$multivariatet_sigmay * input$multivariatet_rho, ", ", input$multivariatet_sigmay^2, "]])"),
+         random=paste0("multi_student_t_rng(", input$multivariatet_df, ", to_vector([", input$multivariatet_mux, ", ", input$multivariatet_muy, "]), ", "[[", input$multivariatet_sigmax^2, ", ", input$multivariatet_sigmax * input$multivariatet_sigmay * input$multivariatet_rho, "], [", 
+                       input$multivariatet_sigmax * input$multivariatet_sigmay * input$multivariatet_rho, ", ", input$multivariatet_sigmay^2, "]])")
   )
   
 }
@@ -150,12 +162,7 @@ fStanCode <- function(input){
     }else if(input$distType=='Multivariate'){
       switch(input$dist2,
              MultivariateNormal=fMultivariateNormal_stan(input),
-             MultivariateT=dMVTFull(input$multivariatet_mux,
-                                    input$multivariatet_muy,
-                                    input$multivariatet_sigmax,
-                                    input$multivariatet_sigmay,
-                                    input$multivariatet_rho, 
-                                    input$multivariatet_df, input),
+             MultivariateT=fMultivariateT_stan(input),
              Multinomial=fStanHelper_discrete("multinomial", c(input$multinomial_prob1, input$multinomial_prob2, input$multinomial_prob3), input, vector_params = T),
              Wishart=fStanHelper("wishart", input$wishart_df, input),
              InverseWishart=dInverseWishartFull(input$inversewishart_df, input),
