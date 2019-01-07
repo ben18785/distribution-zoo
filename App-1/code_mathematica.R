@@ -134,12 +134,21 @@ fWishart_mathematica <- function(input){
   )
 }
 
+dInverseWishart_mathematica <- paste(
+  "multivariateGamma[p_, a_] := \\[Pi]^(p (p - 1)/4) Product[Gamma[a + (1 - j)/2], {j, 1, p}]",
+  " ",
+  "inverseWishartPDF[X_, \\[Nu]_ /; \\[Nu] > 0, S_] := Module[{d = Dimensions[X][[1]]},",
+  "  Det[S]^(\\[Nu]/ 2) Det[X]^(-(\\[Nu] + d + 1)/2) Exp[-Tr[S.Inverse[X]]/2]",
+  "  1 / (2^(\\[Nu] d/2) multivariateGamma[d, \\[Nu]/2])]",
+  sep="\n"
+)
+
 fInverseWishart_mathematica <- function(input){
   topper <- paste0("(* S must be symmetric and positive definite *)")
   top <- paste0("aDist=InverseWishartMatrixDistribution[", input$inversewishart_df, ", S]")
   switch(input$property,
-         pdf=paste(topper, top, "PDF[aDist, x]", sep = "\n"),
-         log_pdf=paste(topper, top, "Log@PDF[aDist, x]", sep = "\n"),
+         pdf=paste(topper, dInverseWishart_mathematica, " ", paste0("inverseWishartPDF[x, ",input$inversewishart_df, ", S]"), sep = "\n"),
+         log_pdf=paste(topper, dInverseWishart_mathematica, " ", paste0("Log@inverseWishartPDF[x, ",input$inversewishart_df, ", S]"), sep = "\n"),
          random=paste(topper, top, "RandomVariate[aDist, n]", sep = "\n")
   )
 }
