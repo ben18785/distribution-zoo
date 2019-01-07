@@ -64,7 +64,15 @@ fLatex <- function(input){
                             \\end{cases}}",
                             "\\text{where } I_w(u,v) \\text{ is the regularised incomplete beta function: }}",
                             "I_w(u,v) = \\frac{B(w; u, v)}{B(u,v)}",
-                            "\\text{where } B(w; u,v)=\\int_{0}^{w}t^{u-1}(1-t)^{v-1}\\mathrm{d}t \\text{ is the incomplete beta function and } B(u,v) \\text{ is the (complete) beta function}}"))
+                            "\\text{where } B(w; u,v)=\\int_{0}^{w}t^{u-1}(1-t)^{v-1}\\mathrm{d}t \\text{ is the incomplete beta function and } B(u,v) \\text{ is the (complete) beta function}}")),
+           Beta=fLatexHelper(c("\\mathrm{E}(X) = \\frac{\\alpha}{\\alpha + \\beta}",
+                               "var(X) = \\frac{\\alpha\\beta}{(\\alpha + \\beta)^2 (\\alpha + \\beta + 1)}"),
+                             c("f(x|\\alpha, \\beta) = \\frac{x^{\\alpha-1} (1-x)^{\\beta-1}}{B(\\alpha,\\beta)}",
+                               "\\text{where } B(u,v)=\\int_{0}^{1}t^{u-1}(1-t)^{v-1}\\mathrm{d}t \\text{ is the beta function}}"),
+                             c("F(x|\\alpha,\\beta) = I_x(\\alpha,\\beta)",
+                               "\\text{where } I_w(u,v) \\text{ is the regularised beta function: }}",
+                               "I_w(u,v) = \\frac{B(w; u, v)}{B(u,v)}",
+                               "\\text{where } B(w; u,v)=\\int_{0}^{w}t^{u-1}(1-t)^{v-1}\\mathrm{d}t \\text{ is the incomplete beta function and } B(u,v) \\text{ is the (complete) beta function}}"))
     )
   }
 }
