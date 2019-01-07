@@ -449,7 +449,7 @@ fWishart_matlab <- function(input){
            dWishart_matlab,
            sep = "\n"),
          log_pdf=paste("% calling function (S must be symmetric and positive definite)",
-                       paste0("log(wishartpdf(x, ", ", ", lparams, ", S))"),
+                       paste0("log(wishartpdf(x, ", lparams, ", S))"),
                        " ",
                        dWishart_matlab,
                        sep = "\n"),
@@ -458,6 +458,44 @@ fWishart_matlab <- function(input){
                              "end",
                              sep = "\n"))
            )
+}
+
+dInverseWishart_matlab <- paste(
+  "function g = multivariate_gamma(p, a)",
+  "    j = 1:p;",
+  "    g = gamma(a + (1 - j) / 2);",
+  "    g = pi^(p * (p - 1) / 4) * prod(g);",
+  "end",
+  " ",
+  "function f = inversewishartpdf(x, nu, S)",
+  "    m = size(x);",
+  "    d = m(1);",
+  "    if nu < d - 1",
+  "        f = 0;",
+  "    else",
+  "        f = det(S)^(nu / 2) * det(x)^(-(nu + d + 1) / 2) * exp(-trace(S * inv(x)) / 2) * 1 / (2^(nu * d / 2) * multivariate_gamma(d, nu /2));",
+  "    end",
+  "end",
+  sep = "\n")
+
+fInverseWishart_matlab <- function(input){
+  lparams <- input$inversewishart_df
+  switch(input$property,
+         pdf=paste("% calling function (S must be symmetric and positive definite)",
+                   paste0("inversewishartpdf(x, ", lparams, ", S)"),
+                   " ",
+                   dInverseWishart_matlab,
+                   sep = "\n"),
+         log_pdf=paste("% calling function (S must be symmetric and positive definite)",
+                       paste0("log(inversewishartpdf(x, ", lparams, ", S))"),
+                       " ",
+                       dInverseWishart_matlab,
+                       sep = "\n"),
+         random=paste0(paste("for i = 1:n",
+                             paste0("    iwishrnd(S, ", lparams, ")"),
+                             "end",
+                             sep = "\n"))
+  )
 }
 
 fMatlabcode <- function(input){
@@ -511,7 +549,8 @@ fMatlabcode <- function(input){
              MultivariateNormal=fMultivariatenormal_matlab(input),
              MultivariateT=fMultivariatet_matlab(input),
              Multinomial=fMultinomial_matlab(input),
-             Wishart=fWishart_matlab(input)
+             Wishart=fWishart_matlab(input),
+             InverseWishart=fInverseWishart_matlab(input)
       )
     }
   return(prismCodeBlock(text, language = "matlab"))
