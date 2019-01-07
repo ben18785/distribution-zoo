@@ -25,7 +25,10 @@ fMatlabcode <- function(input){
                                   input),
              Uniform=fMatlabHelper("unif",
                                    params = c(input$uniform_a, input$uniform_b),
-                                   input)
+                                   input),
+             LogNormal=fMatlabHelper("logn",
+                                     params = c(input$lognormal_mu, input$lognormal_sigma),
+                                     input)
       )
             
     }
