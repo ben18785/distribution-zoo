@@ -147,6 +147,34 @@ fMultinomial_stan <- function(input){
   
 }
 
+fWishart_stan <- function(input){
+  switch(input$property,
+         pdf=paste("// S is symmetric and positive-definite",
+                   paste0("exp(wishart_lpdf(x| ", input$wishart_df, ", S))"),
+                   sep = "\n"),
+         log_pdf=paste("// S is symmetric and positive-definite",
+                       paste0("wishart_lpdf(x| ", input$wishart_df, ", S)"),
+                       sep = "\n"),
+         random=paste("// S is symmetric and positive-definite",
+                      paste0("wishart_rng(", input$wishart_df, ", S)"),
+                      sep = "\n")
+  )
+}
+
+fInverseWishart_stan <- function(input){
+  switch(input$property,
+         pdf=paste("// S is symmetric and positive-definite",
+                   paste0("exp(inv_wishart_lpdf(x| ", input$inversewishart_df, ", S))"),
+                   sep = "\n"),
+         log_pdf=paste("// S is symmetric and positive-definite",
+                       paste0("inv_wishart_lpdf(x| ", input$inversewishart_df, ", S)"),
+                       sep = "\n"),
+         random=paste("// S is symmetric and positive-definite",
+                      paste0("inv_wishart_rng(", input$inversewishart_df, ", S)"),
+                      sep = "\n")
+  )
+}
+
 
 fStanCode <- function(input){
   text <-
@@ -177,8 +205,8 @@ fStanCode <- function(input){
              MultivariateNormal=fMultivariateNormal_stan(input),
              MultivariateT=fMultivariateT_stan(input),
              Multinomial=fMultinomial_stan(input),
-             Wishart=fStanHelper("wishart", input$wishart_df, input),
-             InverseWishart=dInverseWishartFull(input$inversewishart_df, input),
+             Wishart=fWishart_stan(input),
+             InverseWishart=fInverseWishart_stan(input),
              LKJ=fLKJ_1(input$lkj_eta, input$lkj_dimension, input),
              Dirichlet=if_else(input$dirichlet_dimension==2, fStanHelper("dirichlet", c(input$dirichlet_alpha1, input$dirichlet_alpha2), input, vector_params = TRUE, import="library(LaplacesDemon)"),
                                if_else(input$dirichlet_dimension==3, fStanHelper("dirichlet", c(input$dirichlet_alpha1, input$dirichlet_alpha2, input$dirichlet_alpha3), input, vector_params = TRUE, import="library(LaplacesDemon)"),
