@@ -19,9 +19,10 @@ prismLanguageDependencies <- function(languages) {
 
 # Define UI for random distribution application 
 shinyUI(fluidPage(
-  
+  includeCSS("styles.css"),
   # Application title
-  titlePanel("Distribution explorer"),
+  headerPanel("Distribution explorer"),
+  tagList(h4("by"), a(h4("Ben Lambert"), href="https://ben-lambert.com/bayesian/", target="_blank")),
   prismDependencies,
   prismLanguageDependencies(c("r", "python", "latex",
                               "matlab", "mathematica", "c-like",

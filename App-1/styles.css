@@ -1,0 +1,14 @@
+@import url("//fonts.googleapis.com/css?family=Lobster|Cabin:400,700");
+
+h1 {
+  font-family: 'Verdana';
+  font-weight: 500;
+  line-height: 1.1;
+  color: #107f88;
+  font-size:6rem;
+}
+
+body {
+  background-color: #fff;
+  font-size: 2rem;
+}
