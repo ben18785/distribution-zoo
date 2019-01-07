@@ -214,7 +214,11 @@ I_{\\frac{\\kappa}{\\kappa+\\lambda}}(\\kappa,1+\\lfloor x \\rfloor), & x\\geq 0
 \\text{undefined}, & \\text{otherwise}
 \\end{cases}"),
                                       c("f(x|\\mu,\\Sigma, \\nu) = \\frac{\\Gamma((\\nu+d)/2)}{\\Gamma(\\nu/2)\\nu^{d/2}\\pi^{d/2}|\\Sigma|^{1/2}}\\left[1+\\frac{1}{\\nu}(x-\\mu)'\\Sigma^{-1}(x-\\mu)\\right]^{-(\\nu+d)/2}",
-                                        "\\text{where }\\Gamma(w)=\\int_{0}^{\\infty}t^{w-1}e^{-t}\\mathrm{d}t \\text{ is the gamma function}"))
+                                        "\\text{where }\\Gamma(w)=\\int_{0}^{\\infty}t^{w-1}e^{-t}\\mathrm{d}t \\text{ is the gamma function}")),
+           Multinomial=fLatexHelper_discrete(c("\\mathrm{E}(X_i) = n p_i \\text{, }\\forall i",
+                                               "var(X_i) = n p_i (1-p_i) \\text{, }\\forall i",
+                                               "cov(X_i,X_j) = -n p_i p_j \\text{, }\\forall i\\neq j"),
+                                             c("f(x_1,x_2,...,x_d|n,p_1,p_2,...,p_d) = \\frac{n!}{x_1 ! x_2 ! ... x_d !} p_1^{x_1} p_2^{x_2}...p_d^{x_d} "))
     )
     }
 }
