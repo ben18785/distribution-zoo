@@ -1,19 +1,25 @@
 
 fStanHelper <- function(mainName, params, input, import=NULL,
-                        named_arguments=NULL, vector_params=FALSE, end_brace=FALSE){
+                        named_arguments=NULL, vector_params=FALSE, end_brace=FALSE, 
+                        python_vector=FALSE){
   switch(input$property,
         pdf=fMakeFunctionPaste_stan(mainName=paste0("exp(", mainName, "_lpdf"),
                                params=params, prefixparams="x",
                                import=import, named_arguments=named_arguments,
-                               vector_params=vector_params, end_brace = T),
+                               vector_params=vector_params, end_brace = T,
+                               python_vector = python_vector),
         log_pdf=fMakeFunctionPaste_stan(mainName=paste0(mainName, "_lpdf"),
                                    params=params, prefixparams="x",
                                    import=import, named_arguments=named_arguments,
-                                   vector_params=vector_params),
-        random=fMakeFunctionPaste_stan(mainName=paste0(mainName, "_rng"),
+                                   vector_params=vector_params,
+                                   python_vector = python_vector),
+        random=paste("// repeat following n times (for example, in for loop)",
+                     fMakeFunctionPaste_stan(mainName=paste0(mainName, "_rng"),
                                   params=params,
                                   import=import, named_arguments=named_arguments,
-                                  vector_params=vector_params))
+                                  vector_params=vector_params,
+                                  python_vector = python_vector),
+                     sep = "\n"))
 }
 
 fStanHelper_discrete <- function(mainName, params, input, import=NULL,
@@ -27,10 +33,12 @@ fStanHelper_discrete <- function(mainName, params, input, import=NULL,
                                          params=params, prefixparams="x",
                                          import=import, named_arguments=named_arguments,
                                          vector_params=vector_params),
-         random=fMakeFunctionPaste_stan(mainName=paste0(mainName, "_rng"),
+         random=paste("// repeat following n times (for example, in for loop)",
+                      fMakeFunctionPaste_stan(mainName=paste0(mainName, "_rng"),
                                         params=params,
                                         import=import, named_arguments=named_arguments,
-                                        vector_params=vector_params))
+                                        vector_params=vector_params),
+                      sep = "\n"))
 }
 
 dhalfcauchy_stan <- function(input){
@@ -52,7 +60,7 @@ dhalfcauchy_stan <- function(input){
                        fMakeFunctionPaste_stan(mainName = "cauchy_lccdf",
                                                params=c(input$halfcauchy_location, input$halfcauchy_scale),
                                                prefixparams="0")),
-         random=paste(
+         random=paste("// repeat following n times (for example, in for loop)",
            paste0("real x_rng = cauchy_rng(", input$halfcauchy_location, ", ", input$halfcauchy_scale, ");"),
            "while(x_rng < 0)",
            paste0("  real x_rng = cauchy_rng(", input$halfcauchy_location, ", ", input$halfcauchy_scale, ");"),
@@ -82,7 +90,9 @@ flogitnormal_stan <- function(input){
          log_pdf=paste(dlogitnormal_stan,
                        fStanHelper("logitnormal", c(input$logitnormal_mu, input$logitnormal_sigma), input),
                        sep = "\n"),
-         random=paste0("inv_logit(normal_rng(", input$logitnormal_mu, ", ", input$logitnormal_sigma, "))")
+         random=paste("// repeat following n times (for example, in for loop)",
+                      paste0("inv_logit(normal_rng(", input$logitnormal_mu, ", ", input$logitnormal_sigma, "))"),
+                      sep = "\n")
   )
 }
 
@@ -111,7 +121,8 @@ fMultivariateNormal_stan <- function(input){
                        paste0("multi_normal_cholesky_lpdf(x| [", input$multivariatenormal_mux, ", ", input$multivariatenormal_muy, "], ", "[[", comps[1], ", ", 0, "], [", 
                               comps[2], ", ", comps[3], "]])"),
                        sep = "\n"),
-         random=paste("// non-Cholesky",
+         random=paste("// repeat either of the following n times (for example, in for loop)",
+                      "// non-Cholesky",
                       paste0("multi_normal_rng(to_vector([", input$multivariatenormal_mux, ", ", input$multivariatenormal_muy, "]), ","[[", input$multivariatenormal_sigmax^2, ", ", input$multivariatenormal_sigmax * input$multivariatenormal_sigmay * input$multivariatenormal_rho, "], [", 
                        input$multivariatenormal_sigmax * input$multivariatenormal_sigmay * input$multivariatenormal_rho, ", ", input$multivariatenormal_sigmay^2, "]])"),
                       "// Cholesky (faster)",
@@ -128,8 +139,10 @@ fMultivariateT_stan <- function(input){
                           input$multivariatet_sigmax * input$multivariatet_sigmay * input$multivariatet_rho, ", ", input$multivariatet_sigmay^2, "]]))"),
          log_pdf=paste0("multi_student_t_lpdf(x| ", input$multivariatet_df, ", [", input$multivariatet_mux, ", ", input$multivariatet_muy, "], ", "[[", input$multivariatet_sigmax^2, ", ", input$multivariatet_sigmax * input$multivariatet_sigmay * input$multivariatet_rho, "], [", 
                         input$multivariatet_sigmax * input$multivariatet_sigmay * input$multivariatet_rho, ", ", input$multivariatet_sigmay^2, "]])"),
-         random=paste0("multi_student_t_rng(", input$multivariatet_df, ", to_vector([", input$multivariatet_mux, ", ", input$multivariatet_muy, "]), ", "[[", input$multivariatet_sigmax^2, ", ", input$multivariatet_sigmax * input$multivariatet_sigmay * input$multivariatet_rho, "], [", 
-                       input$multivariatet_sigmax * input$multivariatet_sigmay * input$multivariatet_rho, ", ", input$multivariatet_sigmay^2, "]])")
+         random=paste("// repeat following n times (for example, in for loop)",
+                      paste0("multi_student_t_rng(", input$multivariatet_df, ", to_vector([", input$multivariatet_mux, ", ", input$multivariatet_muy, "]), ", "[[", input$multivariatet_sigmax^2, ", ", input$multivariatet_sigmax * input$multivariatet_sigmay * input$multivariatet_rho, "], [", 
+                       input$multivariatet_sigmax * input$multivariatet_sigmay * input$multivariatet_rho, ", ", input$multivariatet_sigmay^2, "]])"),
+                      sep = "\n")
   )
   
 }
@@ -142,7 +155,9 @@ fMultinomial_stan <- function(input){
   switch(input$property,
          pdf=paste0("exp(multinomial_lpmf(x| to_vector([", theta[1], ", ", theta[2], ", ", theta[3], "])))"),
          log_pdf=paste0("multinomial_lpmf(x| to_vector([", theta[1], ", ", theta[2], ", ", theta[3], "]))"),
-         random=paste0("multinomial_rng(to_vector([", theta[1], ", ", theta[2], ", ", theta[3], "]), ", input$multinomial_size, ")")
+         random=paste("// repeat following n times (for example, in for loop)",
+                      paste0("multinomial_rng(to_vector([", theta[1], ", ", theta[2], ", ", theta[3], "]), ", input$multinomial_size, ")"),
+                      sep = "\n")
   )
   
 }
@@ -155,7 +170,8 @@ fWishart_stan <- function(input){
          log_pdf=paste("// S is symmetric and positive-definite",
                        paste0("wishart_lpdf(x| ", input$wishart_df, ", S)"),
                        sep = "\n"),
-         random=paste("// S is symmetric and positive-definite",
+         random=paste("// repeat following n times (for example, in for loop)",
+                      "// S is symmetric and positive-definite",
                       paste0("wishart_rng(", input$wishart_df, ", S)"),
                       sep = "\n")
   )
@@ -169,7 +185,8 @@ fInverseWishart_stan <- function(input){
          log_pdf=paste("// S is symmetric and positive-definite",
                        paste0("inv_wishart_lpdf(x| ", input$inversewishart_df, ", S)"),
                        sep = "\n"),
-         random=paste("// S is symmetric and positive-definite",
+         random=paste("// repeat following n times (for example, in for loop)",
+                      "// S is symmetric and positive-definite",
                       paste0("inv_wishart_rng(", input$inversewishart_df, ", S)"),
                       sep = "\n")
   )
@@ -181,6 +198,28 @@ fLKJ_stan <- function(input){
          log_pdf=fStanHelper("lkj_corr", input$lkj_eta, input),
          random=fStanHelper("lkj_corr", c(input$lkj_dimension, input$lkj_eta), input)
   )
+}
+
+fDirichlet_stan <- function(input){
+  if(input$dirichlet_dimension==2){
+    switch(input$property,
+           pdf=paste0("exp(dirichlet_lpdf(x| to_vector([", input$dirichlet_alpha1, ", ", input$dirichlet_alpha2, "])))"),
+           log_pdf=paste0("dirichlet_lpdf(x| to_vector([", input$dirichlet_alpha1, ", ", input$dirichlet_alpha2, "]))"),
+           random=paste0("dirichlet_rng(to_vector([", input$dirichlet_alpha1, ", ", input$dirichlet_alpha2, "]))")
+    )
+  }else if(input$dirichlet_dimension==3){
+    switch(input$property,
+           pdf=paste0("exp(dirichlet_lpdf(x| to_vector([", input$dirichlet_alpha1, ", ", input$dirichlet_alpha2, ", ", input$dirichlet_alpha3, "])))"),
+           log_pdf=paste0("dirichlet_lpdf(x| to_vector([", input$dirichlet_alpha1, ", ", input$dirichlet_alpha2, ", ", input$dirichlet_alpha3, "]))"),
+           random=paste0("dirichlet_rng(to_vector([", input$dirichlet_alpha1, ", ", input$dirichlet_alpha2, ", ", input$dirichlet_alpha3, "]))")
+    )
+  }else if(input$dirichlet_dimension==4){
+    switch(input$property,
+           pdf=paste0("exp(dirichlet_lpdf(x| to_vector([", input$dirichlet_alpha1, ", ", input$dirichlet_alpha2, ", ", input$dirichlet_alpha3, ", ", input$dirichlet_alpha4, "])))"),
+           log_pdf=paste0("dirichlet_lpdf(x| to_vector([", input$dirichlet_alpha1, ", ", input$dirichlet_alpha2, ", ", input$dirichlet_alpha3, ", ", input$dirichlet_alpha4, "]))"),
+           random=paste0("dirichlet_rng(to_vector([", input$dirichlet_alpha1, ", ", input$dirichlet_alpha2, ", ", input$dirichlet_alpha3, ", ", input$dirichlet_alpha4, "]))")
+    )
+  }
 }
 
 fStanCode <- function(input){
@@ -215,9 +254,7 @@ fStanCode <- function(input){
              Wishart=fWishart_stan(input),
              InverseWishart=fInverseWishart_stan(input),
              LKJ=fLKJ_stan(input),
-             Dirichlet=if_else(input$dirichlet_dimension==2, fStanHelper("dirichlet", c(input$dirichlet_alpha1, input$dirichlet_alpha2), input, vector_params = TRUE, import="library(LaplacesDemon)"),
-                               if_else(input$dirichlet_dimension==3, fStanHelper("dirichlet", c(input$dirichlet_alpha1, input$dirichlet_alpha2, input$dirichlet_alpha3), input, vector_params = TRUE, import="library(LaplacesDemon)"),
-                                       if_else(input$dirichlet_dimension==4, fStanHelper("dirichlet", c(input$dirichlet_alpha1, input$dirichlet_alpha2, input$dirichlet_alpha3, input$dirichlet_alpha4), input, vector_params = TRUE, import="library(LaplacesDemon)"), "test")))
+             Dirichlet=fDirichlet_stan(input)
       )
     }
            
