@@ -155,7 +155,12 @@ Q\\left(\\alpha ,\\frac{\\beta }{x}\\right), & x>0 \\\\
 0, & x<0 \\\\
 1 - p, & 0\\leq x \\leq 1 \\\\
 1, & x>1
-\\end{cases}"))
+\\end{cases}")),
+           Binomial=fLatexHelper_discrete(c("\\mathrm{E}(X) = np",
+                                            "var(X) = np(1-p)"),
+                                          c("f(x|n,p) = \\binom{n}{x} p^x(1-p)^{n-x}"),
+                                          c("F(x|n,p) = I_{1-p}(n-x,1+x)",
+                                            "\\text{where }I_{1-p}(n-x,x+1)=(n-x)\\binom{n}{x}\\int_{0}^{1-p}t^{n-x-1}(1-t)^x \\mathrm{d}t \\text{ is the regularised incomplete beta function}"))
     )
     }
 }
