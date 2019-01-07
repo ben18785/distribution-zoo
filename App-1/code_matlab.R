@@ -15,6 +15,43 @@ fMatlabHelper <- function(mainName, params, input, import=NULL, named_arguments=
                                    vector_params=vector_params))
 }
 
+dStudentt_matlab <- paste(
+  "function f = studenttpdf(x, mu, sigma, nu)",
+  "    numer = (nu / (nu + ((x - mu) / sigma)^2))^((nu + 1) / 2);",
+  "    f = numer / (sqrt(nu) * sigma * beta(nu / 2, 1 / 2));",
+  "end",
+  "% calling function",
+  sep = "\n"
+)
+
+rStudentt_matlab <- paste(
+  "function x = studenttrnd(mu, sigma, nu, M)",
+  "    y = trnd(nu, M);",
+  "    x = sigma * y + mu;",
+  "end",
+  "% calling function",
+  sep = "\n"
+)
+
+fStudentt_matlab <- function(input){
+  switch(input$property,
+         pdf=paste(dStudentt_matlab,
+                   fMatlabHelper("studentt",
+                           params = c(input$t_mu,input$t_sigma, input$t_nu),
+                           input),
+           sep = "\n"),
+         log_pdf=paste(dStudentt_matlab,
+                       fMatlabHelper("studentt",
+                               params = c(input$t_mu,input$t_sigma, input$t_nu),
+                               input),
+                       sep = "\n"),
+         random=paste(rStudentt_matlab,
+                      fMatlabHelper("studentt",
+                              params = c(input$t_mu,input$t_sigma, input$t_nu),
+                              input),
+                      sep = "\n")
+  )
+}
 
 fMatlabcode <- function(input){
   text <- 
@@ -35,7 +72,7 @@ fMatlabcode <- function(input){
              Gamma=fMatlabHelper("gam",
                                   params = c(input$gamma_shape, 1 / input$gamma_rate),
                                   input),
-             t="test",
+             t=fStudentt_matlab(input),
              Beta=fMatlabHelper("beta",
                                 params = c(input$beta_a, input$beta_b),
                                 input)
