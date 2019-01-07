@@ -43,7 +43,13 @@ fLatex <- function(input){
            Exponential=fLatexHelper(c("\\mathrm{E}(X) = \\frac{1}{\\lambda}",
                                       "var(X) = \\frac{1}{\\lambda^2}"),
                                     c("f(x|\\lambda) = \\lambda e^{-\\lambda x}"),
-                                    c("F(x|\\lambda) = 1 - e^{-\\lambda x}"))
+                                    c("F(x|\\lambda) = 1 - e^{-\\lambda x}")),
+           Gamma=fLatexHelper(c("\\mathrm{E}(X) = \\frac{\\alpha}{\\beta}",
+                                "var(X) = \\frac{\\alpha}{\\beta^2}"),
+                              c("f(x|\\alpha, \\beta) = \\frac{\\beta^\\alpha}{\\Gamma(\\alpha)} x^{\\alpha-1} e^{-\\beta x}",
+                                "\\text{where }\\Gamma(w)=\\int_{0}^{\\infty}t^{w-1}e^{-t}\\mathrm{d}t \\text{ is the gamma function}}"),
+                              c("F(x|\\alpha, \\beta) = \\frac{1}{\\Gamma(\\alpha)} \\gamma(\\alpha, \\beta x)",
+                                "\\text{where }\\gamma(w,v)=\\int_{0}^{v}t^{w-1}e^{-t}\\mathrm{d}t \\text{ is the incomplete lower gamma function}}"))
     )
   }
 }
