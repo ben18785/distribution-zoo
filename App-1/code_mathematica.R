@@ -122,6 +122,26 @@ fMultinomial_mathematica <- function(input){
   )
 }
 
+fWishart_mathematica <- function(input){
+  topper <- paste0("(* S must be symmetric and positive definite *)")
+  top <- paste0("aDist=WishartMatrixDistribution[", input$wishart_df, ", S]")
+  switch(input$property,
+         pdf=paste(topper, top, "PDF[aDist, x]", sep = "\n"),
+         log_pdf=paste(topper, top, "Log@PDF[aDist, x]", sep = "\n"),
+         random=paste(topper, top, "RandomVariate[aDist, n]", sep = "\n")
+  )
+}
+
+fInverseWishart_mathematica <- function(input){
+  topper <- paste0("(* S must be symmetric and positive definite *)")
+  top <- paste0("aDist=InverseWishartMatrixDistribution[", input$inversewishart_df, ", S]")
+  switch(input$property,
+         pdf=paste(topper, top, "PDF[aDist, x]", sep = "\n"),
+         log_pdf=paste(topper, top, "Log@PDF[aDist, x]", sep = "\n"),
+         random=paste(topper, top, "RandomVariate[aDist, n]", sep = "\n")
+  )
+}
+
 fMathematicacode <- function(input){
   text <- 
     if(input$distType=='Continuous'){
@@ -184,7 +204,9 @@ fMathematicacode <- function(input){
       switch(input$dist2,
              MultivariateNormal=fMultivariatenormal_mathematica(input),
              MultivariateT=fMultivariatet_mathematica(input),
-             Multinomial=fMultinomial_mathematica(input)
+             Multinomial=fMultinomial_mathematica(input),
+             Wishart=fWishart_mathematica(input),
+             InverseWishart=fInverseWishart_mathematica(input)
       )
     }
   return(prismCodeBlock(text))
