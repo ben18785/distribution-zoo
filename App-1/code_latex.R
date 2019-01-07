@@ -2,28 +2,40 @@ fPrismLatex <- function(text){
   return(prismCodeBlock(text, language = "latex"))
 }
 
-fLatexHelper <- function(lMoments, lPDF, lCDF){
+fLatexHelper <- function(lMoments, lPDF, lCDF=NULL){
   moments_latex <- lapply(lMoments, fPrismLatex)
   pdf_latex <- lapply(lPDF, fPrismLatex)
   cdf_latex <- lapply(lCDF, fPrismLatex)
-  return(tagList(h2("Moments"),
+  if(!is.null(lCDF))
+    return(tagList(h2("Moments"),
                  moments_latex,
                  h2("Probability density function (PDF)"),
                  pdf_latex,
                  h2("Cumulative distribution function (CDF)"),
                  cdf_latex))
+  else
+    return(tagList(h2("Moments"),
+                   moments_latex,
+                   h2("Probability density function (PDF)"),
+                   pdf_latex))
 }
 
-fLatexHelper_discrete <- function(lMoments, lPDF, lCDF){
+fLatexHelper_discrete <- function(lMoments, lPDF, lCDF=NULL){
   moments_latex <- lapply(lMoments, fPrismLatex)
   pdf_latex <- lapply(lPDF, fPrismLatex)
   cdf_latex <- lapply(lCDF, fPrismLatex)
-  return(tagList(h2("Moments"),
+  if(!is.null(lCDF))
+    return(tagList(h2("Moments"),
                  moments_latex,
                  h2("Probability mass function (PMF)"),
                  pdf_latex,
                  h2("Cumulative distribution function (CDF)"),
                  cdf_latex))
+  else
+    return(tagList(h2("Moments"),
+                   moments_latex,
+                   h2("Probability mass function (PMF)"),
+                   pdf_latex))
 }
 
 fLatex <- function(input){
@@ -187,6 +199,12 @@ I_{\\frac{\\kappa}{\\kappa+\\lambda}}(\\kappa,1+\\lfloor x \\rfloor), & x\\geq 0
 1, & x>n
 \\end{cases}",
                                                 "\\text{where } {}_{3}F_2(a,b,x) \\text{ is the generalised hypergeometric function}"))
+    )
+  }else if(input$distType=='Multivariate'){
+    switch(input$dist2,
+           MultivariateNormal=fLatexHelper(c("\\mathrm{E}(X) = \\mu",
+                                             "var(X) = \\Sigma"),
+                                           c("f(x|\\mu,\\Sigma) = \\frac{1}{(2\\pi)^{d/2}|\\Sigma|^{1/2}} \\text{exp}\\left(-\\frac{1}{2}(x-\\mu)'\\Sigma^{-1}(x-\\mu)\\right)"))
     )
     }
 }
