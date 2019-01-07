@@ -339,6 +339,15 @@ fMultivariatet_matlab <- function(input){
          )
 }
 
+fMultinomial_matlab <- function(input){
+  comps <- c(input$multinomial_prob1, input$multinomial_prob2, input$multinomial_prob3)
+  switch(input$property,
+         pdf=paste0("mnpdf(x, [", comps[1], ", ", comps[2], ", ", comps[3], "]", "/ sum([", comps[1], ", ", comps[2], ", ", comps[3], "]))"),
+         log_pdf=paste0("log(mnpdf(x, [", comps[1], ", ", comps[2], ", ", comps[3], "]", "/ sum([", comps[1], ", ", comps[2], ", ", comps[3], "])))"),
+         random=paste0("mnrnd(",input$multinomial_size, ", [", comps[1], ", ", comps[2], ", ", comps[3], "]", "/ sum([", comps[1], ", ", comps[2], ", ", comps[3], "]), n)")
+         )
+}
+
 fMatlabcode <- function(input){
   text <- 
     if(input$distType=='Continuous'){
@@ -387,7 +396,8 @@ fMatlabcode <- function(input){
     }else if(input$distType=='Multivariate'){
       switch(input$dist2,
              MultivariateNormal=fMultivariatenormal_matlab(input),
-             MultivariateT=fMultivariatet_matlab(input)
+             MultivariateT=fMultivariatet_matlab(input),
+             Multinomial=fMultinomial_matlab(input)
       )
     }
   return(prismCodeBlock(text, language = "matlab"))
