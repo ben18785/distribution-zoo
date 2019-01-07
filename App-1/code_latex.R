@@ -222,7 +222,17 @@ I_{\\frac{\\kappa}{\\kappa+\\lambda}}(\\kappa,1+\\lfloor x \\rfloor), & x\\geq 0
            Wishart=fLatexHelper(c("\\mathrm{E}(X) = \\nu \\Psi",
                                   "var(X_{i,j}) = \\nu(\\Psi_{i,j}^2+\\Psi_{i,i}\\Psi_{j,j})"),
                                 c("f(X|\\nu,\\Psi) = |X|^{(\\nu-d-1)/2} \\text{exp}(-\\text{tr}(\\Psi^{-1} X)/2)\\frac{1}{2^{\\nu d/2} |\\Psi|^{d/2} \\Gamma_d(\\nu/2)}",
-                                  "\\text{where }  \\Gamma_p(a)=\\pi^{p(p-1)/4}\\prod_{j=1}^{p}\\Gamma(a+(1-j)/2) \\text{ is the multivariate gamma function}"))
+                                  "\\text{where }  \\Gamma_p(a)=\\pi^{p(p-1)/4}\\prod_{j=1}^{p}\\Gamma(a+(1-j)/2) \\text{ is the multivariate gamma function}")),
+           InverseWishart=fLatexHelper(c("\\mathrm{E}(X) = \\begin{cases}
+\\frac{\\Psi}{\\nu-d-1}, & \\nu>d+1 \\\\
+\\text{undefined}, & \\text{otherwise}
+\\end{cases}",
+                                         "var(X_{i,j}) = \\begin{cases}
+\\frac{(\\nu-d+1)\\Psi_{i,j}^2 + (\\nu-d-1)\\Psi_{i,i}\\Psi_{i,j}}{(\\nu-d)(\\nu-d-1)^2(\\nu-d-3)}, & \\nu>d+3 \\\\
+\\text{undefined}, & \\text{otherwise}
+\\end{cases}"),
+                                       c("f(X|\\nu,\\Psi) = |\\Psi|^{d/2} |X|^{-(\\nu+d+1)/2} \\text{exp}(-\\text{tr}(\\Psi X^{-1})/2)\\frac{1}{2^{\\nu d/2}  \\Gamma_d(\\nu/2)}",
+                                         "\\text{where }  \\Gamma_p(a)=\\pi^{p(p-1)/4}\\prod_{j=1}^{p}\\Gamma(a+(1-j)/2) \\text{ is the multivariate gamma function}"))
     )
     }
 }
