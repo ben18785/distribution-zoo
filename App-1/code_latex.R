@@ -23,7 +23,8 @@ fLatex <- function(input){
                                c("f(x|\\mu,\\sigma) = \\frac{1}{\\sqrt{2\\pi\\sigma^2}}
                                  \\text{exp}\\left(-\\frac{(x-\\mu)^2}{2\\sigma^2}\\right)"),
                                c("F(x|\\mu,\\sigma) = \\frac{1}{2}\\left[1+\\text{erf}
-                          \\left(\\frac{x-\\mu}{\\sigma\\sqrt{2}}\\right)\\right]")),
+                          \\left(\\frac{x-\\mu}{\\sigma\\sqrt{2}}\\right)\\right]",
+                                 "\\text{where }\\text{erf}(x) = \\frac{2}{\\sqrt{\\pi}}\\int_{0}^{x} e^{-t^2}\\mathrm{d}t \\text{ is the error function}}")),
            Uniform=fLatexHelper(c("\\mathrm{E}(X) = \\frac{1}{2}(a + b)",
                                   "var(X) = \\frac{1}{12}(b - a)^2"), 
                                   c("f(x|a,b)=\\begin{cases}
@@ -33,7 +34,11 @@ fLatex <- function(input){
   0,  & \\text{if }x < a \\\\
   \\frac{x-a}{b-a}, & \\text{if } x\\in [a,b]\\\\
   1, & \\text{if } x > b
-  \\end{cases}"))
+  \\end{cases}")),
+           LogNormal=fLatexHelper(c("\\mathrm{E}(X) = \\text{exp}(\\mu + \\frac{\\sigma^2}{2})",
+                                    "var(X) = \\left[\\text{exp}(\\sigma^2) - 1\\right] \\text{exp}(2\\mu + \\sigma^2)"),
+                                  c("f(x|\\mu,\\sigma) = \\frac{1}{x \\sigma \\sqrt{2 \\pi}} \\text{exp}\\left(-\\frac{(\\text{log } x - \\mu)^2}{2\\sigma^2}\\right)"),
+                                  c("F(x|\\mu,\\sigma) = \\frac{1}{2} + \\frac{1}{2} \\text{erf}\\left(\\frac{\\text{log } x - \\mu}{\\sqrt{2} \\sigma}\\right)"))
     )
   }
 }
