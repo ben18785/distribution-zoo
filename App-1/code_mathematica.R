@@ -110,6 +110,18 @@ fMultivariatet_mathematica <- function(input){
   )
 }
 
+fMultinomial_mathematica <- function(input){
+  comps <- c(input$multinomial_prob1, input$multinomial_prob2, input$multinomial_prob3)
+  comps <- comps / sum(comps)
+  top <- paste0("aDist=MultinomialDistribution[", input$multinomial_size, ", ", "{", comps[1], ", ",
+                comps[2], ", ", comps[3], "}]")
+  switch(input$property,
+         pdf=paste(top, "PDF[aDist, x]", sep = "\n"),
+         log_pdf=paste(top, "Log@PDF[aDist, x]", sep = "\n"),
+         random=paste(top, "RandomVariate[aDist, n]", sep = "\n")
+  )
+}
+
 fMathematicacode <- function(input){
   text <- 
     if(input$distType=='Continuous'){
@@ -172,6 +184,7 @@ fMathematicacode <- function(input){
       switch(input$dist2,
              MultivariateNormal=fMultivariatenormal_mathematica(input),
              MultivariateT=fMultivariatet_mathematica(input),
+             Multinomial=fMultinomial_mathematica(input)
       )
     }
   return(prismCodeBlock(text))
