@@ -19,7 +19,7 @@ fRHelper <- function(mainName, params, input, import=NULL, named_arguments=NULL,
 dHalfCauchyCode <- paste(
   "dhalfcauchy <- function(x, location, scale, log=FALSE){",
   "  if(x >= 0)",
-  "    val <- 1.0 / (pi * (1 + ((x-location)/scale)^2) * scale * (0.5 + atan(location / scale) / pi))",
+  "    val <- 1.0 / (pi * (1 + ((x - location) / scale)^2) * scale * (0.5 + atan(location / scale) / pi))",
   "  else",
   "    val <- 0.0",
   "  if(!log)",

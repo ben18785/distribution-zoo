@@ -668,6 +668,66 @@ fLKJ <- function(input){
   )
 }
 
+dHalfCauchy_python <- paste(
+  "import numpy",
+  "def halfcauchy_pdf(x, location, scale):",
+  "    if x >= 0:",
+  "        val = 1.0 / (numpy.pi * (1 + ((x - location) / scale)**2) * scale * (0.5 + numpy.arctan(location / scale) / numpy.pi))",
+  "    else:",
+  "        val = 0.0",
+  "    return val",
+  "# calling function",
+  sep="\n"
+)
+
+dHalfCauchy_log_python <- paste(
+  "import numpy",
+  "def halfcauchy_logpdf(x, location, scale):",
+  "    if x >= 0:",
+  "        val = 1.0 / (numpy.pi * (1 + ((x - location) / scale)**2) * scale * (0.5 + numpy.arctan(location / scale) / numpy.pi))",
+  "    else:",
+  "        val = 0.0",
+  "    return numpy.log(val)",
+  "# calling function",
+  sep="\n"
+)
+
+rHalfCauchy_python <- paste(
+  "import scipy.stats",
+  "import numpy",
+  "def halfcauchy_rvs(location, scale, n):",
+  "    x = numpy.zeros(n)",
+  "    for i in range(n):",
+  "        z = scipy.stats.cauchy.rvs(location, scale, 1)",
+  "        while z < 0:",
+  "            z = scipy.stats.cauchy.rvs(location, scale, 1)",
+  "        x[i] = z",
+  "    return x",
+  "# calling function",
+  sep = "\n"
+)
+
+fHalfCauchy_python <- function(input){
+  lparams <- c(input$halfcauchy_location, input$halfcauchy_scale)
+  switch(input$property,
+         pdf=paste(dHalfCauchy_python,
+                   fMakeFunctionPaste(mainName="halfcauchy_pdf",
+                                      params=lparams, 
+                                      prefixparams="x"),
+                   sep="\n"),
+         log_pdf=paste(dHalfCauchy_log_python,
+                       fMakeFunctionPaste(mainName="halfcauchy_logpdf",
+                                          params=lparams, 
+                                          prefixparams="x"),
+                       sep="\n"),
+         random=paste(rHalfCauchy_python,
+                      fMakeFunctionPaste(mainName="halfcauchy_rvs",
+                                         params=lparams,
+                                         postfixparams="n"),
+                      sep="\n")
+  )
+}
+
 fPythoncode <- function(input){
   text <-
     if(input$distType=='Continuous'){
@@ -692,10 +752,7 @@ fPythoncode <- function(input){
                              c(input$cauchy_location, input$cauchy_scale),
                              input, import="import scipy.stats",
                              import1="import scipy.stats"),
-             HalfCauchy=fPythonHelper("halfcauchy", "halfcauchy",
-                                  c(input$halfcauchy_location, input$halfcauchy_scale),
-                                  input, import="import scipy.stats",
-                                  import1="import scipy.stats"),
+             HalfCauchy=fHalfCauchy_python(input),
              InverseGamma=fInverseGamma(input),
              InverseChiSquared=fInverseChiSquaredFull(input),
              LogitNormal=fLogitNormalFull(input)
