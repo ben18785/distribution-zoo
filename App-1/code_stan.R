@@ -63,7 +63,7 @@ dhalfcauchy_stan <- function(input){
          random=paste("// repeat following n times (for example, in for loop)",
            paste0("real x_rng = cauchy_rng(", input$halfcauchy_location, ", ", input$halfcauchy_scale, ");"),
            "while(x_rng < 0)",
-           paste0("  real x_rng = cauchy_rng(", input$halfcauchy_location, ", ", input$halfcauchy_scale, ");"),
+           paste0("  x_rng = cauchy_rng(", input$halfcauchy_location, ", ", input$halfcauchy_scale, ");"),
          sep = "\n")
                    
   )

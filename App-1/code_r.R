@@ -162,10 +162,8 @@ dMultinomialFull <- function(prob1, prob2, prob3, input){
     fRHelper("multinom", c(input$multinomial_prob1, input$multinomial_prob2, input$multinomial_prob3), input,
              named_arguments=c("prob"))
   }else{
-    fMakeFunctionPaste("rmultinom",
-                       params=c(input$multinomial_prob1, input$multinomial_prob2, input$multinomial_prob3),
-                       prefixparams=c("n", "size"),
-                       named_arguments=c("prob"))
+    paste0("rmultinom(n, ", input$multinomial_size,
+           ", prob=c(", input$multinomial_prob1, ", ", input$multinomial_prob2, ", ", input$multinomial_prob3, "))")
   }
 }
 
