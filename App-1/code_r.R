@@ -214,15 +214,17 @@ dInverseWishartFull <- function(df, input){
 
 
 dLKJ_1 <- paste(
-  "dlkj <- function(x, eta, log=FALSE){",
-  "  det_a <- det(x) ^ (eta - 1)",
+  "dlkj <- function(x, nu, log=FALSE){",
+  "  d <- nrow(x)",
+  "  if(sum(diag(x)) != d | x[upper.tri(x)] != x[lower.tri(x)])",
+  "    return(ifelse(!log, 0.0, -Inf))",
+  "  det_a <- det(x) ^ (nu - 1)",
   "  a_sum <- 0",
   "  b_sum <- 1",
-  "  d <- nrow(x)",
   "  k <- 1",
   "  for(i in 1:(d - 1)){",
-  "    a_sum <- a_sum + (2 * eta - 2 + d - k) * (d - k)",
-  "    b_sum <- b_sum * (beta(eta + 0.5 * (d - k - 1), eta + 0.5 * (d - k - 1)) ^ (d - k))",
+  "    a_sum <- a_sum + (2 * nu - 2 + d - k) * (d - k)",
+  "    b_sum <- b_sum * (beta(nu + 0.5 * (d - k - 1), nu + 0.5 * (d - k - 1)) ^ (d - k))",
   "    k <- k + 1",
   "  }",
   "  a_sum <- 2 ^ a_sum",

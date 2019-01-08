@@ -31,6 +31,8 @@ x = multivariatetrnd([1, -3], [[2, 0.5]; [0.5, 0.9]], 1, 100);
 
 f = inversewishartpdf([[2, 0.5]; [0.5, 1]], 10, [[3, 0]; [0, 2]]);
 
+f = lkjpdf(diag([1, 1]), 10);
+
 function f = studenttpdf(x, mu, sigma, nu)
     numer = (nu / (nu + ((x - mu) / sigma)^2))^((nu + 1) / 2);
     f = numer / (sqrt(nu) * sigma * beta(nu / 2, 1 / 2));
@@ -186,5 +188,10 @@ function f = lkjpdf(x, nu)
     d = m(1);
     a_sum = 0;
     a_prod = 1;
-    for i = 1:(d-1)
-        a_sum = a_sum + (2 * eta(
+    for k = 1:(d-1)
+        a_sum = a_sum + (2 * nu - 2 + d - k) * (d - k);
+        a_prod = a_prod * beta(nu + 0.5 * (d - k - 1), nu + 0.5 * (d - k - 1));
+    end
+    a_sum = 2^a_sum;
+    f = a_sum * a_prod * det(x)^(nu - 1);
+end
