@@ -297,7 +297,7 @@ dBetaBinomial <- paste(
 )
 
 dBetaBinomial_log <- paste(
-  "import scipy.special",
+  "from scipy.special import gammaln",
   "def betabinomial_logpmf(x, size, a, b):",
   "    return (gammaln(size + 1) + gammaln(x + a) + gammaln(size - x + b) + gammaln(a + b) - \
         (gammaln(x + 1) + gammaln(size - x + 1) + gammaln(a) + gammaln(b) + gammaln(size + a + b)))",
