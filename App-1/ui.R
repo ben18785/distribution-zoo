@@ -21,7 +21,7 @@ prismLanguageDependencies <- function(languages) {
 shinyUI(fluidPage(
   includeCSS("styles.css"),
   # Application title
-  headerPanel("Distribution explorer"),
+  headerPanel("The distribution dictionary"),
   tagList(h4("by"), a(h4("Ben Lambert"), href="https://ben-lambert.com/bayesian/", target="_blank")),
   prismDependencies,
   prismLanguageDependencies(c("r", "python", "latex",

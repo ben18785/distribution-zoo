@@ -245,6 +245,7 @@ shinyServer(function(input, output) {
   })
   
   output$code <- renderUI({
+    tagList(h4("Note: generates dynamic code for distribution properties with same properties as in plots"),
     if(is.null(input$language)){
       uiOutput("rcode")
     }else{
@@ -260,7 +261,7 @@ shinyServer(function(input, output) {
              Stan=uiOutput("stancode"),
              BUGS=uiOutput("BUGScode"),
              JAGS=uiOutput("JAGScode"))
-    }
+    })
   })
   
   output$mytabs = renderUI({
