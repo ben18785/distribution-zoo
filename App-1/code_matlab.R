@@ -498,7 +498,7 @@ fInverseWishart_matlab <- function(input){
   )
 }
 
-dLKJ <- paste(
+dLKJ_matlab <- paste(
   "function f = lkjpdf(x, nu)",
   "    m = size(x);",
   "    d = m(1);",
