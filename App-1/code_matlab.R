@@ -677,7 +677,7 @@ fMatlabcode <- function(input){
                                      params = c(input$lognormal_mu, input$lognormal_sigma),
                                      input),
              Exponential=fMatlabHelper("exp",
-                                       params = input$exponential_rate, 
+                                       params = 1 / input$exponential_rate, 
                                        input),
              Gamma=fMatlabHelper("gam",
                                   params = c(input$gamma_shape, 1 / input$gamma_rate),

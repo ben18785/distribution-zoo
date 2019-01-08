@@ -12,5 +12,5 @@ data{
 generated quantities{
   real log_prob = multinomial_lpmf(x| to_vector([0.375, 0.3125, 0.3125]));
   int x_rng[3] = multinomial_rng(to_vector([0.375, 0.3125, 0.3125]), 11);
-    
+  real prob = exp(exponential_lpdf(1.1| 0.23));
 }
