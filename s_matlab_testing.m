@@ -31,7 +31,7 @@ x = multivariatetrnd([1, -3], [[2, 0.5]; [0.5, 0.9]], 1, 100);
 
 f = inversewishartpdf([[2, 0.5]; [0.5, 1]], 10, [[3, 0]; [0, 2]]);
 
-f = lkjpdf(diag([1, 1]), 10);
+f = lkjpdf([[1, 0]; [0, 1]], 10);
 
 function f = studenttpdf(x, mu, sigma, nu)
     numer = (nu / (nu + ((x - mu) / sigma)^2))^((nu + 1) / 2);
@@ -186,6 +186,11 @@ end
 function f = lkjpdf(x, nu)
     m = size(x);
     d = m(1);
+    n = numel(x);
+    if sum(diag(x)) ~= d || sum(sum(tril(x)==triu(x))) ~= n
+        f = 0.0;
+        return;
+    end
     a_sum = 0;
     a_prod = 1;
     for k = 1:(d-1)

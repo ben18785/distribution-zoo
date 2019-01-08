@@ -498,6 +498,27 @@ fInverseWishart_matlab <- function(input){
   )
 }
 
+dLKJ <- paste(
+  "function f = lkjpdf(x, nu)",
+  "    m = size(x);",
+  "    d = m(1);",
+  "    n = numel(x);",
+  "    if sum(diag(x)) ~= d || sum(sum(tril(x)==triu(x))) ~= n",
+  "        f = 0.0;",
+  "        return;",
+  "    end",
+  "    a_sum = 0;",
+  "    a_prod = 1;",
+  "    for k = 1:(d-1)",
+  "        a_sum = a_sum + (2 * nu - 2 + d - k) * (d - k);",
+  "        a_prod = a_prod * beta(nu + 0.5 * (d - k - 1), nu + 0.5 * (d - k - 1));",
+  "    end",
+  "    a_sum = 2^a_sum;",
+  "    f = a_sum * a_prod * det(x)^(nu - 1);",
+  "end",
+  sep = "\n"
+)
+
 fMatlabcode <- function(input){
   text <- 
     if(input$distType=='Continuous'){
