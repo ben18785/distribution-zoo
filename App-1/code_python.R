@@ -190,7 +190,7 @@ dLogitNormal <- paste(
   "import scipy.special",
   "def logitnormal_pdf(x, mu, sigma):",
   "    temp = ((scipy.special.logit(x) - mu)**2 / (2 * sigma**2))",
-  "    return (1.0 / sigma) * (1.0 / numpy.sqrt(2 * numpy.pi)) * np.exp(-temp) * (1.0 / (x * (1.0 - x)))",
+  "    return (1.0 / sigma) * (1.0 / numpy.sqrt(2 * numpy.pi)) * numpy.exp(-temp) * (1.0 / (x * (1.0 - x)))",
   "# calling function",
   sep="\n"
 )
@@ -200,7 +200,7 @@ dLogitNormal_log <- paste(
   "import scipy.special",
   "def logitnormal_logpdf(x, mu, sigma):",
   "    temp = ((scipy.special.logit(x) - mu)**2 / (2 * sigma**2))",
-  "    return numpy.log((1.0 / sigma) * (1.0 / numpy.sqrt(2 * numpy.pi)) * np.exp(-temp) * (1.0 / (x * (1.0 - x))))",
+  "    return numpy.log((1.0 / sigma) * (1.0 / numpy.sqrt(2 * numpy.pi)) * numpy.exp(-temp) * (1.0 / (x * (1.0 - x))))",
   "# calling function",
   sep="\n"
 )
