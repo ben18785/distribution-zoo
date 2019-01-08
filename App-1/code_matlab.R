@@ -1,18 +1,41 @@
-fMatlabHelper <- function(mainName, params, input, import=NULL, named_arguments=NULL, vector_params=FALSE){
+fMatlabHelper <- function(mainName, params, input, import=NULL, named_arguments=NULL, vector_params=FALSE, python_vector=FALSE){
   switch(input$property,
          pdf=fMakeFunctionPaste(mainName=paste0(mainName, "pdf"),
                                 params=params, prefixparams="x",
                                 import=import, named_arguments=named_arguments,
-                                vector_params=vector_params),
+                                vector_params=vector_params,
+                                python_vector=python_vector),
          log_pdf=paste0(fMakeFunctionPaste(mainName=paste0("log(", mainName, "pdf"),
                                     params=params, prefixparams="x",
                                     import=import, named_arguments=named_arguments,
-                                    vector_params=vector_params),
+                                    vector_params=vector_params,
+                                    python_vector=python_vector),
                         ")"),
          random=fMakeFunctionPaste(mainName=paste0(mainName, "rnd"),
                                    params=params, postfixparams="[n, 1]",
                                    import=import, named_arguments=named_arguments,
-                                   vector_params=vector_params))
+                                   vector_params=vector_params,
+                                   python_vector=python_vector))
+}
+
+fMatlabHelper1 <- function(mainName, params, input, import=NULL, named_arguments=NULL, vector_params=FALSE, python_vector=FALSE){
+  switch(input$property,
+         pdf=fMakeFunctionPaste(mainName=paste0(mainName, "pdf"),
+                                params=params, prefixparams="x",
+                                import=import, named_arguments=named_arguments,
+                                vector_params=vector_params,
+                                python_vector=python_vector),
+         log_pdf=paste0(fMakeFunctionPaste(mainName=paste0("log(", mainName, "pdf"),
+                                           params=params, prefixparams="x",
+                                           import=import, named_arguments=named_arguments,
+                                           vector_params=vector_params,
+                                           python_vector=python_vector),
+                        ")"),
+         random=fMakeFunctionPaste(mainName=paste0(mainName, "rnd"),
+                                   params=params, postfixparams="n",
+                                   import=import, named_arguments=named_arguments,
+                                   vector_params=vector_params,
+                                   python_vector=python_vector))
 }
 
 dStudentt_matlab <- paste(
@@ -581,6 +604,65 @@ fLKJ_matlab <- function(input){
   )
 }
 
+dDirichlet_matlab <- paste(
+  "function f = beta_long(alpha_vec)",
+  "    a_prod = prod(gamma(alpha_vec));",
+  "    f = a_prod / gamma(sum(alpha_vec));",
+  "end",
+  " ",
+  "function f = dirichletpdf(x_vec, alpha_vec)",
+  "    beta_denom = beta_long(alpha_vec);",
+  "    a_prod = prod(x_vec.^(alpha_vec-1));",
+  "    f = a_prod / beta_denom;",
+  "end",
+  sep = "\n"
+)
+
+rDirichlet_matlab <- paste(
+  "function x = dirichletrnd(alpha_vec, n)",
+  "    p = length(alpha_vec);",
+  "    x = gamrnd(repmat(alpha_vec, n, 1), 1, n, p);",
+  "    x = x ./ repmat(sum(x, 2), 1, p);",
+  "end",
+  sep = "\n"
+)
+
+fDirichlet_matlab <- function(input){
+  if(input$dirichlet_dimension==2){
+    alpha <- c(input$dirichlet_alpha1, input$dirichlet_alpha2)
+  }else if(input$dirichlet_dimension==3){
+    alpha <- c(input$dirichlet_alpha1, input$dirichlet_alpha2, input$dirichlet_alpha3)
+  }else if(input$dirichlet_dimension==4){
+    alpha <- c(input$dirichlet_alpha1, input$dirichlet_alpha2, input$dirichlet_alpha3, input$dirichlet_alpha4)
+  }
+  switch(input$property,
+         pdf=paste("% calling function",
+                   fMatlabHelper("dirichlet",
+                                 params = alpha,
+                                 input, vector_params = T,
+                                 python_vector = T),
+                   " ",
+                   dDirichlet_matlab,
+                   sep = "\n"),
+         log_pdf=paste("% calling function",
+                       fMatlabHelper("dirichlet",
+                                     params = alpha,
+                                     input, vector_params = T,
+                                     python_vector = T),
+                       " ",
+                       dDirichlet_matlab,
+                       sep = "\n"),
+         random=paste("% calling function",
+                      fMatlabHelper1("dirichlet",
+                                    params = alpha,
+                                    input, vector_params = T,
+                                    python_vector = T),
+                      " ",
+                      rDirichlet_matlab,
+                      sep = "\n")
+  )
+}
+
 fMatlabcode <- function(input){
   text <- 
     if(input$distType=='Continuous'){
@@ -634,7 +716,8 @@ fMatlabcode <- function(input){
              Multinomial=fMultinomial_matlab(input),
              Wishart=fWishart_matlab(input),
              InverseWishart=fInverseWishart_matlab(input),
-             LKJ=fLKJ_matlab(input)
+             LKJ=fLKJ_matlab(input),
+             Dirichlet=fDirichlet_matlab(input)
       )
     }
   return(prismCodeBlock(text, language = "matlab"))

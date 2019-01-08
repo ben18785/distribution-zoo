@@ -35,6 +35,10 @@ f = lkjpdf([[1, 0]; [0, 1]], 10);
 
 a=lkjrnd(3, 4, 5);
 
+f = dirichletpdf([0.25, 0.5, 0.25], [1, 3, 2]);
+
+dirichletrnd([1, 2, 3], 10)
+
 function f = studenttpdf(x, mu, sigma, nu)
     numer = (nu / (nu + ((x - mu) / sigma)^2))^((nu + 1) / 2);
     f = numer / (sqrt(nu) * sigma * beta(nu / 2, 1 / 2));
@@ -234,4 +238,21 @@ function r_list = lkjrnd(nu, d, n)
     for i = 1:n
         r_list{i} = lkjsinglernd(nu, d);
     end
+end
+
+function f = beta_long(alpha_vec)
+    a_prod = prod(gamma(alpha_vec));
+    f = a_prod / gamma(sum(alpha_vec));
+end
+
+function f = dirichletpdf(x_vec, alpha_vec)
+    beta_denom = beta_long(alpha_vec);
+    a_prod = prod(x_vec.^(alpha_vec-1));
+    f = a_prod / beta_denom;
+end
+
+function x = dirichletrnd(alpha_vec, n)
+    p = length(alpha_vec);
+    x = gamrnd(repmat(alpha_vec, n, 1), 1, n, p);
+    x = x ./ repmat(sum(x, 2), 1, p);
 end
