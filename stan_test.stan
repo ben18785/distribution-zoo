@@ -21,7 +21,7 @@ generated quantities{
 
   real log_prob = gamma_rng(2, 0.74);
   
-  int x_rng[3];
-  x_rng = multinomial_rng(to_vector([0.212121212121212, 0.522727272727273, 0.265151515151515]), 81);
+  vector[2] x_rng = multi_normal_rng(to_vector([-4, -5.4]), [[16, 10.88], [10.88, 11.56]]);
+  vector[2] x_rng1 = multi_student_t_rng(2, to_vector([2.2, -4]), [[0.16, -0.128], [-0.128, 0.64]]);
   
 }
