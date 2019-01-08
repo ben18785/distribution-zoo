@@ -241,7 +241,7 @@ fStanCode <- function(input){
              Beta=fStanHelper("beta", c(input$beta_a,input$beta_b), input),
              Cauchy=fStanHelper("cauchy", c(input$cauchy_location,input$cauchy_scale), input),
              HalfCauchy=dhalfcauchy_stan(input),
-             InverseGamma=fStanHelper("inv_gamma", c(input$inversegamma_shape, 1.0 / input$inversegamma_scale), input),
+             InverseGamma=fStanHelper("inv_gamma", c(input$inversegamma_shape, input$inversegamma_scale), input),
              InverseChiSquared=fStanHelper("inv_chi_square", input$inversechisquared_df, input),
              LogitNormal=flogitnormal_stan(input))
     }else if(input$distType=='Discrete'){
