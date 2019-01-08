@@ -245,7 +245,7 @@ shinyServer(function(input, output) {
   })
   
   output$code <- renderUI({
-    tagList(h4("Note: generates dynamic code for distribution properties with same properties as in plots"),
+    tagList(h4("Note: generates dynamic code for distributions with same properties as in plots"),
     if(is.null(input$language)){
       uiOutput("rcode")
     }else{
