@@ -527,7 +527,6 @@ dLKJ_matlab <- paste(
   "    m = size(x);",
   "    d = m(1);",
   "    n = numel(x);",
-  "    [~, p] = chol(x);",
   "    if sum(diag(x)) ~= d || sum(sum(tril(x)))~=sum(sum(triu(x)))",
   "        f = 0.0;",
   "        return;",
