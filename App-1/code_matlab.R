@@ -504,7 +504,7 @@ dLKJ_matlab <- paste(
   "    d = m(1);",
   "    n = numel(x);",
   "    [~, p] = chol(x);",
-  "    if sum(diag(x)) ~= d || sum(sum(tril(x)==triu(x))) ~= n || (p==0 && rank(x) == size(x, 1))",
+  "    if sum(diag(x)) ~= d || sum(sum(tril(x)))~=sum(sum(triu(x)))",
   "        f = 0.0;",
   "        return;",
   "    end",
@@ -519,6 +519,67 @@ dLKJ_matlab <- paste(
   "end",
   sep = "\n"
 )
+
+rLKJ_matlab <- paste(
+  "function r = lkjsinglernd(nu, d)",
+  "    if d == 1",
+  "        r = 1;",
+  "    elseif d==2",
+  "        rho = 2 * betarnd(nu, nu, 1) - 1;",
+  "        r = [[1, rho]; [rho, 1]];",
+  "    else",
+  "        beta1 = nu + (d - 2) / 2;",
+  "        u = betarnd(beta1, beta1, 1);",
+  "        r_12 = 2 * u - 1;",
+  "        r = [[1, r_12]; [r_12, 1]];",
+  "        for m = 2:(d-1)",
+  "            beta1 = beta1 - 0.5;",
+  "            y = betarnd(m / 2, beta1, 1);",
+  "            a = normrnd(0, 1, [m, 1]);",
+  "            anorm = sqrt(sum(a.^2));",
+  "            u = a / anorm;",
+  "            w = sqrt(y) * u;",
+  "            A = chol(r);",
+  "            z = A * w;",
+  "            r = [[r, z]; [z', 1]];",
+  "        end",
+  "    end",
+  "end",
+  " ",
+  "function r_list = lkjrnd(nu, d, n)",
+  "    r_list = cell([n,1]);",
+  "    for i = 1:n",
+  "        r_list{i} = lkjsinglernd(nu, d);",
+  "    end",
+  "end",
+  sep = "\n"
+)
+
+fLKJ_matlab <- function(input){
+  switch(input$property,
+         pdf=paste("% calling function",
+                   fMatlabHelper("lkj",
+                                 params = input$lkj_eta,
+                                 input),
+                   " ",
+                   dLKJ_matlab,
+                   sep = "\n"),
+         log_pdf=paste("% calling function",
+                       fMatlabHelper("lkj",
+                                     params = input$lkj_eta,
+                                     input),
+                       " ",
+                       dLKJ_matlab,
+                       sep = "\n"),
+         random=paste("% calling function",
+                      fMatlabHelper("lkj",
+                                    params = c(input$lkj_eta, input$lkj_dimension),
+                                    input),
+                      " ",
+                      rLKJ_matlab,
+                      sep = "\n")
+  )
+}
 
 fMatlabcode <- function(input){
   text <- 
@@ -572,7 +633,8 @@ fMatlabcode <- function(input){
              MultivariateT=fMultivariatet_matlab(input),
              Multinomial=fMultinomial_matlab(input),
              Wishart=fWishart_matlab(input),
-             InverseWishart=fInverseWishart_matlab(input)
+             InverseWishart=fInverseWishart_matlab(input),
+             LKJ=fLKJ_matlab(input)
       )
     }
   return(prismCodeBlock(text, language = "matlab"))

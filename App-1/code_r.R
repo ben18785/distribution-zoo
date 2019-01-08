@@ -238,16 +238,16 @@ dLKJ_1 <- paste(
 )
 
 rLKJ_1 <- paste(
-  "rlkj <- function(n, eta, d){",
+  "rlkj <- function(n, nu, d){",
   "  r_list <- vector(length = n, mode = 'list')",
   "  for(i in 1:n){",
   "    if(d==1)",
   "      r = as.array(1)",
   "    else if(d==2){",
-  "      rho <- 2 * rbeta(1, eta, eta) - 1",
+  "      rho <- 2 * rbeta(1, nu, nu) - 1",
   "      r <- matrix(c(1, rho, rho, 1), ncol = 2)",
   "    }else{",
-  "      beta <- eta + (d - 2) / 2",
+  "      beta <- nu + (d - 2) / 2",
   "      u <- rbeta(1, beta, beta)",
   "      r_12 <- 2 * u - 1",
   "      r <- matrix(c(1, r_12, r_12, 1), ncol = 2)",

@@ -33,6 +33,8 @@ f = inversewishartpdf([[2, 0.5]; [0.5, 1]], 10, [[3, 0]; [0, 2]]);
 
 f = lkjpdf([[1, 0]; [0, 1]], 10);
 
+a=lkjrnd(3, 4, 5);
+
 function f = studenttpdf(x, mu, sigma, nu)
     numer = (nu / (nu + ((x - mu) / sigma)^2))^((nu + 1) / 2);
     f = numer / (sqrt(nu) * sigma * beta(nu / 2, 1 / 2));
@@ -199,4 +201,37 @@ function f = lkjpdf(x, nu)
     end
     a_sum = 2^a_sum;
     f = a_sum * a_prod * det(x)^(nu - 1);
+end
+
+
+function r = lkjsinglernd(nu, d)
+    if d == 1
+        r = 1;
+    elseif d==2
+        rho = 2 * betarnd(nu, nu, 1) - 1;
+        r = [[1, rho]; [rho, 1]];
+    else
+        beta1 = nu + (d - 2) / 2;
+        u = betarnd(beta1, beta1, 1);
+        r_12 = 2 * u - 1;
+        r = [[1, r_12]; [r_12, 1]];
+        for m = 2:(d-1)
+            beta1 = beta1 - 0.5;
+            y = betarnd(m / 2, beta1, 1);
+            a = normrnd(0, 1, [m, 1]);
+            anorm = sqrt(sum(a.^2));
+            u = a / anorm;
+            w = sqrt(y) * u;
+            A = chol(r);
+            z = A * w;
+            r = [[r, z]; [z', 1]];
+        end
+    end
+end
+
+function r_list = lkjrnd(nu, d, n)
+    r_list = cell([n,1]);
+    for i = 1:n
+        r_list{i} = lkjsinglernd(nu, d);
+    end
 end
