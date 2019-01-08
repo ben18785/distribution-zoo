@@ -15,7 +15,7 @@ fPlotPDF <- function(input, aDist, aMean, aVar, lScale, lExtra){
                  linetype = "longdash",
                  size=1) +
       theme_classic() +
-      ggtitle(paste0("mean = ", round(aMean, 2), ", sd = ", round(sqrt(aVar), 2))) +
+      ggtitle(paste0("mean (orange line) = ", round(aMean, 2), ", sd = ", round(sqrt(aVar), 2))) +
       theme(plot.title = element_text(hjust = 0.5, size = 18),
             axis.text = element_text(size=14),
             axis.title = element_text(size=16)) +
@@ -32,7 +32,7 @@ fPlotPDF <- function(input, aDist, aMean, aVar, lScale, lExtra){
                  linetype = "longdash",
                  size=1) +
       theme_classic() +
-      ggtitle(paste0("mean = ", round(aMean, 2), ", var = ", round(sqrt(aVar), 2))) +
+      ggtitle(paste0("mean (orange line) = ", round(aMean, 2), ", sd = ", round(sqrt(aVar), 2))) +
       theme(plot.title = element_text(hjust = 0.5, size = 18),
             axis.text = element_text(size=14),
             axis.title = element_text(size=16)) +
@@ -110,13 +110,22 @@ fPlotPDF <- function(input, aDist, aMean, aVar, lScale, lExtra){
       lOffD1[i] <- aMatrix[2,3]/sqrt(aMatrix[2,2]*aMatrix[3,3])
       lDiag[i] <- aMatrix[1,1]
     }
-    h1 <- qplot(log(lDiag),fill=I("blue")) + xlab(expression(paste("log(",sigma[1]^2,")")))
+    h1 <- qplot(log(lDiag),fill=I("blue")) + 
+      xlab(expression(paste("log(",sigma[1]^2,")"))) + 
+      ylab("count") +
+      theme_classic() +
+      theme(axis.title = element_text(size=18),
+            axis.text = element_text(size=14))
     aDataF <- data.frame(x=lOffD,y=lOffD1)
     m <- ggplot(aDataF, aes(x = x, y = y)) +
       geom_point() + xlab(expression(rho[12])) + ylab(expression(rho[23]))
-    p <- m + geom_density2d(size=1)
+    p <- m + geom_density2d(size=1) +
+      theme_classic() +
+      theme(axis.title = element_text(size=18),
+            axis.text = element_text(size=14))
     p1<-ggExtra::ggMarginal(p,type = "histogram",fill=I("blue"))
-    grid.arrange(h1,p1,ncol = 2)
+    grid.arrange(h1,p1,ncol = 2,
+                 top=textGrob("Samples from distribution",gp=gpar(fontsize=20,font=1)))
     
   }else if (input$dist2=='InverseWishart'){
     lList<-rWishart(input$inversewishart_samplesize,input$inversewishart_df,diag(input$inversewishart_dimension))
@@ -129,20 +138,38 @@ fPlotPDF <- function(input, aDist, aMean, aVar, lScale, lExtra){
       lOffD1[i] <- aMatrix[2,3]/sqrt(aMatrix[2,2]*aMatrix[3,3])
       lDiag[i] <- aMatrix[1,1]
     }
-    h1 <- qplot(log(lDiag),fill=I("blue")) + xlab(expression(paste("log(",sigma[1]^2,")")))
+    h1 <- qplot(log(lDiag),fill=I("blue")) + 
+      xlab(expression(paste("log(",sigma[1]^2,")"))) + 
+      ylab("count") +
+      theme_classic() +
+      theme(axis.title = element_text(size=18),
+            axis.text = element_text(size=14))
     aDataF <- data.frame(x=lOffD,y=lOffD1)
     m <- ggplot(aDataF, aes(x = x, y = y)) +
       geom_point() + xlab(expression(rho[12])) + ylab(expression(rho[23]))
-    p <- m + geom_density2d(size=1)
+    p <- m + geom_density2d(size=1) +
+      theme_classic() +
+      theme(axis.title = element_text(size=18),
+            axis.text = element_text(size=14))
     p1<-ggExtra::ggMarginal(p,type = "histogram",fill=I("blue"))
-    grid.arrange(h1,p1,ncol = 2)
+    grid.arrange(h1,p1,ncol = 2,
+                 top=textGrob("Samples from distribution",gp=gpar(fontsize=20,font=1)))
   } else if (input$dist2=='Dirichlet'){
     if(input$dirichlet_dimension==2){
       lSamples <- rdirichlet(input$dirichlet_samplesize, c(input$dirichlet_alpha1,input$dirichlet_alpha2))
-      qplot(lSamples[,1],fill=I("blue")) + xlab(expression(p[1]))
+      qplot(lSamples[,1],fill=I("blue")) + xlab(expression(p[1])) +
+        theme_classic() +
+        ylab("count") +
+        ggtitle("Samples from distribution") +
+        theme(axis.title = element_text(size=18),
+              axis.text = element_text(size=14),
+              title = element_text(size=20))
       
     } else if (input$dirichlet_dimension==3){     
-      plot(DR_data(rdirichlet(input$dirichlet_samplesize, c(input$dirichlet_alpha1,input$dirichlet_alpha2,input$dirichlet_alpha3))), a2d = list(colored = TRUE),dim.labels=c(expression(p[1]),expression(p[2]),expression(p[3])))
+      plot(DR_data(rdirichlet(input$dirichlet_samplesize,
+                              c(input$dirichlet_alpha1,input$dirichlet_alpha2,input$dirichlet_alpha3))),
+           a2d = list(colored = TRUE),
+           dim.labels=c(expression(p[1]),expression(p[2]),expression(p[3])))
     } else {     
       plot(DR_data(rdirichlet(input$dirichlet_samplesize, c(input$dirichlet_alpha1,input$dirichlet_alpha2,input$dirichlet_alpha3,input$dirichlet_alpha4))), a3d = list(colored = TRUE,rgl=FALSE),dim.labels=c(expression(p[1]),expression(p[2]),expression(p[3]),expression(p[4])))
     }
@@ -152,8 +179,12 @@ fPlotPDF <- function(input, aDist, aMean, aVar, lScale, lExtra){
     X <- X[ , colSums(X) <= input$multinomial_size]; X <- rbind(X, input$multinomial_size - colSums(X))
     Z <- round(apply(X, 2, function(x) dmultinom(x, prob = c(input$multinomial_prob1,input$multinomial_prob2,input$multinomial_prob3))), 3)
     A <- data.frame(x = X[1, ], y = X[2, ], probability = Z)
-    scatterplot3d(A, type = "h", lwd = 3,highlight.3d=TRUE, 
-                  box = FALSE,angle=input$multinomial_angle)
+    scatterplot3d(A, type = "h", lwd = 3, 
+                  highlight.3d=TRUE, 
+                  box = FALSE,
+                  angle=input$multinomial_angle,
+                  cex.lab = 2,
+                  cex.axis = 1)
     
   } else if(input$dist2=='LKJ'){
     lSamples <- lapply(seq(1,input$lkj_samplesize,1), function(x) rcoronion(input$lkj_dimension,
@@ -163,7 +194,12 @@ fPlotPDF <- function(input, aDist, aMean, aVar, lScale, lExtra){
     aDataF <- data.frame(x=lSample12,y=lSample23)
     m <- ggplot(aDataF, aes(x = x, y = y)) +
       geom_point() + xlab(expression(rho[12])) + ylab(expression(rho[23]))
-    p <- m + geom_density2d(size=1)
+    p <- m + geom_density2d(size=1) +
+      theme_classic() +
+      ggtitle("Samples from distribution") +
+      theme(axis.title = element_text(size=18),
+            axis.text = element_text(size=14),
+            title = element_text(size=20))
     p1<-ggExtra::ggMarginal(p,type = "histogram",fill=I("blue"))
     p1
   }

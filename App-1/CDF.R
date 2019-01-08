@@ -18,7 +18,7 @@ fPlotCDF <- function(input, aDist, aMean, aVar, lScale, lExtra){
             axis.text = element_text(size=14),
             axis.title = element_text(size=16)) +
       ylim(0, NA) +
-      ggtitle(paste0("mean = ", round(aMean, 2), ", var = ", round(aVar, 2)))
+      ggtitle(paste0("mean (orange line) = ", round(aMean, 2), ", sd = ", round(sqrt(aVar), 2)))
     
   } else if (input$distType=='Discrete'){
     
@@ -37,7 +37,7 @@ fPlotCDF <- function(input, aDist, aMean, aVar, lScale, lExtra){
             axis.title = element_text(size=16)) +
       ylim(0, NA) +
       ylab('cumulate probability') +
-      ggtitle(paste0("mean = ", round(aMean, 2), ", var = ", round(aVar, 2)))
+      ggtitle(paste0("mean (orange line) = ", round(aMean, 2), ", sd = ", round(sqrt(aVar), 2)))
   }else if (input$dist2=='MultivariateNormal'){
     lMean <- c(input$multivariatenormal_mux,input$multivariatenormal_muy)
     lSigma <- matrix(c(input$multivariatenormal_sigmax^2,input$multivariatenormal_sigmax * input$multivariatenormal_sigmay * input$multivariatenormal_rho,
