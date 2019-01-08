@@ -306,7 +306,7 @@ fRcode <- function(input){
              Beta=fRHelper("beta", c(input$beta_a,input$beta_b), input),
              Cauchy=fRHelper("cauchy", c(input$cauchy_location,input$cauchy_scale), input),
              HalfCauchy=dHalfCauchyFull(input$halfcauchy_location, input$halfcauchy_scale, input),
-             InverseGamma=fRHelper("invgamma", c(input$inversegamma_shape, input$inversegamma_scale), input, import="library(actuar)"),
+             InverseGamma=fRHelper("invgamma", c(input$inversegamma_shape, 1 / input$inversegamma_scale), input, import="library(actuar)"),
              InverseChiSquared=fRHelper("invchisq", input$inversechisquared_df, input, import="library(LaplacesDemon)"),
              LogitNormal=fLogitNormal_R(input))
     }else if(input$distType=='Discrete'){

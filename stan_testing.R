@@ -1,5 +1,5 @@
 library(rstan)
-
+setwd("~/Desktop/distribution-viewer")
 stan_model <- stan_model('stan_test.stan')
 
 x <- c(2, 3, 1)

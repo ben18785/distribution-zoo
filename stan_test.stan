@@ -17,7 +17,7 @@ data{
 }
 
 generated quantities{
-  real log_prob = multinomial_lpmf(x| to_vector([0.375, 0.3125, 0.3125]));
+  real log_prob = inv_gamma_lpdf(5| 3.2, 3.7);
   int x_rng[3] = multinomial_rng(to_vector([0.375, 0.3125, 0.3125]), 11);
   real prob = exp(binomial_lpmf(5| 29, 0.13));
   real prob1 = exp(multi_normal_cholesky_lpdf([-3, 1]| [-3.2, 1.2], [[0.8, 0], [-0.32, 1.56767343538123]]));
