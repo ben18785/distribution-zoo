@@ -20,7 +20,7 @@ prismLanguageDependencies <- function(languages) {
 # Define UI for random distribution application 
 shinyUI(fluidPage(
   
-  tags$head(includeScript("google-analytics.js")),
+  tags$head(includeHTML(("google-analytics.html"))),
   includeCSS("styles.css"),
   # Application title
   headerPanel("The distribution zoo"),
