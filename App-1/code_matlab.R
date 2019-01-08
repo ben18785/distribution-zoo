@@ -281,7 +281,7 @@ dLogitNormal_matlab <- paste(
   "    if x > 1 || x < 0",
   "        f = 0;",
   "    else",
-  "        f = 1 / (sigma * sqrt(2 * pi)) * exp(-(log(x / (1 - x)) - mu)^2 / (2 * sigma^2));",
+  "        f = 1 / (sigma * sqrt(2 * pi)) * exp(-(log(x / (1 - x)) - mu)^2 / (2 * sigma^2)) * 1.0 / (x * (1.0 - x));",
   "    end",
   "end",
   sep = "\n"
