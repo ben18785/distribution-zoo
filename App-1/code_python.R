@@ -729,6 +729,7 @@ fHalfCauchy_python <- function(input){
 }
 
 fPythoncode <- function(input){
+  scale_temp <- input$uniform_b - input$uniform_a
   text <-
     if(input$distType=='Continuous'){
       switch(input$dist,
@@ -737,7 +738,7 @@ fPythoncode <- function(input){
                                   input, import="import scipy.stats",
                                   import1="import scipy.stats"),
              Uniform=fPythonHelper("uniform", "uniform",
-                                  c(input$uniform_a, input$uniform_b),
+                                  c(input$uniform_a, scale_temp),
                                   input, import="import scipy.stats",
                                   import1="import scipy.stats"),
              LogNormal=fLognormal(input),
