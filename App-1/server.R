@@ -28,6 +28,7 @@ source("code_mathematica.R")
 source("code_julia.R")
 source("code_cplusplus.R")
 source("plotting.R")
+source("example_uses.R")
 
 # Define server logic for random distribution application
 shinyServer(function(input, output) {
@@ -225,6 +226,10 @@ shinyServer(function(input, output) {
   output$fortrancode <- renderUI({
   })
   
+  output$example_uses <- renderUI({
+    fExampleUses(input)
+  })
+  
   output$language <- renderUI({
      selectInput("language", "Language",
                  c("Mathematica"="Mathematica",
@@ -278,7 +283,9 @@ shinyServer(function(input, output) {
                              tabPanel("Code", 
                                       uiOutput("language"),
                                       uiOutput("property"),
-                                      uiOutput("code"))
+                                      uiOutput("code")),
+                             tabPanel("Practical tips",
+                                      uiOutput("example_uses"))
         )
       }else{
         myTabs = tabsetPanel(type = "tabs", 
@@ -291,7 +298,9 @@ shinyServer(function(input, output) {
                              tabPanel("Code", 
                                       uiOutput("language"),
                                       uiOutput("property"),
-                                      uiOutput("code"))
+                                      uiOutput("code")),
+                             tabPanel("Practical tips",
+                                      uiOutput("example_uses"))
         )
       }
   })
