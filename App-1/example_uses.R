@@ -69,17 +69,17 @@ fExampleUses <- function(input){
       switch(input$dist1,
              Bernoulli=fHelperTips(c("Infection status of a single individual",
                                      "Whether an individual animal is seen by a camera trap on a given day"),
-                                   c("NA")),
+                                   c("In models with an unobserved hidden binary state, a Bernoulli model is often used as a prior (although it's often not called that)")),
              Binomial=fHelperTips(c("Count of infected individuals across n sampled persons"),
-                                  c("NA")),
+                                  c("No examples come to mind - using this distribution as a prior is not impossible but very uncommon")),
              Poisson=fHelperTips(c("Count of component failures per week"),
-                                 c("NA"),
+                                 c("No examples come to mind - using this distribution as a prior is not impossible but very uncommon"),
                                  c("In many biological applications, over-dispersion occurs and so a negative binomial may be worth considering")),
              NegativeBinomial=fHelperTips(c("Number of mosquitoes caught in one day",
                                 "Number of cars passing a traffic light in one hour"),
-                                c("NA")),
+                                c("No examples come to mind - using this distribution as a prior is not impossible but very uncommon")),
              BetaBinomial=fHelperTips(c("Count of bank failures across Europe in one year"),
-                                      c("NA"))
+                                      c("No examples come to mind - using this distribution as a prior is not impossible but very uncommon"))
       )
     }else if(input$distType=='Multivariate'){
       switch(input$dist2,
@@ -89,7 +89,7 @@ fExampleUses <- function(input){
                                        c("Mean returns in model for stock price changes")),
              Multinomial=fHelperTips(c("Blood type counts across n individuals",
                                        "Numbers of people voting for each party in a sample"),
-                                     c("NA")),
+                                     c("No examples come to mind - using this distribution as a prior is not impossible but very uncommon")),
              Wishart=fHelperTips(c("Covariance of stock returns"),
                                  c("Covariance of stock returns in a multivariate normal likelihood"),
                                  c("In many applications, an LKJ distribution is a better alternative to the Wishart family because Wisharts place strong restrictions on correlations between parameters")),
