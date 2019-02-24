@@ -228,6 +228,46 @@ fDirichlet_stan <- function(input){
   }
 }
 
+ddiscreteuniform_stan <- paste(
+  "functions{",
+  "  real discreteuniform_lpmf(int x, int lower, int upper){",
+  "    if(upper < lower)",
+  "      return(log(0));",
+  "    return(-log(upper - lower + 1));",
+  "  }",
+  "}",
+  "// calling function",
+  sep="\n"
+)
+
+rdiscreteuniform_stan <- paste(
+  "functions{",
+  "  real discreteuniform_rng(int lower, int upper){",
+  "    if(upper < lower)",
+  "      return(not_a_number());",
+  "    diff = upper - lower + 1;",
+  "    prob = rep_vector(1.0 / diff, diff);",
+  "    return(categorical_rng(prob));",
+  "  }",
+  "}",
+  "// calling function",
+  sep="\n"
+)
+
+fdiscreteuniform_stan <- function(input){
+  switch(input$property,
+         pdf=paste(ddiscreteuniform_stan,
+                   fStanHelper_discrete("discreteuniform", c(input$discreteuniform_lower, input$discreteuniform_upper), input, end_brace = T),
+                   sep = "\n"),
+         log_pdf=paste(ddiscreteuniform_stan,
+                       fStanHelper_discrete("discreteuniform", c(input$discreteuniform_lower, input$discreteuniform_upper), input),
+                       sep = "\n"),
+         random=paste(rdiscreteuniform_stan,
+                       fStanHelper("discreteuniform", c(input$discreteuniform_lower, input$discreteuniform_upper), input),
+                       sep = "\n")
+  )
+}
+
 fStanCode <- function(input){
   text <-
     if(input$distType=='Continuous'){
@@ -248,6 +288,7 @@ fStanCode <- function(input){
       switch(input$dist1,
              Bernoulli=fStanHelper_discrete("bernoulli", input$bernoulli_prob, input),
              Binomial=fStanHelper_discrete("binomial", c(input$binomial_size, input$binomial_prob), input),
+             DiscreteUniform=fdiscreteuniform_stan(input),
              Poisson=fStanHelper_discrete("poisson", input$poisson_lambda, input),
              NegativeBinomial=fStanHelper_discrete("neg_binomial_2", c(input$negativebinomial_mean, input$negativebinomial_dispersion), input),
              BetaBinomial=fStanHelper_discrete("beta_binomial", c(input$betabinomial_size, input$betabinomial_shape1, input$betabinomial_shape2), input)
