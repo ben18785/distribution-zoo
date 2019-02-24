@@ -663,6 +663,62 @@ fDirichlet_matlab <- function(input){
   )
 }
 
+ddiscreteuniform_matlab <- paste(
+  "function f = discreteuniformpdf(x, lower, upper)",
+  "  if lower <= 0",
+  "    diff = 1 - lower;",
+  "    upper_new = diff + upper;",
+  "  elseif lower > 1",
+  "    diff = -(lower - 1);",
+  "  else",
+  "    diff = 0;",
+  "  f = unidpdf(x + diff, upper + diff);",
+  "end",
+  sep = "\n"
+)
+
+rdiscreteuniform_matlab <- paste(
+  "function x = discreteuniformrnd(lower, upper, n)",
+  "  if lower <= 0",
+  "    diff = 1 - lower;",
+  "    upper_new = diff + upper;",
+  "  elseif lower > 1",
+  "    diff = -(lower - 1);",
+  "  else",
+  "    diff = 0;",
+  "  x = unidrnd(upper + diff, n);",
+  "end",
+  sep = "\n"
+)
+
+
+fdiscreteuniform_matlab <- function(input){
+  lparams <- c(input$discreteuniform_lower, input$discreteuniform_upper)
+  switch(input$property,
+         pdf=paste("% calling function",
+                   fMatlabHelper("discreteuniform",
+                                 params = lparams,
+                                 input),
+                   " ",
+                   ddiscreteuniform_matlab,
+                   sep = "\n"),
+         log_pdf=paste("% calling function",
+                       fMatlabHelper("discreteuniform",
+                                     params = lparams,
+                                     input),
+                       " ",
+                       ddiscreteuniform_matlab,
+                       sep = "\n"),
+         random=paste("% calling function",
+                      fMatlabHelper("betabinomial",
+                                    params = lparams,
+                                    input),
+                      " ",
+                      rdiscreteuniform_matlab,
+                      sep = "\n")
+  )
+}
+
 fMatlabcode <- function(input){
   text <- 
     if(input$distType=='Continuous'){
@@ -700,6 +756,7 @@ fMatlabcode <- function(input){
              Binomial=fMatlabHelper("bino",
                                     params = c(input$binomial_size, input$binomial_prob),
                                     input),
+             DiscreteUniform=fdiscreteuniform_matlab(input),
              Poisson=fMatlabHelper("poiss",
                                    params = input$poisson_lambda,
                                    input),
