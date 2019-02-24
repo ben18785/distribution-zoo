@@ -60,7 +60,7 @@ shinyUI(fluidPage(
                                     c("Bernoulli" = "Bernoulli",
                                       "Beta-Binomial" = "BetaBinomial",
                                       "Binomial" = "Binomial",
-                                      "Categorical"="Categorical",
+                                      # "Categorical"="Categorical",
                                       "Discrete-Uniform" = "DiscreteUniform",
                                       "Negative-Binomial" = "NegativeBinomial",
                                       "Poisson" = "Poisson"))),

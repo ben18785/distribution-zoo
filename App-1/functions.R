@@ -85,7 +85,7 @@ rcoronion<-function(d,eta=1){
 }
 
 # from https://stats.stackexchange.com/questions/3930/are-there-default-functions-for-discrete-uniform-distributions-in-r/3940
-dunifdisc<-function(x, min=0, max=1) ifelse(x>=min & x<=max & round(x)==x, 1/(max-min+1), 0)
+dunifdisc<-function(x, min=0, max=1) ifelse(x>=min & x<=max & round(x)==x, 1 / (max - min + 1), 0)
 punifdisc<-function(q, min=0, max=1) ifelse(q<min, 0, ifelse(q>=max, 1, (floor(q)-min+1)/(max-min+1)))
 qunifdisc<-function(p, min=0, max=1) floor(p*(max-min+1))
 runifdisc<-function(n, min=0, max=1) sample(min:max, n, replace=T)

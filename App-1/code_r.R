@@ -55,6 +55,38 @@ dHalfCauchyFull <- function(location, scale, input){
           sep="\n")
 }
 
+dDiscreteUniformCode <- paste("# function definition",
+                              "ddiscreteuniform <- function(x, min=0, max=1, log=FALSE){",
+                              "if(x >= min & x <= max & round(x) == x)",
+                              "  if(!log)",
+                              "    return(1 / (max - min + 1))",
+                              "  else",
+                              "    return(-log(max - min + 1))",
+                              "else",
+                              "  if(!log)",
+                              "    return(0.0)",
+                              "  else",
+                              "    return(-Inf)",
+                              "}",
+                              "# calling function",
+                              sep = "\n")
+rDiscreteUniformCode <- paste("# function definition",
+                              "rdiscreteuniform <- function(n, min=0, max=1){",
+                              "  return(sample(min:max, n, replace=T))",
+                              "}",
+                              sep = "\n")
+
+dDiscreteUniformFull <- function(lower, upper, input){
+  if(input$property!="random")
+    paste(dDiscreteUniformCode,
+          fRHelper("discreteuniform", c(lower, upper), input),
+          sep="\n")
+  else
+    paste(rDiscreteUniformCode,
+          fRHelper("discreteuniform", c(lower, upper), input),
+          sep="\n")
+}
+
 dBetaBinomialCode <- paste("# function definition",
                            "dbetabinom <- function(x, size, alpha, beta, log=FALSE){",
                            "  if(!log)",
@@ -311,6 +343,7 @@ fRcode <- function(input){
       switch(input$dist1,
              Bernoulli=fRHelper("binom", c(1, input$bernoulli_prob), input),
              Binomial=fRHelper("binom", c(input$binomial_size, input$binomial_prob), input),
+             DiscreteUniform=dDiscreteUniformFull(input$discreteuniform_lower, input$discreteuniform_upper, input),
              Poisson=fRHelper("pois", input$poisson_lambda, input),
              NegativeBinomial=fRHelper("nbinom", c(input$negativebinomial_mean, input$negativebinomial_dispersion), input,
                                        named_arguments=c("mu", "size")),
