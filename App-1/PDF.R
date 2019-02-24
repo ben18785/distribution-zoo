@@ -21,13 +21,12 @@ fPlotPDF <- function(input, aDist, aMean, aVar, lScale, lExtra){
             axis.title = element_text(size=16)) +
       ylim(0, NA)
   } else if (input$distType=='Discrete') {
-
     aLen <- length(lScale)
     lPMF <- unlist(lapply(lScale, function(x) eval(parse(text=paste("aDist(x,",lExtra,")")))))
     dataF <- data.frame(a=lScale,pmf=lPMF)
-    ggplot(data=dataF, aes(x=factor(a), y=pmf)) +
-      geom_bar(stat="identity", position=position_dodge(),fill="darkblue", colour="black") + xlab('X') +
-      geom_vline(xintercept=(aMean + 1),
+    ggplot(data=dataF, aes(x=a, y=pmf)) +
+      geom_col(fill="darkblue", colour="black") + xlab('X') +
+      geom_vline(xintercept=(aMean),
                  colour="orange",
                  linetype = "longdash",
                  size=1) +

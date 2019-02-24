@@ -18,6 +18,7 @@ fScaleFull1 <- function(input){
   lScale <- switch(input$dist1,
                    Bernoulli=c(0,1),
                    Binomial=seq(0,input$binomial_size,1),
+                   DiscreteUniform=seq(input$discreteuniform_lower - 1, input$discreteuniform_upper + 1, 1),
                    Poisson=seq(0,input$poisson_range,1),
                    NegativeBinomial=seq(0,input$negativebinomial_range,1),
                    BetaBinomial=seq(0,input$betabinomial_size,1)
@@ -47,6 +48,7 @@ fExtra1FunctionInputsFull <- function(input){
   lExtra <- switch(input$dist1,
                    Bernoulli=paste("prob=",input$bernoulli_prob),
                    Binomial=paste("size=",input$binomial_size,",prob=",input$binomial_prob),
+                   DiscreteUniform=paste("min=", input$discreteuniform_lower,",max=",input$discreteuniform_upper),
                    Poisson=paste("lambda=",input$poisson_lambda),
                    NegativeBinomial=paste("mu=",input$negativebinomial_mean,",size=",input$negativebinomial_dispersion),
                    BetaBinomial=paste("n=",input$betabinomial_size,",alpha=",input$betabinomial_shape1,",beta=",input$betabinomial_shape2),

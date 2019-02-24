@@ -53,10 +53,11 @@ shinyServer(function(input, output) {
     } else if (input$distType=='Discrete'){
         switch(input$dist1,
            Bernoulli=dbern,
+           BetaBinomial=dCustomBetaBinomial,
            Binomial=dbinom,
+           DiscreteUniform=dunifdisc,
            Poisson=dpois,
            NegativeBinomial=dnbinom,
-           BetaBinomial=dCustomBetaBinomial,
            dbern)
     } else if (input$distType=='Multivariate'){
       switch(input$dist2,
@@ -86,6 +87,7 @@ shinyServer(function(input, output) {
       switch(input$dist1,
              Bernoulli=pbern,
              Binomial=pbinom,
+             DiscreteUniform=punifdisc,
              Poisson=ppois,
              NegativeBinomial=pnbinom,
              BetaBinomial=pCustomBetaBinomial,
