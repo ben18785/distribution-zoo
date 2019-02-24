@@ -299,6 +299,22 @@ fFormulae <- function(input){
                                   helpText(HTML('$$\\color{black}{\\text{where }I_{1-p}(n-x,x+1)=(n-x)\\binom{n}{x}\\int_{0}^{1-p}t^{n-x-1}(1-t)^x \\mathrm{d}t}$$')))),
                                 h2(withMathJax(
                                   helpText(HTML('$$\\color{black}{\\text{is the regularised incomplete beta function}}$$'))))),
+           DiscreteUniform=withMathJax(h2("Parameters"),
+                               h2("$$a\\in \\mathbb{Z}$$"),
+                               h2("$$b\\in \\mathbb{Z}$$"),
+                               h2(withMathJax(
+                                 helpText(HTML('$$\\color{black}{\\text{where } a\\leq b}$$')))),
+                               h2("Support"),
+                               h2("$$x\\in\\{a,a+1,...,b-1,b\\}$$"),
+                               h2("Moments"),
+                               h2("$$\\mathrm{E}(X) = \\frac{a + b}{2}$$"),
+                               h2("$$var(X) = \\frac{(b - a + 1)^2 - 1}{12}$$"),
+                               h2("Probability mass function (PMF)"),
+                               h2("$$f(x|a, b) = \\frac{1}{b - a + 1}$$"),
+                               h2("Cumulative distribution function (CDF)"),
+                               h2("$$F(x|a, b) = \\frac{\\lfloor x \\rfloor - a - 1}{b - a + 1}$$"),
+                               h2(withMathJax(
+                                 helpText(HTML('$$\\color{black}{\\text{and } \\lfloor x \\rfloor \\text{ is the floor function (rounds down reals to nearest smaller integer)}}$$'))))),
            Poisson=withMathJax(h2("Parameters"),
                                h2(withMathJax(
                                  helpText(HTML('$$\\color{black}{\\text{rate: }\\lambda\\in\\mathbb{R}^+}$$')))),
@@ -310,7 +326,7 @@ fFormulae <- function(input){
                                h2("Probability mass function (PMF)"),
                                h2("$$f(x|\\lambda) = \\frac{\\lambda^x e^{-\\lambda}}{x!}$$"),
                                h2("Cumulative distribution function (CDF)"),
-                               h2("$$F(x|\\lambda) = \\frac{\\Gamma(\\lfloor k+1\\rfloor,\\lambda)}{\\lfloor k \\rfloor !}$$"),
+                               h2("$$F(x|\\lambda) = \\frac{\\Gamma(\\lfloor x+1\\rfloor,\\lambda)}{\\lfloor x \\rfloor !}$$"),
                                h2(withMathJax(
                                  helpText(HTML('$$\\color{black}{\\text{where }\\Gamma(u,v)=\\int_{v}^{\\infty}t^{u-1}e^{-t} \\mathrm{d}t \\text{ is the upper incomplete gamma function}}$$')))),
                                h2(withMathJax(

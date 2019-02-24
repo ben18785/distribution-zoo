@@ -121,7 +121,7 @@ shinyUI(fluidPage(
                        sliderInput("binomial_prob", "probability", min=0, max=1, value=0.5)),
       conditionalPanel(condition="input.distType=='Discrete'&&input.dist1=='DiscreteUniform'",
                        sliderInput("discreteuniform_lower", "Lower bound", min=-30, max=0, value=0, step=1),
-                       sliderInput("discreteuniform_upper", "Upper bound", min=1, max=30, value=1, step=1)),
+                       sliderInput("discreteuniform_upper", "Upper bound", min=0, max=30, value=1, step=1)),
       conditionalPanel(condition="input.distType=='Discrete'&&input.dist1=='Poisson'",
                        sliderInput("poisson_lambda", "Rate", min=0, max=50, value=10, step=0.2),
                        sliderInput("poisson_range", "Range", min=0, max=100, value=40)),
