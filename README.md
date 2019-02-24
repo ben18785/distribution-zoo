@@ -4,5 +4,11 @@ App to view distribution properties and access dynamic code in R, Python, Matlab
 ## To add a new distribution
 
 - Add distribution to relevant conditional panel at top of `ui.R`.
-- Add slider inputs for the parameter values in `ui.R`.
+- Add slider inputs for the parameter values in `ui.R` and, if necessary, range parameters that will determine plotting range.
 - Add the mean and variance in `fCalculateMeanFull` and `fCalculateVarianceFull` within `functions.R`.
+- Add arguments in one of the `fExtra[]FunctionInputsFull` functions that will be passed to the function to call it (for plotting) to `plotting.R`. For example, the Normal distribution is parameterised by two named arguments in R's implementation `mean` and `sd`. So to plot this distribution as we vary the user-selected parameters `input$normal_mu` and `input$normal_sigma` we need to make a named argument call of the form `paste("mean=",input$normal_mu,",sd=",input$normal_sigma)`, which is pasted than evaluated to plot.
+- Add a scale for discrete distributions in `fScaleFull1` or continuous distributions in `fScaleFull` in `plotting.R`.
+- Add function to call to evaluate PDF/PMF in the `data <- reactive({` function in `server.R`. Note, if this function does not exist in base R or within a package, you can define a custom one within the `functions.R` file. Note the named arguments to the function must the same as that specified in the above step which takes place in `plotting.R`.
+- Add function to call to evaluate CDF in the `dataCDF <- reactive({` function in `server.R`. Note, see above for custom functions.
+- Add formulae in latex form in `formulae.R`.
+- Copy code from `formulae.R` and put into correct form using helper functions (`fLatexHelper_`) where possible which aid with the construction of code that looks nice in the app.
