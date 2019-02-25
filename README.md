@@ -12,3 +12,5 @@ App to view distribution properties and access dynamic code in R, Python, Matlab
 - Add function to call to evaluate CDF in the `dataCDF <- reactive({` function in `server.R`. Note, see above for custom functions.
 - Add formulae in latex form in `formulae.R`.
 - Copy code from `formulae.R` and put into correct form using helper functions (`fLatexHelper_`) where possible which aid with the construction of code that looks nice in the app.
+- Add code for R, Python, Mathematica, Matlab and Stan by updating the relevant `code_` files. Note that the code is intended to be dynamic and the properties shown on the plots should be exactly replicated by the code examples. This means that the parameterisation in the function call may not reflect the default parameterisation.
+- Add example likelihood and prior uses for the distribution in `example_users.R`.
