@@ -1,5 +1,5 @@
 # The distribution zoo
-App to view distribution properties and access dynamic code in R, Python, Matlab, Mathematica and Stan.
+App to view distribution properties and access dynamic code in R, Python, Matlab, Mathematica and Stan. The app is available online: https://ben18785.shinyapps.io/distribution-zoo/
 
 ## To add a new distribution
 
