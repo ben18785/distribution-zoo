@@ -1,27 +1,29 @@
 functions{
-  real logitnormal_lpdf(real x, real mu, real sigma){
-    real temp = (logit(x) - mu)^2 / (2 * sigma^2);
-    if(sigma < 0)
-      return(log(0));
-    return(-log(sigma) - 0.5 * log(2 * pi()) - temp - log(x) - log(1.0 - x));
+  int discreteuniform_rng(int lower, int upper){
+    int diff;
+    int cat;
+    int d = 0;
+    if(upper < lower)
+      return(not_a_number());
+    diff = upper - lower + 1;
+    cat = categorical_rng(rep_vector(1.0 / diff, diff));
+    if(lower <= 0)
+      d = 1 - lower;
+    else if(lower > 1)
+      d = -(lower - 1);
+    return(cat - d);
   }
 }
 
 data{
-  int x[3];
-  real mux;
-  real muy;
-  real rho;
-  real sigmax;
-  real sigmay;
+  int x;
 }
 
 generated quantities{
   // calling function
 
-  real log_prob = gamma_rng(2, 0.74);
-  
-  vector[2] x_rng = multi_normal_rng(to_vector([-4, -5.4]), [[16, 10.88], [10.88, 11.56]]);
-  vector[2] x_rng1 = multi_student_t_rng(2, to_vector([2.2, -4]), [[0.16, -0.128], [-0.128, 0.64]]);
+  int test[10];
+  for(i in 1:10)
+    test[i] = discreteuniform_rng(2, 5);
   
 }

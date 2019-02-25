@@ -728,6 +728,29 @@ fHalfCauchy_python <- function(input){
   )
 }
 
+fdiscreteuniform_python <- function(input){
+  lparams=c(input$discreteuniform_lower, input$discreteuniform_upper + 1)
+  switch(input$property,
+         pdf = fPythonHelperDiscrete("randint", "randint",
+                        params=lparams,
+                        params1=lparams,
+                        input, import="import scipy.stats",
+                        import1="import scipy.stats"),
+         log_pdf = fPythonHelperDiscrete("randint", "randint",
+                                         params=lparams,
+                                         params1=lparams,
+                                         input, import="import scipy.stats",
+                                         import1="import scipy.stats"),
+         random = paste("import scipy.stats",
+                        paste0("scipy.stats.randint.rvs(",
+                        input$discreteuniform_lower, ", ",
+                        (input$discreteuniform_upper + 1), ", ",
+                        "loc=0", ", ",
+                        "size=n)"),
+                        sep = "\n")
+  )
+}
+
 fPythoncode <- function(input){
   scale_temp <- input$uniform_b - input$uniform_a
   text <-
@@ -770,11 +793,7 @@ fPythoncode <- function(input){
                                             params1=c(input$binomial_size, input$binomial_prob, 0),
                                             input, import="import scipy.stats",
                                             import1="import scipy.stats"),
-             DiscreteUniform=fPythonHelperDiscrete("randint", "randint",
-                                                   params=c(input$discreteuniform_lower, input$discreteuniform_upper + 1),
-                                                   params1=c(input$discreteuniform_lower, input$discreteuniform_upper + 1),
-                                                   input, import="import scipy.stats",
-                                                   import1="import scipy.stats"),
+             DiscreteUniform=fdiscreteuniform_python(input),
              Poisson=fPythonHelperDiscrete("poisson", "poisson",
                                            params=input$poisson_lambda,
                                            params1=c(input$poisson_lambda, 0),

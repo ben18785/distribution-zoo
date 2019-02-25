@@ -2,6 +2,8 @@ rm(list=ls())
 library(rstan)
 setwd("~/Desktop/distribution-viewer")
 stan_model <- stan_model('stan_test.stan')
+sampling(stan_model, data=list(x=-9.5), algorithm="Fixed_param")
+
 
 x <- c(10, 2, 2)
 mux <- 2.6
