@@ -482,7 +482,7 @@ fFormulae <- function(input){
                              h2("$$X\\in\\mathbb{R}^{d\\times d} \\text{ (with unit diagonals and positive definite) }$$"),
                              h2("Moments"),
                              h2("$$\\mathrm{E}(X) = \\mathcal{I}_d$$"),
-                             h2("$$var(X_{i,j}) = \\frac{\\left(\\frac{d}{2}+\\nu -1\\right)^2}{4(d+2 \\nu -2)^2 (d+2 \\nu -1)}$$"),
+                             h2("$$var(X_{i,j}) = \\frac{4\\left(\\frac{d}{2}+\\nu -1\\right)^2}{(d+2 \\nu -2)^2 (d+2 \\nu -1)}$$"),
                              h2("Probability density function (PDF)"),
                              h2("$$f(X|\\nu,d) = \\left(2^{\\sum_{k=1}^{d-1}(2\\nu-2+d-k)(d-k)}\\prod_{k=1}^{d-1}\\left[B(\\nu+0.5(d-k-1),\\nu+0.5(d-k-1))\\right]^{d-k}\\right) |X|^{\\nu-1}$$"),
                              h2(withMathJax(
