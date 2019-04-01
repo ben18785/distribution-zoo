@@ -276,7 +276,7 @@ fCalculateVarianceFull <- function(input){
   }else if (input$distType=='Discrete'){
     aVar <- switch(input$dist1,
                    Bernoulli=input$bernoulli_prob * (1 - input$bernoulli_prob),
-                   Binomial=input$binomial_size * input$binomial_prob * (1 - input$bernoulli_prob),
+                   Binomial=input$binomial_size * input$binomial_prob * (1 - input$binomial_prob),
                    DiscreteUniform= (1 / 12) * ((input$discreteuniform_upper - input$discreteuniform_lower + 1)^2 - 1),
                    Poisson=input$poisson_lambda,
                    NegativeBinomial=input$negativebinomial_mean + (input$negativebinomial_mean^2 / input$negativebinomial_dispersion),
