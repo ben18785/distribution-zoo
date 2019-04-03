@@ -85,7 +85,7 @@ shinyUI(fluidPage(
                        sliderInput("lognormal_mu", "Mean of log", min=-10, max=10, value=0, step=0.2),
                        sliderInput("lognormal_sigma", "Standard deviation of log", min=0.1, max=20, value=1, step=0.2)),
       conditionalPanel(condition="input.distType=='Continuous'&&input.dist=='Exponential'",
-                       sliderInput("exponential_rate", "Rate parameter", min=0, max=1.1, value=0.5)),
+                       sliderInput("exponential_rate", "Rate parameter", min=0, max=5.0, value=0.5, step=0.2)),
       conditionalPanel(condition="input.distType=='Continuous'&&input.dist=='Gamma'",
                        sliderInput("gamma_shape", "Shape parameter", min=0.1, max=10, value=1),
                        sliderInput("gamma_rate", "Rate parameter", min=0.1, max=2, value=0.5)),
