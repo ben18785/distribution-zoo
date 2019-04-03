@@ -1,5 +1,4 @@
 fCpluspluscode <- function(input){
-  text <- 
   if(input$dist=="Normal"){
     text.common <- paste0(
       "#include &lt;cassert&gt;\n",
@@ -93,16 +92,9 @@ fCpluspluscode <- function(input){
       "}\n",
       ""
     )
-
-    if(input$property=="pdf")
-      paste(text.common, text.pdf, sep="\n")
-    else if(input$property=="log_pdf")
-      paste(text.common, text.logpdf, sep="\n")
-    else if(input$property=="random")
-      paste(text.samples)
-  } else if(input$dist=="Beta"){
+  } else if(input$dist=="Uniform"){
     text.common <- paste0(
-      "Coming soon!"
+      "Uniform coming soon!"
     )
 
     text.pdf <- paste0(
@@ -114,15 +106,193 @@ fCpluspluscode <- function(input){
     )
 
     text.samples <- paste0(
-      "Coming soon!"
+      "Uniform coming soon!"
+    )
+  } else if(input$dist=="LogNormal"){
+    text.common <- paste0(
+      "LogNormal coming soon!"
     )
 
-    if(input$property=="pdf")
-      paste(text.common, text.pdf, sep="\n")
-    else if(input$property=="log_pdf")
-      paste(text.common, text.logpdf, sep="\n")
-    else if(input$property=="random")
-      paste(text.samples)
+    text.pdf <- paste0(
+      ""
+    )
+
+    text.logpdf <- paste0(
+      ""
+    )
+
+    text.samples <- paste0(
+      "LogNormal coming soon!"
+    )
+  } else if(input$dist=="Exponential"){
+    text.common <- paste0(
+      "Exponential coming soon!"
+    )
+
+    text.pdf <- paste0(
+      ""
+    )
+
+    text.logpdf <- paste0(
+      ""
+    )
+
+    text.samples <- paste0(
+      "Exponential coming soon!"
+    )
+  } else if(input$dist=="Gamma"){
+    text.common <- paste0(
+      "Gamma coming soon!"
+    )
+
+    text.pdf <- paste0(
+      ""
+    )
+
+    text.logpdf <- paste0(
+      ""
+    )
+
+    text.samples <- paste0(
+      "Gamma coming soon!"
+    )
+  } else if(input$dist=="t"){
+    text.common <- paste0(
+      "t coming soon!"
+    )
+
+    text.pdf <- paste0(
+      ""
+    )
+
+    text.logpdf <- paste0(
+      ""
+    )
+
+    text.samples <- paste0(
+      "t coming soon!"
+    )
+  } else if(input$dist=="Beta"){
+    text.common <- paste0(
+      "Beta coming soon!"
+    )
+
+    text.pdf <- paste0(
+      ""
+    )
+
+    text.logpdf <- paste0(
+      ""
+    )
+
+    text.samples <- paste0(
+      "Beta coming soon!"
+    )
+  } else if(input$dist=="Cauchy"){
+    text.common <- paste0(
+      "Cauchy coming soon!"
+    )
+
+    text.pdf <- paste0(
+      ""
+    )
+
+    text.logpdf <- paste0(
+      ""
+    )
+
+    text.samples <- paste0(
+      "Cauchy coming soon!"
+    )
+  } else if(input$dist=="HalfCauchy"){
+    text.common <- paste0(
+      "HalfCauchy coming soon!"
+    )
+
+    text.pdf <- paste0(
+      ""
+    )
+
+    text.logpdf <- paste0(
+      ""
+    )
+
+    text.samples <- paste0(
+      "HalfCauchy coming soon!"
+    )
+  } else if(input$dist=="InverseGamma"){
+    text.common <- paste0(
+      "InverseGamma coming soon!"
+    )
+
+    text.pdf <- paste0(
+      ""
+    )
+
+    text.logpdf <- paste0(
+      ""
+    )
+
+    text.samples <- paste0(
+      "InverseGamma coming soon!"
+    )
+  } else if(input$dist=="InverseChiSquared"){
+    text.common <- paste0(
+      "InverseChiSquared coming soon!"
+    )
+
+    text.pdf <- paste0(
+      ""
+    )
+
+    text.logpdf <- paste0(
+      ""
+    )
+
+    text.samples <- paste0(
+      "InverseChiSquared coming soon!"
+    )
+  } else if(input$dist=="LogitNormal"){
+    text.common <- paste0(
+      "LogitNormal coming soon!"
+    )
+
+    text.pdf <- paste0(
+      ""
+    )
+
+    text.logpdf <- paste0(
+      ""
+    )
+
+    text.samples <- paste0(
+      "LogitNormal coming soon!"
+    )
+  } else {
+    text.common <- paste0(
+      "Not done yet!"
+    )
+
+    text.pdf <- paste0(
+      ""
+    )
+
+    text.logpdf <- paste0(
+      ""
+    )
+
+    text.samples <- paste0(
+      "Not done yet!"
+    )
   }
-  return(prismCodeBlock(text, language = "cpp"))
+
+  text.to.display <-
+  if(input$property=="pdf")
+    paste(text.common, text.pdf, sep="\n")
+  else if(input$property=="log_pdf")
+    paste(text.common, text.logpdf, sep="\n")
+  else if(input$property=="random")
+    paste(text.samples)
+
+  return(prismCodeBlock(text.to.display, language = "cpp"))
 }
