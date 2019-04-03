@@ -5,20 +5,23 @@ fPlotCDF <- function(input, aDist, aMean, aVar, lScale, lExtra){
     
     aLen <- length(lScale)
     lPDF <- unlist(lapply(lScale, function(x) eval(parse(text=paste("aDist(x,",lExtra,")")))))
-    qplot(lScale,lPDF,geom="path",
+    g <- qplot(lScale,lPDF,geom="path",
           xlab="X",ylab="cumulative probability",
-          xlim=c(lScale[1],lScale[aLen]))+
+          xlim=c(lScale[1],lScale[aLen])) +
       geom_line(color='darkblue',size=1) +
-      geom_vline(xintercept=aMean,
-                 colour="orange",
-                 linetype = "longdash",
-                 size=1) +
       theme_classic() +
       theme(plot.title = element_text(hjust = 0.5, size = 18),
             axis.text = element_text(size=14),
             axis.title = element_text(size=16)) +
       ylim(0, NA) +
       ggtitle(paste0("mean (orange line) = ", round(aMean, 2), ", sd = ", round(sqrt(aVar), 2)))
+    if(!is.na(aMean))
+      g + geom_vline(xintercept=aMean,
+                     colour="orange",
+                     linetype = "longdash",
+                     size=1)
+    else
+      g
     
   } else if (input$distType=='Discrete'){
     

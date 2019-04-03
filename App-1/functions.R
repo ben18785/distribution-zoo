@@ -35,7 +35,7 @@ dCustomHalfCauchy <- function(x,location,scale){
 
 pCustomHalfCauchy <- function(x,location,scale){
   aInt <- integrate(function(x) dcauchy(x,location,scale),0,Inf)
-  return((1/aInt)*pcauchy(x,location,scale))
+  return((1/aInt[1]$value)*(pcauchy(x,location,scale) - pcauchy(0, location, scale)))
 }
 
 dCustomBetaBinomial <- function(x, n, alpha, beta){
