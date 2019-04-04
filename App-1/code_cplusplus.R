@@ -93,7 +93,13 @@ fCpluspluscode <- function(input){
     )
     text.logpdf <- paste0("Uniform coming soon"
     )
-    text.samples.dep <- paste0("Uniform coming soon"
+    text.samples.dep <- paste0(
+      "// The code above depends on the following, which you can copy directly into your application\n",
+      "// Note that C++11 (or later) is required\n",
+      "\n",
+      "#include &lt;random&gt;\n",
+      "#include &lt;vector&gt;\n",
+      ""
     )
     text.samples <- paste0("Uniform coming soon"
     )
@@ -104,7 +110,13 @@ fCpluspluscode <- function(input){
     )
     text.logpdf <- paste0("LogNormal coming soon"
     )
-    text.samples.dep <- paste0("LogNormal coming soon"
+    text.samples.dep <- paste0(
+      "// The code above depends on the following, which you can copy directly into your application\n",
+      "// Note that C++11 (or later) is required\n",
+      "\n",
+      "#include &lt;random&gt;\n",
+      "#include &lt;vector&gt;\n",
+      ""
     )
     text.samples <- paste0("LogNormal coming soon"
     )
@@ -115,7 +127,13 @@ fCpluspluscode <- function(input){
     )
     text.logpdf <- paste0("Exponential coming soon"
     )
-    text.samples.dep <- paste0("Exponential coming soon"
+    text.samples.dep <- paste0(
+      "// The code above depends on the following, which you can copy directly into your application\n",
+      "// Note that C++11 (or later) is required\n",
+      "\n",
+      "#include &lt;random&gt;\n",
+      "#include &lt;vector&gt;\n",
+      ""
     )
     text.samples <- paste0("Exponential coming soon"
     )
@@ -126,7 +144,13 @@ fCpluspluscode <- function(input){
     )
     text.logpdf <- paste0("Gamma coming soon"
     )
-    text.samples.dep <- paste0("Gamma coming soon"
+    text.samples.dep <- paste0(
+      "// The code above depends on the following, which you can copy directly into your application\n",
+      "// Note that C++11 (or later) is required\n",
+      "\n",
+      "#include &lt;random&gt;\n",
+      "#include &lt;vector&gt;\n",
+      ""
     )
     text.samples <- paste0("Gamma coming soon"
     )
@@ -137,7 +161,13 @@ fCpluspluscode <- function(input){
     )
     text.logpdf <- paste0("t coming soon"
     )
-    text.samples.dep <- paste0("t coming soon"
+    text.samples.dep <- paste0(
+      "// The code above depends on the following, which you can copy directly into your application\n",
+      "// Note that C++11 (or later) is required\n",
+      "\n",
+      "#include &lt;random&gt;\n",
+      "#include &lt;vector&gt;\n",
+      ""
     )
     text.samples <- paste0("t coming soon"
     )
@@ -148,7 +178,13 @@ fCpluspluscode <- function(input){
     )
     text.logpdf <- paste0("Beta coming soon"
     )
-    text.samples.dep <- paste0("Beta coming soon"
+    text.samples.dep <- paste0(
+      "// The code above depends on the following, which you can copy directly into your application\n",
+      "// Note that C++11 (or later) is required\n",
+      "\n",
+      "#include &lt;random&gt;\n",
+      "#include &lt;vector&gt;\n",
+      ""
     )
     text.samples <- paste0("Beta coming soon"
     )
@@ -159,7 +195,13 @@ fCpluspluscode <- function(input){
     )
     text.logpdf <- paste0("Cauchy coming soon"
     )
-    text.samples.dep <- paste0("Cauchy coming soon"
+    text.samples.dep <- paste0(
+      "// The code above depends on the following, which you can copy directly into your application\n",
+      "// Note that C++11 (or later) is required\n",
+      "\n",
+      "#include &lt;random&gt;\n",
+      "#include &lt;vector&gt;\n",
+      ""
     )
     text.samples <- paste0("Cauchy coming soon"
     )
@@ -170,7 +212,13 @@ fCpluspluscode <- function(input){
     )
     text.logpdf <- paste0("HalfCauchy coming soon"
     )
-    text.samples.dep <- paste0("HalfCauchy coming soon"
+    text.samples.dep <- paste0(
+      "// The code above depends on the following, which you can copy directly into your application\n",
+      "// Note that C++11 (or later) is required\n",
+      "\n",
+      "#include &lt;random&gt;\n",
+      "#include &lt;vector&gt;\n",
+      ""
     )
     text.samples <- paste0("HalfCauchy coming soon"
     )
@@ -181,7 +229,13 @@ fCpluspluscode <- function(input){
     )
     text.logpdf <- paste0("InverseGamma coming soon"
     )
-    text.samples.dep <- paste0("InverseGamma coming soon"
+    text.samples.dep <- paste0(
+      "// The code above depends on the following, which you can copy directly into your application\n",
+      "// Note that C++11 (or later) is required\n",
+      "\n",
+      "#include &lt;random&gt;\n",
+      "#include &lt;vector&gt;\n",
+      ""
     )
     text.samples <- paste0("InverseGamma coming soon"
     )
@@ -192,7 +246,13 @@ fCpluspluscode <- function(input){
     )
     text.logpdf <- paste0("InverseChiSquared coming soon"
     )
-    text.samples.dep <- paste0("InverseChiSquared coming soon"
+    text.samples.dep <- paste0(
+      "// The code above depends on the following, which you can copy directly into your application\n",
+      "// Note that C++11 (or later) is required\n",
+      "\n",
+      "#include &lt;random&gt;\n",
+      "#include &lt;vector&gt;\n",
+      ""
     )
     text.samples <- paste0("InverseChiSquared coming soon"
     )
@@ -203,7 +263,13 @@ fCpluspluscode <- function(input){
     )
     text.logpdf <- paste0("LogitNormal coming soon"
     )
-    text.samples.dep <- paste0("LogitNormal coming soon"
+    text.samples.dep <- paste0(
+      "// The code above depends on the following, which you can copy directly into your application\n",
+      "// Note that C++11 (or later) is required\n",
+      "\n",
+      "#include &lt;random&gt;\n",
+      "#include &lt;vector&gt;\n",
+      ""
     )
     text.samples <- paste0("LogitNormal coming soon"
     )
