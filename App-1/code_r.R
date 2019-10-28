@@ -92,7 +92,7 @@ dBetaBinomialCode <- paste("# function definition",
                            "  if(!log)",
                            "    return(choose(size, x) * beta(x + alpha, size - x + beta) / beta(alpha, beta))",
                            "  else",
-                           "    return(log(choose(size, x) * beta(x + alpha, size - x + beta) / beta(alpha, beta)))",
+                           "    return(lchoose(size, x) + lbeta(x + alpha, size - x + beta) - lbeta(alpha, beta))",
                            "}",
                            "# calling function",
                            sep="\n")
