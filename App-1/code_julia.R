@@ -16,6 +16,15 @@ fJuliaHelper <- function(name, input, params){
                          julia=TRUE)
 }
 
+fTCustom <- function(input){
+  if(input$property=="pdf")
+    paste0("pdf(TDist(", input$t_nu, "), ", "(x - ", input$t_mu, ") / ", input$t_sigma, ") / ", input$t_sigma)
+  else if(input$property=="log_pdf")
+    paste0("logpdf(TDist(", input$t_nu, "), ", "(x - ", input$t_mu, ") / ", input$t_sigma, ") - log(", input$t_sigma, ")")
+  else if(input$property=="random")
+    paste0(input$t_mu, " .+ ", input$t_sigma, " .* ", "rand(TDist(", input$t_nu, ")", ", n)")
+}
+
 
 fJuliacode <- function(input){
   text <- switch (input$dist,
@@ -24,13 +33,14 @@ fJuliacode <- function(input){
     LogNormal=fJuliaHelper("LogNormal", input, c(input$lognormal_mu, input$lognormal_sigma)),
     Exponential=fJuliaHelper("Exponential", input, c(1 / input$exponential_rate)),
     Gamma=fJuliaHelper("Gamma", input, c(input$gamma_shape, 1 / input$gamma_rate)),
+    t=fTCustom(input),
     "To be completed."
   )
       
   
   if(text!="To be completed."){
-  tagList(prismCodeBlock("using Random, Distributions", language = "julia"),
-          prismCodeBlock(text, language = "julia"),
+  tagList(prismCodeBlock(paste0("using Random, Distributions\n",
+                                text), language = "julia"),
           h3("Note that code assumes that 'Compat' and 'Distributions' packages are installed by typing:"),
           prismCodeBlock(paste("Pkg.add(\"Compat\")",
                                "Pkg.add(\"Distributions\")",
