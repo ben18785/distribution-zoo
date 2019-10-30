@@ -96,6 +96,18 @@ fMultivariatetJulia <- function(input){
   )
 }
 
+fMultinomialJulia <- function(input){
+  comps <- c(input$multinomial_prob1, input$multinomial_prob2, input$multinomial_prob3)
+  comps <- comps / sum(comps)
+  top <- paste0("aDist=Multinomial(", input$multinomial_size, ", ", "[", comps[1], ", ",
+                comps[2], ", ", comps[3], "])")
+  switch(input$property,
+         pdf=paste(top, "pdf(aDist, x)", sep = "\n"),
+         log_pdf=paste(top, "logpdf(aDist, x)", sep = "\n"),
+         random=paste(top, "rand(aDist, n)", sep = "\n")
+  )
+}
+
 
 fJuliacode <- function(input){
   text <- 
@@ -127,6 +139,7 @@ fJuliacode <- function(input){
       switch(input$dist2,
              MultivariateNormal=fMultivariatenormalJulia(input),
              MultivariateT=fMultivariatetJulia(input),
+             Multinomial=fMultinomialJulia(input),
              "Coming soon.")
     }
   
