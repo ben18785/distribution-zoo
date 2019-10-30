@@ -34,6 +34,7 @@ fJuliacode <- function(input){
     Exponential=fJuliaHelper("Exponential", input, c(1 / input$exponential_rate)),
     Gamma=fJuliaHelper("Gamma", input, c(input$gamma_shape, 1 / input$gamma_rate)),
     t=fTCustom(input),
+    Beta=fJuliaHelper("Beta", input, c(input$beta_a, input$beta_b)),
     "To be completed."
   )
       
