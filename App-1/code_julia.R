@@ -35,6 +35,7 @@ fJuliacode <- function(input){
     Gamma=fJuliaHelper("Gamma", input, c(input$gamma_shape, 1 / input$gamma_rate)),
     t=fTCustom(input),
     Beta=fJuliaHelper("Beta", input, c(input$beta_a, input$beta_b)),
+    Cauchy=fJuliaHelper("Cauchy", input, c(input$cauchy_location,input$cauchy_scale)),
     "To be completed."
   )
       
