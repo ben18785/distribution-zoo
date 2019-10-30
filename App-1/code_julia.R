@@ -77,6 +77,25 @@ fMultivariatenormalJulia <- function(input){
   )
 }
 
+dMultivariatetJulia <- function(mux, muy, sigmax, sigmay, rho, df){
+  top <- paste0("aDist=MvTDist(", df, ", [", mux, ", ", muy, "], float([[", sigmax^2, " ", sigmax * sigmay * rho, "]; [", sigmax * sigmay * rho, " ",  
+                sigmay^2, "]]))")
+}
+
+fMultivariatetJulia <- function(input){
+  top <- dMultivariatetJulia(input$multivariatet_mux,
+                                    input$multivariatet_muy,
+                                    input$multivariatet_sigmax,
+                                    input$multivariatet_sigmay,
+                                    input$multivariatet_rho,
+                                    input$multivariatet_df)
+  switch(input$property,
+         pdf=paste(top, "pdf(aDist, x)", sep = "\n"),
+         log_pdf=paste(top, "logpdf(aDist, x)", sep = "\n"),
+         random=paste(top, "rand(aDist, n)", sep = "\n")
+  )
+}
+
 
 fJuliacode <- function(input){
   text <- 
@@ -107,6 +126,7 @@ fJuliacode <- function(input){
     }else if(input$distType=='Multivariate'){
       switch(input$dist2,
              MultivariateNormal=fMultivariatenormalJulia(input),
+             MultivariateT=fMultivariatetJulia(input),
              "Coming soon.")
     }
   
