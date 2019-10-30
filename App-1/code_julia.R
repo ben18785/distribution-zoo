@@ -16,7 +16,7 @@ fJuliaHelper <- function(name, input, params){
                          julia=TRUE)
 }
 
-fTCustom <- function(input){
+fTCustomJulia <- function(input){
   if(input$property=="pdf")
     paste0("pdf(TDist(", input$t_nu, "), ", "(x - ", input$t_mu, ") / ", input$t_sigma, ") / ", input$t_sigma)
   else if(input$property=="log_pdf")
@@ -25,12 +25,19 @@ fTCustom <- function(input){
     paste0(input$t_mu, " .+ ", input$t_sigma, " .* ", "rand(TDist(", input$t_nu, ")", ", n)")
 }
 
-fTruncatedCauchy <- function(input){
+fTruncatedCauchyJulia <- function(input){
   preamble <- paste0("d=Truncated(Cauchy(", input$halfcauchy_location, ", ", input$halfcauchy_scale, ")", ", 0, Inf)")
   switch(input$property,
          pdf=paste(preamble, "pdf(d, x)", sep = "\n"),
          log_pdf=paste(preamble, "logpdf(d, x)", sep = "\n"),
          random=paste(preamble, "rand(d, n)", sep = "\n"))
+}
+
+fInverseChiSquaredJulia <- function(input){
+  switch(input$property,
+         pdf=paste0("pdf(InverseGamma(", input$inversechisquared_df, " / 2, 1 / 2), x)"),
+         log_pdf=paste0("logpdf(InverseGamma(", input$inversechisquared_df, " / 2, 1 / 2), x)"),
+         random=paste0("rand(InverseGamma(", input$inversechisquared_df, " / 2, 1 / 2), n)"))
 }
 
 
@@ -41,11 +48,12 @@ fJuliacode <- function(input){
     LogNormal=fJuliaHelper("LogNormal", input, c(input$lognormal_mu, input$lognormal_sigma)),
     Exponential=fJuliaHelper("Exponential", input, c(1 / input$exponential_rate)),
     Gamma=fJuliaHelper("Gamma", input, c(input$gamma_shape, 1 / input$gamma_rate)),
-    t=fTCustom(input),
+    t=fTCustomJulia(input),
     Beta=fJuliaHelper("Beta", input, c(input$beta_a, input$beta_b)),
     Cauchy=fJuliaHelper("Cauchy", input, c(input$cauchy_location,input$cauchy_scale)),
-    HalfCauchy=fTruncatedCauchy(input),
+    HalfCauchy=fTruncatedCauchyJulia(input),
     InverseGamma=fJuliaHelper("InverseGamma", input, c(input$inversegamma_shape, input$inversegamma_scale)),
+    InverseChiSquared=fInverseChiSquaredJulia(input),
     "Coming soon."
   )
       
