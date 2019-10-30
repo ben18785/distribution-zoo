@@ -36,11 +36,11 @@ fJuliacode <- function(input){
     t=fTCustom(input),
     Beta=fJuliaHelper("Beta", input, c(input$beta_a, input$beta_b)),
     Cauchy=fJuliaHelper("Cauchy", input, c(input$cauchy_location,input$cauchy_scale)),
-    "To be completed."
+    "Coming soon."
   )
       
   
-  if(text!="To be completed."){
+  if(text!="Coming soon."){
   tagList(prismCodeBlock(paste0("using Random, Distributions\n",
                                 text), language = "julia"),
           h3("Note that code assumes that 'Compat' and 'Distributions' packages are installed by typing:"),
