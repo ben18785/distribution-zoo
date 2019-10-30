@@ -58,6 +58,25 @@ fInverseChiSquaredJulia <- function(input){
          random=paste0("rand(InverseGamma(", input$inversechisquared_df, " / 2, 1 / 2), n)"))
 }
 
+dMultivariateNormalJulia <- function(mux, muy, sigmax, sigmay, rho){
+  top <- paste0("aDist=MvNormal(float([", mux, ", ", muy, "]), float([[", sigmax^2, " ", sigmax * sigmay * rho, "]; [", sigmax * sigmay * rho, " ",  
+                sigmay^2, "]]))")
+}
+
+
+fMultivariatenormalJulia <- function(input){
+  top <- dMultivariateNormalJulia(input$multivariatenormal_mux,
+                                         input$multivariatenormal_muy,
+                                         input$multivariatenormal_sigmax,
+                                         input$multivariatenormal_sigmay,
+                                         input$multivariatenormal_rho)
+  switch(input$property,
+         pdf=paste(top, "pdf(aDist, x)", sep = "\n"),
+         log_pdf=paste(top, "logpdf(aDist, x)", sep = "\n"),
+         random=paste(top, "rand(aDist, n)", sep = "\n")
+  )
+}
+
 
 fJuliacode <- function(input){
   text <- 
@@ -85,6 +104,10 @@ fJuliacode <- function(input){
               NegativeBinomial=fJuliaHelperDiscrete("NegativeBinomial", input, c(input$negativebinomial_dispersion, input$negativebinomial_dispersion / (input$negativebinomial_dispersion + input$negativebinomial_mean))),
               Poisson=fJuliaHelperDiscrete("Poisson", input, c(input$poisson_lambda)),
               "Coming soon.")
+    }else if(input$distType=='Multivariate'){
+      switch(input$dist2,
+             MultivariateNormal=fMultivariatenormalJulia(input),
+             "Coming soon.")
     }
   
   if(text!="Coming soon."){
