@@ -79,11 +79,11 @@ fJuliacode <- function(input){
     }else if(input$distType=='Discrete'){
        switch(input$dist1,
               Bernoulli=fJuliaHelperDiscrete("Bernoulli", input, c(input$bernoulli_prob)),
+              BetaBinomial=fJuliaHelperDiscrete("BetaBinomial", input, c(input$betabinomial_size, input$betabinomial_shape1, input$betabinomial_shape2)),
               Binomial=fJuliaHelperDiscrete("Binomial", input, c(input$binomial_size, input$binomial_prob)),
               DiscreteUniform=fJuliaHelperDiscrete("DiscreteUniform", input, c(input$discreteuniform_lower, input$discreteuniform_upper)),
               NegativeBinomial=fJuliaHelperDiscrete("NegativeBinomial", input, c(input$negativebinomial_dispersion, input$negativebinomial_dispersion / (input$negativebinomial_dispersion + input$negativebinomial_mean))),
               Poisson=fJuliaHelperDiscrete("Poisson", input, c(input$poisson_lambda)),
-            
               "Coming soon.")
     }
   
