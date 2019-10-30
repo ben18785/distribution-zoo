@@ -158,8 +158,12 @@ fJuliacode <- function(input){
              MultivariateNormal=fMultivariatenormalJulia(input),
              MultivariateT=fMultivariatetJulia(input),
              Multinomial=fMultinomialJulia(input),
-             Wishart=fWishartJulia(input),
-             InverseWishart=fInverseWishartJulia(input),
+             Wishart=paste(paste0("# S must be symmetric and positive definite and of size ",
+                                  input$wishart_dimension, "x", input$wishart_dimension),
+                                  fWishartJulia(input), sep="\n"),
+             InverseWishart=paste(paste0("# S must be symmetric and positive definite and of size ",
+                                         input$inversewishart_dimension, "x", input$inversewishart_dimension),
+                                  fInverseWishartJulia(input), sep="\n"),
              "Coming soon.")
     }
   
