@@ -108,6 +108,24 @@ fMultinomialJulia <- function(input){
   )
 }
 
+fWishartJulia <- function(input){
+  top <- paste0("aDist=Wishart(", input$wishart_df, ", S)")
+  switch(input$property,
+         pdf=paste(top, "pdf(aDist, x)", sep = "\n"),
+         log_pdf=paste(top, "logpdf(aDist, x)", sep = "\n"),
+         random=paste(top, "rand(aDist, n)", sep = "\n")
+  )
+}
+
+fInverseWishartJulia <- function(input){
+  top <- paste0("aDist=InverseWishart(", input$inversewishart_df, ", S)")
+  switch(input$property,
+         pdf=paste(top, "pdf(aDist, x)", sep = "\n"),
+         log_pdf=paste(top, "logpdf(aDist, x)", sep = "\n"),
+         random=paste(top, "rand(aDist, n)", sep = "\n")
+  )
+}
+
 
 fJuliacode <- function(input){
   text <- 
@@ -140,6 +158,8 @@ fJuliacode <- function(input){
              MultivariateNormal=fMultivariatenormalJulia(input),
              MultivariateT=fMultivariatetJulia(input),
              Multinomial=fMultinomialJulia(input),
+             Wishart=fWishartJulia(input),
+             InverseWishart=fInverseWishartJulia(input),
              "Coming soon.")
     }
   
