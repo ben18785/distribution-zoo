@@ -54,6 +54,7 @@ fJuliacode <- function(input){
     HalfCauchy=fTruncatedCauchyJulia(input),
     InverseGamma=fJuliaHelper("InverseGamma", input, c(input$inversegamma_shape, input$inversegamma_scale)),
     InverseChiSquared=fInverseChiSquaredJulia(input),
+    LogitNormal=fJuliaHelper("LogitNormal", input, c(input$logitnormal_mu, input$logitnormal_sigma)),
     "Coming soon."
   )
       
