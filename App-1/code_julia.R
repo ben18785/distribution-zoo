@@ -45,6 +45,7 @@ fJuliacode <- function(input){
     Beta=fJuliaHelper("Beta", input, c(input$beta_a, input$beta_b)),
     Cauchy=fJuliaHelper("Cauchy", input, c(input$cauchy_location,input$cauchy_scale)),
     HalfCauchy=fTruncatedCauchy(input),
+    InverseGamma=fJuliaHelper("InverseGamma", input, c(input$inversegamma_shape, input$inversegamma_scale)),
     "Coming soon."
   )
       
