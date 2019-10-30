@@ -25,6 +25,14 @@ fTCustom <- function(input){
     paste0(input$t_mu, " .+ ", input$t_sigma, " .* ", "rand(TDist(", input$t_nu, ")", ", n)")
 }
 
+fTruncatedCauchy <- function(input){
+  preamble <- paste0("d=Truncated(Cauchy(", input$halfcauchy_location, ", ", input$halfcauchy_scale, ")", ", 0, Inf)")
+  switch(input$property,
+         pdf=paste(preamble, "pdf(d, x)", sep = "\n"),
+         log_pdf=paste(preamble, "logpdf(d, x)", sep = "\n"),
+         random=paste(preamble, "rand(d, n)", sep = "\n"))
+}
+
 
 fJuliacode <- function(input){
   text <- switch (input$dist,
@@ -36,6 +44,7 @@ fJuliacode <- function(input){
     t=fTCustom(input),
     Beta=fJuliaHelper("Beta", input, c(input$beta_a, input$beta_b)),
     Cauchy=fJuliaHelper("Cauchy", input, c(input$cauchy_location,input$cauchy_scale)),
+    HalfCauchy=fTruncatedCauchy(input),
     "Coming soon."
   )
       
