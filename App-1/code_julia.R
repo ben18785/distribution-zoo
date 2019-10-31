@@ -126,6 +126,22 @@ fInverseWishartJulia <- function(input){
   )
 }
 
+fDirichletMathematica <- function(input){
+  if(input$dirichlet_dimension==2){
+    alpha <- c(input$dirichlet_alpha1, input$dirichlet_alpha2)
+  }else if(input$dirichlet_dimension==3){
+    alpha <- c(input$dirichlet_alpha1, input$dirichlet_alpha2, input$dirichlet_alpha3)
+  }else if(input$dirichlet_dimension==4){
+    alpha <- c(input$dirichlet_alpha1, input$dirichlet_alpha2, input$dirichlet_alpha3, input$dirichlet_alpha4)
+  }
+  top <- paste0("Dirichlet([", paste(alpha, collapse = ", "), "])")
+  switch(input$property,
+         pdf=paste(paste0("pdf(", top, ", x)"), sep="\n"),
+         log_pdf=paste0("logpdf(", top, ", x)"),
+         random=paste(paste0("rand(", top, ", n)"), sep="\n")
+  )
+}
+
 
 fJuliacode <- function(input){
   text <- 
@@ -164,6 +180,7 @@ fJuliacode <- function(input){
              InverseWishart=paste(paste0("# S must be symmetric and positive definite and of size ",
                                          input$inversewishart_dimension, "x", input$inversewishart_dimension),
                                   fInverseWishartJulia(input), sep="\n"),
+             Dirichlet=fDirichletMathematica(input),
              "Coming soon.")
     }
   
