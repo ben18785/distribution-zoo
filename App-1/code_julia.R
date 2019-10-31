@@ -142,6 +142,48 @@ fDirichletMathematica <- function(input){
   )
 }
 
+dLKJJulia <- paste(
+  "using LinearAlgebra",
+  "using GSL",
+  "function LKJ_pdf(X, nu)",
+  "    d = size(X)[1]",
+  "    if sum(Diagonal(X)) != d || sum(LowerTriangular(X)) != sum(UpperTriangular(X)) || !isposdef(X) || nu < 0",
+  "        return 0.0;",
+  "    end",
+  "",
+  "    a_sum = 0.0;",
+  "    a_prod = 1.0;",
+  "    for k = 1:(d - 1)",
+  "        a_sum += (2 * nu - 2 + d - k) * (d - k);",
+  "        a_prod *= sf_beta(nu + 0.5 * (d - k - 1), nu + 0.5 * (d - k - 1));",
+  "    end",
+  "    a_sum = 2^a_sum;",
+  "    return a_sum * a_prod * det(X)^(nu - 1);",
+  "end",
+  sep = "\n"
+)
+
+dLKJJulia_log <- paste(
+  "using LinearAlgebra",
+  "using GSL",
+  "function LKJ_pdf(X, nu)",
+  "    d = size(X)[1]",
+  "    if sum(Diagonal(X)) != d || sum(LowerTriangular(X)) != sum(UpperTriangular(X)) || !isposdef(X) || nu < 0",
+  "        return 0.0;",
+  "    end",
+  "",
+  "    a_sum = 0.0;",
+  "    a_prod = 1.0;",
+  "    for k = 1:(d - 1)",
+  "        a_sum += (2 * nu - 2 + d - k) * (d - k);",
+  "        a_prod *= sf_beta(nu + 0.5 * (d - k - 1), nu + 0.5 * (d - k - 1));",
+  "    end",
+  "    a_sum = 2^a_sum;",
+  "    return log(a_sum) + log(a_prod) + (nu - 1) * log(det(X));",
+  "end",
+  sep = "\n"
+)
+
 
 fJuliacode <- function(input){
   text <- 
