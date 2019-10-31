@@ -184,6 +184,62 @@ dLKJJulia_log <- paste(
   sep = "\n"
 )
 
+rLKJJulia <- paste(
+  "# use with caution as have disabled posdef matrix checking for Cholesky decomp",
+  "using Distributions",
+  "using LinearAlgebra",
+  "function LKJ_rand_1(nu, d)",
+  "    @assert nu > 0 && d > 0",
+  "    d = Int(d)",
+  "    if d == 1",
+  "        r = [1];",
+  "    elseif d == 2",
+  "        rho = 2 * rand(Beta(nu, nu), 1)[1] - 1;",
+  "        r = [[1 rho]; [rho 1]];",
+  "    else",
+  "        beta = nu + (d - 2) / 2;",
+  "        u = rand(Beta(beta, beta), 1)[1];",
+  "        r_12 = 2 * u - 1;",
+  "        r = [[1 r_12]; [r_12 1]];",
+  "        for m = 2:(d - 1)",
+  "            beta -= 0.5;",
+  "            y = rand(Beta(m / 2.0, beta), 1)[1];",
+  "            a = rand(Normal(0, 1), m);",
+  "            anorm = sqrt(sum(a.^2));",
+  "            u = a ./ anorm;",
+  "            w = sqrt(y) .* u;",
+  "            A = cholesky(Hermitian(r), check=false).U;",
+  "            z = A * w;",
+  "            r = [r z; transpose(z) 1];",
+  "        end",
+  "    end",
+  "    return r;",
+  "end",
+  "",
+  "function LKJ_rand(n, nu, d)",
+  "    r_list = []",
+  "    for i = 1:n",
+  "        push!(r_list, LKJ_rand_1(nu, d))",
+  "    end",
+  "    return r_list;",
+  "end",
+  sep = "\n"
+)
+
+fLKJJulia <- function(input){
+  switch(input$property,
+         pdf=paste(dLKJJulia,
+                   paste0("LKJ_pdf(x, ", input$lkj_eta, ")"),
+                   sep = "\n"),
+         log_pdf=paste(dLKJJulia_log,
+                       paste0("LKJ_logpdf(x, ", input$lkj_eta, ")"),
+                       sep = "\n"),
+         random=paste(rLKJJulia,
+                      paste0("LK_rand(n, ", input$lkj_eta, ", ", input$lkj_dimension, "]"),
+                      sep = "\n")
+  )
+}
+
 
 fJuliacode <- function(input){
   text <- 
@@ -223,6 +279,7 @@ fJuliacode <- function(input){
                                          input$inversewishart_dimension, "x", input$inversewishart_dimension),
                                   fInverseWishartJulia(input), sep="\n"),
              Dirichlet=fDirichletMathematica(input),
+             LKJ=fLKJJulia(input),
              "Coming soon.")
     }
   
