@@ -178,7 +178,7 @@ dLKJ_log_mathematica <- paste(
 rLKJ_mathematica <- paste(
   "LKJRandomOne[\\[Nu]_ /; \\[Nu] > 0, d_ /; And[d > 0, IntegerQ[d]]] :=",
   "  Module[{r, rho, beta, u, r12, y, a, anorm, w, A, z},",
-  "    If[d == 1, r = {1}, If[d == 2, rho = 2 (RandomVariate[BetaDistribution[\\[Nu], \\[Nu]], 1][[1]] - 1);",
+  "    If[d == 1, r = {1}, If[d == 2, rho = 2 RandomVariate[BetaDistribution[\\[Nu], \\[Nu]], 1][[1]] - 1;",
   "      r = {{1, rho}, {rho, 1}}, beta = \\[Nu] + (d - 2)/2; ",
   "      u = RandomVariate[BetaDistribution[beta, beta], 1][[1]];",
   "      r12 = 2 u - 1;",
