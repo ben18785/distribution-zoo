@@ -263,7 +263,7 @@ fCalculateVarianceFull <- function(input){
                    Exponential = 1/input$exponential_rate^2,
                    Gamma= input$gamma_shape / input$gamma_rate^2,
                    t = ifelse(input$t_nu > 2,
-                              input$t_nu / (input$t_nu - 2), NA),
+                              input$t_nu * input$t_sigma^2 / (input$t_nu - 2), NA),
                    Beta=(input$beta_a * input$beta_b) / ((input$beta_a+input$beta_b)^2 * (input$beta_a+input$beta_b + 1)),
                    Cauchy=NA,
                    HalfCauchy=NA,
