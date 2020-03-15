@@ -17,14 +17,17 @@ prismLanguageDependencies <- function(languages) {
 }
 
 
-# Define UI for random distribution application 
+# Define UI for random distribution application
+ben_link <- a("Ben Lambert", href="https://ben-lambert.com/bayesian/", target="_blank")
+fergus_link <- a("Fergus Cooper", href="https://www.cs.ox.ac.uk/people/fergus.cooper/site/", target="_blank")
 shinyUI(fluidPage(
   
   tags$head(includeHTML(("google-analytics.html"))),
   includeCSS("styles.css"),
   # Application title
   headerPanel("The distribution zoo"),
-  tagList(h4("by"), a(h4("Ben Lambert"), href="https://ben-lambert.com/bayesian/", target="_blank")),
+  tagList(h4("by")),
+  fluidRow(h4(ben_link, " and ", fergus_link)),
   prismDependencies,
   prismLanguageDependencies(c("r", "python", "latex",
                               "matlab", "mathematica", "c-like",
