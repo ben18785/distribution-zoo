@@ -20,6 +20,9 @@ prismLanguageDependencies <- function(languages) {
 # Define UI for random distribution application
 ben_link <- a("Ben Lambert", href="https://ben-lambert.com/bayesian/", target="_blank")
 fergus_link <- a("Fergus Cooper", href="https://www.cs.ox.ac.uk/people/fergus.cooper/site/", target="_blank")
+
+ga_data <- rjson::fromJSON(file="https://www.cs.ox.ac.uk/people/fergus.cooper/google_analytics_data.json")
+
 shinyUI(fluidPage(
   
   tags$head(includeHTML(("google-analytics.html"))),
@@ -28,6 +31,7 @@ shinyUI(fluidPage(
   headerPanel("The distribution zoo"),
   tagList(h4("by")),
   fluidRow(h4(ben_link, " and ", fergus_link)),
+  fluidRow(h4("Used by ", ga_data['total'], " people in ", length(ga_data) - 1, " countries in the last month")),
   prismDependencies,
   prismLanguageDependencies(c("r", "python", "latex",
                               "matlab", "mathematica", "c-like",
