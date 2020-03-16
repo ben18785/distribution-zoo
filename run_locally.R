@@ -10,7 +10,8 @@ list.of.packages <- c(
   'gridExtra',
   'DirichletReg',
   'scatterplot3d',
-  'tidyverse'
+  'tidyverse',
+  'rjson'
 )
 
 new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
