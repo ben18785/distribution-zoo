@@ -31,7 +31,7 @@ shinyUI(fluidPage(
   headerPanel("The distribution zoo"),
   tagList(h4("by")),
   fluidRow(h4(ben_link, " and ", fergus_link)),
-  fluidRow(h4("Used by ", ga_data['total'], " people in ", length(ga_data) - 1, " countries in the last month")),
+  fluidRow(h4("Used by ", ga_data['user_count'], " people ", ga_data['session_count'], "times in ", ga_data['country_count'], " countries in the last month")),
   prismDependencies,
   prismLanguageDependencies(c("r", "python", "latex",
                               "matlab", "mathematica", "c-like",
