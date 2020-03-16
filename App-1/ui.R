@@ -31,7 +31,9 @@ shinyUI(fluidPage(
   # Application title
   headerPanel("The distribution zoo"),
   tagList(h4("by")),
-  fluidRow(h4(ben_link, " and ", fergus_link), h3("In the last month used by ", ga_30['user_count'], " people over ", ga_30['session_count'], "sessions in ", ga_30['country_count'], " countries")),
+  fluidRow(h4(ben_link, " and ", fergus_link),
+           h4("Last month: used by ", ga_30['user_count'], " people over ", ga_30['session_count'], "sessions in ", ga_30['country_count'], " countries"),
+           h4("Since created: used by ", ga_all['user_count'], " people over ", ga_all['session_count'], "sessions in ", ga_all['country_count'], " countries")),
   prismDependencies,
   prismLanguageDependencies(c("r", "python", "latex",
                               "matlab", "mathematica", "c-like",
