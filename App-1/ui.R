@@ -20,6 +20,7 @@ prismLanguageDependencies <- function(languages) {
 # Define UI for random distribution application
 ben_link <- a("Ben Lambert", href="https://ben-lambert.com/bayesian/", target="_blank")
 fergus_link <- a("Fergus Cooper", href="https://www.cs.ox.ac.uk/people/fergus.cooper/site/", target="_blank")
+survey_link <- a("two minute survey", href="https://oxford.onlinesurveys.ac.uk/distribution_zoo_evaluation", target="_blank")
 
 ga_30_line <- ""
 ga_all_line <- ""
@@ -35,6 +36,13 @@ shinyUI(fluidPage(
   
   tags$head(includeHTML(("google-analytics.html"))),
   includeCSS("styles.css"),
+
+  # Survey link with light yellow background
+  fluidRow(
+    helpText("Help improve this app by filling in a ", survey_link)
+      %>% tagAppendAttributes(style= 'background-color:#F3FEB0; padding:1rem;')
+  ),
+
   # Application title
   headerPanel("The distribution zoo"),
   tagList(h4("by")),
