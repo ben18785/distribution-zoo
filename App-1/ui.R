@@ -1,4 +1,5 @@
 library(shiny)
+library(purrr)
 
 prismDependencies <- tags$head(
   tags$script(src = "https://cdnjs.cloudflare.com/ajax/libs/prism/1.8.4/prism.min.js"),
@@ -33,7 +34,7 @@ try({
 })
 
 shinyUI(fluidPage(
-  
+
   tags$head(includeHTML(("google-analytics.html"))),
   includeCSS("styles.css"),
 
@@ -51,7 +52,7 @@ shinyUI(fluidPage(
   prismLanguageDependencies(c("r", "python", "latex",
                               "matlab", "mathematica", "c-like",
                               "c", "cpp", "julia")),
-  
+
   # Sidebar with controls to select the random distribution type
   # and number of observations to generate. Note the use of the
   # br() element to introduce extra vertical spacing
@@ -131,7 +132,7 @@ shinyUI(fluidPage(
                        sliderInput("inversechisquared_df", "degrees of freedom", min=0.5, max=10, value=3)),
       conditionalPanel(condition="input.distType=='Continuous'&&input.dist=='LogitNormal'",
                        sliderInput("logitnormal_mu", "mu parameter", min=-10, max=10, value=1, step=0.2),
-                       sliderInput("logitnormal_sigma", "sigma parameter", min=0.5, max=10, value=1, step=0.2)),   
+                       sliderInput("logitnormal_sigma", "sigma parameter", min=0.5, max=10, value=1, step=0.2)),
       conditionalPanel(condition="input.distType=='Discrete'&&input.dist1=='Bernoulli'",
                        sliderInput("bernoulli_prob", "probability", min=0, max=1, value=0.5)),
       conditionalPanel(condition="input.distType=='Discrete'&&input.dist1=='BetaBinomial'",
