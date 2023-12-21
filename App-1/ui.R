@@ -27,8 +27,8 @@ ga_30_line <- ""
 ga_all_line <- ""
 
 try({
-  ga_30 <- rjson::fromJSON(file="https://www.cs.ox.ac.uk/people/fergus.cooper/google_analytics_data_30daysAgo.json")
-  ga_all <- rjson::fromJSON(file="https://www.cs.ox.ac.uk/people/fergus.cooper/google_analytics_data_2019-01-08.json")
+  ga_30 <- rjson::fromJSON(file="https://fcooper8472.github.io/distribution-zoo-analytics/data_30.json")
+  ga_all <- rjson::fromJSON(file="https://fcooper8472.github.io/distribution-zoo-analytics/data_all_time.json")
   ga_30_line <- h4("Last month: used by ", ga_30['user_count'], " people over ", ga_30['session_count'], "sessions in ", ga_30['country_count'], " countries")
   ga_all_line <- h4("Since created: used by ", ga_all['user_count'], " people over ", ga_all['session_count'], "sessions in ", ga_all['country_count'], " countries")
 })
