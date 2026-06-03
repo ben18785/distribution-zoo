@@ -1,0 +1,12 @@
+name: distribution-zoo
+title: distribution-zoo
+username: ben18785
+account: ben18785
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 631788
+bundleId: 8119357
+url: https://ben18785.shinyapps.io/distribution-zoo/
+version: 1
+asMultiple: FALSE
+asStatic: FALSE

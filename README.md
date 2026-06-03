@@ -1,5 +1,10 @@
 # The distribution zoo
+
+[![tests](https://github.com/ben18785/distribution-zoo/actions/workflows/tests.yaml/badge.svg)](https://github.com/ben18785/distribution-zoo/actions/workflows/tests.yaml)
+
 App to view distribution properties and access dynamic code in R, Python, Matlab, Mathematica and Stan. The app is available online <a href="https://ben18785.shinyapps.io/distribution-zoo/" target="_blank">here</a>.
+
+Tests live in `App-1/tests/` and run automatically on every push (see [`App-1/tests/README.md`](App-1/tests/README.md)).
 
 ## To add a new distribution
 

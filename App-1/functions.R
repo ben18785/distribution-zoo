@@ -259,7 +259,7 @@ fCalculateVarianceFull <- function(input){
     aVar <- switch(input$dist,
                    Normal=input$normal_sigma^2,
                    Uniform = (1/12) * (input$uniform_b - input$uniform_a)^2,
-                   LogNormal = exp(input$lognormal_sigma^2 - 1) * exp(2 * input$lognormal_mu + input$lognormal_sigma^2),
+                   LogNormal = (exp(input$lognormal_sigma^2) - 1) * exp(2 * input$lognormal_mu + input$lognormal_sigma^2),
                    Exponential = 1/input$exponential_rate^2,
                    Gamma= input$gamma_shape / input$gamma_rate^2,
                    t = ifelse(input$t_nu > 2,

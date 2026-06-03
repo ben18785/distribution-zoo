@@ -1,7 +1,9 @@
 name: App-1
 account: ben18785
 server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
 appId: 77164
-bundleId: 349211
+bundleId: 8119339
 url: https://ben18785.shinyapps.io/App-1/
-when: 1452730348.62359
+asMultiple: FALSE
+asStatic: FALSE

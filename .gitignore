@@ -1,4 +1,6 @@
+.Rhistory
+.RData
+.Rproj.user
 
-.Rhistory
-.Rhistory
-.Rhistory
+# testthat throwaway snapshots (the committed _snaps/ baseline is kept)
+**/_snaps/**/*.new.md

@@ -1,0 +1,54 @@
+name: tests
+
+# Run the testthat suite on every push and pull request.
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    name: R ${{ matrix.config.r }} tests
+    strategy:
+      fail-fast: false
+      matrix:
+        config:
+          - { r: 'release' }
+
+    env:
+      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+      R_KEEP_PKG_SOURCE: yes
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: r-lib/actions/setup-r@v2
+        with:
+          r-version: ${{ matrix.config.r }}
+          use-public-rspm: true
+
+      # Reads ./DESCRIPTION, installs the R package dependencies plus the
+      # required system libraries (e.g. those needed by ggplot2), and caches
+      # the installed library between runs.
+      - uses: r-lib/actions/setup-r-dependencies@v2
+        with:
+          extra-packages: any::testthat
+
+      - name: Run test suite
+        shell: Rscript {0}
+        run: |
+          library(testthat)
+          results <- test_dir(
+            "App-1/tests/testthat",
+            reporter = "summary",
+            stop_on_failure = FALSE
+          )
+          df <- as.data.frame(results)
+          n_failed <- sum(df$failed)
+          n_error  <- if ("error" %in% names(df)) sum(df$error) else 0L
+          cat(sprintf("\n==> %d failed expectation(s), %d test(s) errored\n",
+                      n_failed, n_error))
+          if (n_failed > 0 || n_error > 0) {
+            quit(status = 1, save = "no")
+          }

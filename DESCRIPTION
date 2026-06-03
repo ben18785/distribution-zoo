@@ -1,0 +1,23 @@
+Package: distributionzoo
+Title: The Distribution Zoo
+Version: 0.0.0.9000
+Authors@R: c(
+    person("Ben", "Lambert", role = c("aut", "cre")),
+    person("Fergus", "Cooper", role = "aut"))
+Description: A Shiny app to view distribution properties and access dynamic
+    code in R, Python, Matlab, Mathematica, Julia, C++ and Stan. This
+    DESCRIPTION exists to declare dependencies so that continuous integration
+    can install the R packages and system libraries the app and its test
+    suite need; the app itself is run from App-1/.
+Encoding: UTF-8
+Imports:
+    shiny,
+    purrr,
+    ggplot2,
+    LaplacesDemon,
+    actuar,
+    logitnorm,
+    mvtnorm,
+    reshape
+Suggests:
+    testthat (>= 3.0.0)
