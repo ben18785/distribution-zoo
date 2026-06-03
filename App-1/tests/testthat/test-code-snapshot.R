@@ -48,10 +48,12 @@ dump_all_code <- function(properties = "pdf") {
 }
 
 test_that("generated code (pdf) is stable across all distributions and languages", {
+  local_edition(3)  # expect_snapshot() requires testthat's 3rd edition
   expect_snapshot(cat(dump_all_code("pdf"), sep = "\n"))
 })
 
 test_that("generated R/Python/Stan code is stable across all properties", {
+  local_edition(3)  # expect_snapshot() requires testthat's 3rd edition
   # Limit to the three languages and the univariate distributions to keep the
   # snapshot focused on the property-dependent (pdf / log_pdf / random) paths.
   catalogue <- c(

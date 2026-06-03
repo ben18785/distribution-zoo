@@ -76,14 +76,16 @@ test_that("univariate distributions return finite-or-NA mean and variance", {
     m <- fCalculateMeanFull(inp)
     v <- fCalculateVarianceFull(inp)
 
-    # must be a single numeric value (NA is allowed: undefined moments)
-    expect_true(is.numeric(m) && length(m) == 1,
-                info = paste(nm, "mean"))
-    expect_true(is.numeric(v) && length(v) == 1,
-                info = paste(nm, "variance"))
-    # if defined, must be finite (catches Inf/NaN from a mis-wired formula)
-    if (!is.na(m)) expect_true(is.finite(m), info = paste(nm, "mean finite"))
-    if (!is.na(v)) expect_true(is.finite(v) && v >= 0, info = paste(nm, "variance >= 0"))
+    # Must be a single scalar. NA denotes an undefined moment and is allowed;
+    # note the app returns a bare `NA` (logical) for these, so we must not
+    # require numeric type for the NA case.
+    expect_length(m, 1)
+    expect_length(v, 1)
+    # When defined (not NA), it must be a finite number.
+    if (!is.na(m)) expect_true(is.numeric(m) && is.finite(m),
+                               info = paste(nm, "mean finite"))
+    if (!is.na(v)) expect_true(is.numeric(v) && is.finite(v) && v >= 0,
+                               info = paste(nm, "variance >= 0"))
   }
 })
 

@@ -4,3 +4,7 @@
 
 # testthat throwaway snapshots (the committed _snaps/ baseline is kept)
 **/_snaps/**/*.new.md
+.positai
+
+# macOS
+.DS_Store
