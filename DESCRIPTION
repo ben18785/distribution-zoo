@@ -13,6 +13,7 @@ Encoding: UTF-8
 Imports:
     shiny,
     purrr,
+    dplyr,
     ggplot2,
     LaplacesDemon,
     actuar,

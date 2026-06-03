@@ -37,7 +37,7 @@ dump_all_code <- function(properties = "pdf") {
     for (prop in properties) {
       inp <- make_input(category, nm, property = prop)
       for (lang in names(.snapshot_generators)) {
-        txt <- render_text(.snapshot_generators[[lang]](inp))
+        txt <- code_block_text(.snapshot_generators[[lang]](inp))
         lines <- c(lines,
                    sprintf("===== %s | %s | %s =====", nm, lang, prop),
                    txt, "")
@@ -68,7 +68,7 @@ test_that("generated R/Python/Stan code is stable across all properties", {
     for (prop in c("pdf", "log_pdf", "random")) {
       inp <- make_input(category, nm, property = prop)
       for (lang in names(gens)) {
-        txt <- render_text(gens[[lang]](inp))
+        txt <- code_block_text(gens[[lang]](inp))
         dump <- c(dump, sprintf("===== %s | %s | %s =====", nm, lang, prop), txt, "")
       }
     }

@@ -11,6 +11,8 @@
 suppressMessages({
   library(shiny)   # tag rendering used by fFormulae / fLatex / code generators
   library(purrr)   # map_dbl / map_chr used inside fMakeFunctionPaste
+  library(dplyr)   # if_else used by the Dirichlet generator in code_r.R
+                   # (the live app gets this via server.R's library(tidyverse))
 })
 
 # Walk upwards from the working directory until we find the app root.
@@ -114,11 +116,31 @@ make_input <- function(category, name, property = "pdf") {
 }
 
 # Flatten a Shiny tag / tagList to its visible text, stripping HTML tags and
-# entities. Used to assert generated content is non-empty.
+# entities. Adequate for non-emptiness checks, but lossy: it also removes code
+# operators such as `<-`, `>=` and `<`. Do NOT use it to record snapshots.
 render_text <- function(x) {
   s <- paste(as.character(x), collapse = "")
   s <- gsub("<[^>]*>", "", s)                 # strip HTML tags
   s <- gsub("&[a-zA-Z]+;|&#[0-9]+;", " ", s)  # strip HTML entities
+  trimws(s)
+}
+
+# Faithful text extraction for snapshots. The code generators wrap their output
+# in a single <pre><code ...>CODE</code></pre> block; we return CODE verbatim so
+# that operators like `<-` and `>=` survive. For output without a <code> block
+# (e.g. LaTeX), we fall back to the full rendered string, which is still stable.
+code_block_text <- function(x) {
+  s <- paste(as.character(x), collapse = "\n")
+  m <- regmatches(s, regexpr("(?s)<code[^>]*>.*</code>", s, perl = TRUE))
+  if (length(m) == 1L) {
+    s <- sub("(?s)^<code[^>]*>", "", m, perl = TRUE)
+    s <- sub("(?s)</code>.*$", "", s, perl = TRUE)
+  }
+  # decode the handful of HTML entities the generators emit (mainly C++)
+  s <- gsub("&lt;", "<", s, fixed = TRUE)
+  s <- gsub("&gt;", ">", s, fixed = TRUE)
+  s <- gsub("&amp;", "&", s, fixed = TRUE)
+  s <- gsub("&emsp;", "  ", s, fixed = TRUE)
   trimws(s)
 }
 
